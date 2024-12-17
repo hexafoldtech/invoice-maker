@@ -8,7 +8,7 @@ Give it a try and see how much easier your financial management can be!
 - Dart 3.3.1
 
 ## Directory Structure
-lib/
+`_****lib/
 ├── core/                      # Core utility classes and shared code
 │   ├── constants/             # Constants, enums, and configurations
 │   ├── exceptions/            # Custom error classes or exception handling
@@ -30,7 +30,7 @@ lib/
 │   ├── invoice_screen.dart    # Screen for listing and managing invoices
 │   └── user_screen.dart       # Screen for user-related actions (e.g., login)
 ├── main.dart                  # Entry point of the application
-└── routes.dart                # Define app routes and navigation
+└── routes.dart                # Define app routes and navigation****_`
 
 ## Project Management Tools
 - UI Designs:
