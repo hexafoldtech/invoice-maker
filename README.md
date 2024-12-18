@@ -1,14 +1,17 @@
-# invoice_maker
-Invoice Maker allows you to simplify the process of sending invoices and receiving payments.
-It can also help you keep track of any outstanding payments and look professional in the eyes of your clients.
+# Invoice Maker
+
+Invoice Maker simplifies the process of sending invoices and receiving payments.
+It helps you track outstanding payments and maintain a professional image with your clients.
 Give it a try and see how much easier your financial management can be!
 
 ## Tools & Versions
-- Flutter 3.19.3
-- Dart 3.3.1
+- **Flutter**: 3.19.3
+- **Dart**: 3.3.1
 
 ## Directory Structure
-`_****lib/
+
+## Directory Structure
+lib/
 ├── core/                      # Core utility classes and shared code
 │   ├── constants/             # Constants, enums, and configurations
 │   ├── exceptions/            # Custom error classes or exception handling
@@ -30,10 +33,23 @@ Give it a try and see how much easier your financial management can be!
 │   ├── invoice_screen.dart    # Screen for listing and managing invoices
 │   └── user_screen.dart       # Screen for user-related actions (e.g., login)
 ├── main.dart                  # Entry point of the application
-└── routes.dart                # Define app routes and navigation****_`
+└── routes.dart                # Define app routes and navigation
+
 
 ## Project Management Tools
-- UI Designs:
-- Version Control: https://github.com/hexafoldtech/invoice-maker
-- Task Board:
-- App Deployment:
+- **UI Designs**: [Insert design links or references here]
+- **Version Control**: [Invoice Maker GitHub Repository](https://github.com/hexafoldtech/invoice-maker)
+- **Task Board**: [Insert task board link or tool name here]
+- **App Deployment**: [Insert deployment details here]
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/hexafoldtech/invoice-maker.git```
+2. Install the required dependencies:
+   ```bash
+   flutter pub get```
+3. Run the application
+    ```bash
+   flutter run```
