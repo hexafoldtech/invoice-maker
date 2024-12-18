@@ -63,22 +63,23 @@ void mainApp() {
                 builder: (context, child) {
                   return Stack(children: [
                     const App(),
-
-                    /// The app version label, displayed at the bottom-left corner.
-                    Positioned(
-                        bottom: AppSizes.s4.r,
-                        left: AppSizes.s4.r,
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppSizes.s8.r,
-                                vertical: AppSizes.s2.r),
-                            decoration: BoxDecoration(
-                                color: AppColors.black.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text("v${PackageInfoUtil.version}",
-                                style: TextStyle(
-                                    color: AppColors.grey,
-                                    fontSize: AppSizes.s10.r))))
+                    if (kDebugMode) ...[
+                      /// The app version label, displayed at the bottom-left corner.
+                      Positioned(
+                          bottom: AppSizes.s4.r,
+                          left: AppSizes.s4.r,
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppSizes.s8.r,
+                                  vertical: AppSizes.s2.r),
+                              decoration: BoxDecoration(
+                                  color: AppColors.black.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text("v${PackageInfoUtil.version}",
+                                  style: TextStyle(
+                                      color: AppColors.grey,
+                                      fontSize: AppSizes.s10.r))))
+                    ]
                   ]);
                 }))));
   }, (Object error, StackTrace stack) {
