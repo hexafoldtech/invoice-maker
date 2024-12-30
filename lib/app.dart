@@ -47,7 +47,7 @@ class _AppState extends State<App> {
             _isLoading = false;
             _initialScreen = hasCredentials
                 ? RouteNames.dashboardScreen
-                : RouteNames.loginScreen;
+                : RouteNames.dashboardScreen;
           });
         });
       });
