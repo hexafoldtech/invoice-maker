@@ -65,8 +65,7 @@ class AppButton extends StatelessWidget {
         onPressed: action,
         child: Text(
           label,
-          style: AppTextStyles.poppinsBody(textColor, FontWeight.w900)
-              as TextStyle?,
+          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900),
           textAlign: TextAlign.center,
         ),
       ),
@@ -98,7 +97,8 @@ class AppButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(color: textColor, fontSize: fontSize),
+          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900),
+          textAlign: TextAlign.center,
         ),
       ),
     );

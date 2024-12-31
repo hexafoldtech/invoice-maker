@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
+import 'package:invoice_maker/core/utils/app_text_styles.dart';
 
 class InvoiceItem extends StatelessWidget {
   final String paid;
@@ -20,10 +21,10 @@ class InvoiceItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const Text(
+          Text(
             "\$ 4500.00",
-            style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.s18),
+            style: AppTextStyles.helveticaNeueItem(
+                AppColors.darkGrey, FontWeight.bold),
           ),
           Container(
             decoration: BoxDecoration(

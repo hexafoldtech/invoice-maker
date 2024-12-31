@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
+import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/view/dashboard_screen/invoice_item.dart';
 
 class ToggleButton extends StatefulWidget {
@@ -48,38 +49,42 @@ class _ToggleButtonState extends State<ToggleButton> {
         const SizedBox(
           height: AppSizes.s20,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               AppStrings.total,
-              style: TextStyle(),
+              style: AppTextStyles.helveticaNeueItem(
+                  AppColors.darkGrey, FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               width: AppSizes.s10,
             ),
             Text(
               "\$ 4500.00",
-              style: TextStyle(),
+              style: AppTextStyles.helveticaNeueItem(
+                  AppColors.darkGrey, FontWeight.bold),
             ),
           ],
         ),
         const SizedBox(
           height: AppSizes.s5,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               AppStrings.received,
-              style: TextStyle(),
+              style: AppTextStyles.helveticaNeueItem(
+                  AppColors.darkGrey, FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               width: AppSizes.s10,
             ),
             Text(
               "\$ 4500.00",
-              style: TextStyle(),
+              style: AppTextStyles.helveticaNeueItem(
+                  AppColors.darkGrey, FontWeight.bold),
             ),
           ],
         ),
