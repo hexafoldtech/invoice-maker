@@ -2,41 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/view/dashboard_screen/invoice_screen.dart';
+import 'package:invoice_maker/providers/bottom_navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: AppStrings.invoiceMakerText),
-              Tab(text: AppStrings.estimatesTabText),
-            ],
-            labelStyle: TextStyle(
-              fontSize: AppSizes.s19,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: AppSizes.s19,
-              fontWeight: FontWeight.normal,
-              color: AppColors.darkGrey,
-            ),
-            indicatorColor: AppColors.black,
+    final bottomNavigationProvider =
+        Provider.of<BottomNavigationProvider>(context);
+    return Scaffold(
+      body: bottomNavigationProvider.currentPage,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: bottomNavigationProvider.currentIndex,
+        onTap: (index) => bottomNavigationProvider.updateIndex(index),
+        elevation: AppSizes.s0,
+        selectedItemColor: AppColors.black,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.file_copy),
+            label: AppStrings.invoiceTabText,
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            Center(child: InvoiceScreen()),
-            Center(child: Text('Content for Tab 2')),
-          ],
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.report),
+            label: AppStrings.reportBottomNavTabText,
+          ),
+        ],
       ),
     );
   }

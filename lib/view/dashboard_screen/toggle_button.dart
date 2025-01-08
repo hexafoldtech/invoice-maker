@@ -3,6 +3,7 @@ import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/view/dashboard_screen/invoice_item.dart';
+import 'package:invoice_maker/view/dashboard_screen/total_recieved_amount.dart';
 
 class ToggleButton extends StatefulWidget {
   const ToggleButton({super.key});
@@ -48,41 +49,11 @@ class _ToggleButtonState extends State<ToggleButton> {
         const SizedBox(
           height: AppSizes.s20,
         ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              AppStrings.total,
-              style: TextStyle(),
-            ),
-            SizedBox(
-              width: AppSizes.s10,
-            ),
-            Text(
-              "\$ 4500.00",
-              style: TextStyle(),
-            ),
-          ],
-        ),
+        const TotalReceivedAmount(title: AppStrings.total, amount: 4500.00),
         const SizedBox(
           height: AppSizes.s5,
         ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              AppStrings.received,
-              style: TextStyle(),
-            ),
-            SizedBox(
-              width: AppSizes.s10,
-            ),
-            Text(
-              "\$ 4500.00",
-              style: TextStyle(),
-            ),
-          ],
-        ),
+        const TotalReceivedAmount(title: AppStrings.received, amount: 4500.00),
         SizedBox(
           height: AppSizes.s400,
           child: IndexedStack(

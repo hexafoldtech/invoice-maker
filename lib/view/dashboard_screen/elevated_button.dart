@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
+import 'package:invoice_maker/core/utils/app_text_styles.dart';
 
 class CreateInvoiceButton extends StatelessWidget {
   const CreateInvoiceButton({super.key});
@@ -26,9 +27,10 @@ class CreateInvoiceButton extends StatelessWidget {
           side: const BorderSide(color: AppColors.white, width: AppSizes.s2),
           shadowColor: AppColors.black.withOpacity(0.5),
         ),
-        child: const Text(
+        child: Text(
           AppStrings.createInvoice,
-          style: TextStyle(color: AppColors.white, fontSize: AppSizes.s20),
+          style:
+              AppTextStyles.helveticaNeue(AppColors.white, FontWeight.normal),
         ),
       ),
     );
