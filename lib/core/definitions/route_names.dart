@@ -4,4 +4,5 @@ class RouteNames {
   static const String dashboardScreen = "dashboard_screen";
   static const String underDevelopmentScreen = "under_development_screen";
   static const String errorScreen = "error_screen";
+  static const String bottomNavigation = "bottom_navigation";
 }

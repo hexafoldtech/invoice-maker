@@ -33,4 +33,24 @@ class AppTextStyles {
       color: color,
     );
   }
+
+  static TextStyle helveticaNeueMedium(Color color, FontWeight fontWeight) {
+    return TextStyle(
+      fontFamily: 'Helvetica Neue',
+      fontSize: AppSizes.s29,
+      fontWeight: fontWeight,
+      height: 1.5,
+      color: color,
+    );
+  }
+
+  static TextStyle helveticaNeueSmall(Color color, FontWeight fontWeight) {
+    return TextStyle(
+      fontFamily: 'Helvetica Neue',
+      fontSize: AppSizes.s15,
+      fontWeight: fontWeight,
+      height: 1.5,
+      color: color,
+    );
+  }
 }

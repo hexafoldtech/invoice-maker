@@ -14,4 +14,6 @@ class AppStrings {
   static const String createEstimate = "Create Estimate";
   static const String elevatedButtonClicked = "button clicked";
   static const String reportBottomNavTabText = "Reports";
+  static const String incomeText = "Income";
+  static const String exportInvoicesText = "Export Invoices";
 }
