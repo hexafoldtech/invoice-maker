@@ -6,8 +6,6 @@ import 'package:invoice_maker/core/utils/app_button.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/core/utils/total_invoice_amount.dart';
 import 'package:invoice_maker/core/utils/year_picker.dart';
-import 'package:invoice_maker/providers/tab_provider.dart';
-import 'package:provider/provider.dart';
 
 class ReportsScreens extends StatelessWidget {
   const ReportsScreens({super.key});
