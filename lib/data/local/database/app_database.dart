@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:invoice_maker/data/local/entity/clients_entity.dart';
+import 'package:invoice_maker/data/local/entity/new_client_entity.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
-
+import "package:path/path.dart" as path;
 // part 'app_database.g.dart';
 
 LazyDatabase _openConnection() {
@@ -18,7 +17,7 @@ LazyDatabase _openConnection() {
 }
 
 // @DriftDatabase(tables: [Client])
-// class AppDatabase extends _$AppDatabase {
+// class AppDatabase extends _$AppDb {
 //   AppDatabase() : super(_openConnection());
 
 //   @override
