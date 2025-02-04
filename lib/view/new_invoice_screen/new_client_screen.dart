@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_maker/boxes/client_boxes.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/core/utils/client_text_form_field.dart';
+import 'package:invoice_maker/models/clients_model.dart';
 
 class NewClientScreen extends StatelessWidget {
   const NewClientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController clientNameController = TextEditingController();
+    TextEditingController clientPhoneNumberController = TextEditingController();
+    TextEditingController clientEmailController = TextEditingController();
+    TextEditingController clientAddressController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
@@ -24,7 +31,22 @@ class NewClientScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              final data = ClientsModel(
+                  id: 1,
+                  clientName: clientNameController.text,
+                  clientPhoneNumber: clientPhoneNumberController.text,
+                  clientEmail: clientEmailController.text,
+                  clientAddress: clientAddressController.text);
+              final clientBox = ClientBoxes.getData();
+              clientBox.add(data);
+              data.save();
+              clientAddressController.clear;
+              clientNameController.clear;
+              clientEmailController.clear;
+              clientPhoneNumberController.clear;
+              print(clientBox);
+            },
             child: Text(
               AppStrings.doneText,
               style: AppTextStyles.helveticaNeueSmall(
@@ -47,7 +69,8 @@ class NewClientScreen extends StatelessWidget {
               const SizedBox(
                 height: AppSizes.s18,
               ),
-              const ClientTextFormField(
+              ClientTextFormField(
+                controller: clientNameController,
                 title: AppStrings.billToText,
                 textFormType: '',
               ),
@@ -58,17 +81,20 @@ class NewClientScreen extends StatelessWidget {
                     AppColors.darkGrey, FontWeight.normal),
               ),
               const SizedBox(height: AppSizes.s10),
-              const ClientTextFormField(
+              ClientTextFormField(
+                controller: clientPhoneNumberController,
                 title: AppStrings.phoneText,
                 textFormType: '',
               ),
               const SizedBox(height: AppSizes.s16),
-              const ClientTextFormField(
+              ClientTextFormField(
+                controller: clientEmailController,
                 title: AppStrings.emailText,
                 textFormType: '',
               ),
               const SizedBox(height: AppSizes.s16),
-              const ClientTextFormField(
+              ClientTextFormField(
+                controller: clientAddressController,
                 title: AppStrings.addressText,
                 textFormType: '',
               ),

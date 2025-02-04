@@ -7,8 +7,12 @@ import 'package:invoice_maker/core/utils/app_text_styles.dart';
 class ClientTextFormField extends StatelessWidget {
   final String title;
   final String textFormType;
+  final TextEditingController controller;
   const ClientTextFormField(
-      {super.key, required this.title, required this.textFormType});
+      {super.key,
+      required this.title,
+      required this.textFormType,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class ClientTextFormField extends StatelessWidget {
           SizedBox(
             width: AppSizes.s200.r,
             child: TextFormField(
+              controller: controller,
               decoration: InputDecoration(
                 hintText: textFormType,
                 border: InputBorder.none,
