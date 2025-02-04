@@ -1,4 +1,3 @@
-/// A utility class for defining application text.
 class AppStrings {
   static const String invoiceMakerText = "Invoice Maker";
   static const String somethingWentWrongText = "Something went wrong!";
@@ -16,4 +15,39 @@ class AppStrings {
   static const String reportBottomNavTabText = "Reports";
   static const String incomeText = "Income";
   static const String exportInvoicesText = "Export Invoices";
+  static const String cancelText = "Cancel";
+  static const String previewText = "Preview";
+  static const String doneText = "Done";
+  static const String newInvoiceText = "New Invoice";
+  static const String summaryText = "Summary";
+  static const String totalCapitalText = "Total:";
+  static const String issuedDateText = "issued:";
+  static const String dueDateText = "due:";
+  static const String numberText = "#";
+  static const String clientText = "Client:";
+  static const String addClientText = "Add Client";
+  static const String itemsText = "Items:";
+  static const String addItemText = "Add Item";
+  static const String newitemsText = "Items";
+  static const String searchText = "Search";
+  static const String addNewItemText = "Add New Item";
+  static const String developmentText = "Development";
+  static const String newItemText = "New Item";
+  static const String clientsText = "Clients";
+  static const String addNewClientText = "Add New Client";
+  static const String nameText = "Name";
+  static const String detailsCompletedText = "Details (e.g. completed on 1/12)";
+  static const String saveToCatalogText = "Save to items catalog";
+  static const String unitPriceText = "Unit Price";
+  static const String quantityText = "Quantity";
+  static const String unitTypeText = "Unit Type";
+  static const String discountText = "Discount";
+  static const String taxableText = "Taxable?";
+  static const String newClientText = "New Client";
+  static const String billToText = "Bill to";
+  static const String contactsText = "Contacts";
+  static const String phoneText = "Phone";
+  static const String emailText = "Email";
+  static const String addressText = "Address";
+  static const String importFromContactsText = "Import from contacts";
 }

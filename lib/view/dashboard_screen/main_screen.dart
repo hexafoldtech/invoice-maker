@@ -7,6 +7,7 @@ import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/providers/tab_provider.dart';
 import 'package:invoice_maker/view/dashboard_screen/estimates_screen/estimates_screen.dart';
 import 'package:invoice_maker/view/dashboard_screen/invoice_screen.dart';
+import 'package:invoice_maker/view/new_invoice_screen/new_invoice_screen.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -75,7 +76,13 @@ class _MainScreenState extends State<MainScreen>
               AppButton(
                 type: ButtonType.invoice,
                 label: context.watch<TabProvider>().title,
-                action: () {},
+                action: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewInvoiceScreen()),
+                  );
+                },
                 textColor: AppColors.white,
                 fontSize: AppSizes.s20,
                 borderColor: AppColors.white,

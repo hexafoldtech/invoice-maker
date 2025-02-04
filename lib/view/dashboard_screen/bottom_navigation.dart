@@ -3,8 +3,6 @@ import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/providers/bottom_navigation_provider.dart';
-import 'package:invoice_maker/view/dashboard_screen/dashboard_screen.dart';
-import 'package:invoice_maker/view/dashboard_screen/reports_screen/reports_screens.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/definitions/route_names.dart';
 import 'package:provider/provider.dart';
-
 import 'core/definitions/routes.dart';
 import 'providers/app_initialization_provider.dart';
 import 'view/app_screens/loading_screen.dart';
