@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/view/dashboard_screen/main_screen.dart';
-import 'package:invoice_maker/view/dashboard_screen/reports_screen/reports_screens.dart';
+import '../view/widgets/custom_bottom_bar.dart';
+
+enum BottomBarOptions { invoices, reports }
 
 class BottomNavigationProvider with ChangeNotifier {
-  int _currentIndex = 0;
-
-  int get currentIndex => _currentIndex;
-
-  void updateIndex(int index) {
-    _currentIndex = index;
+  BottomBarOptions _selectedOption = BottomBarOptions.invoices;
+  BottomBarOptions get selectedOption => _selectedOption;
+  set selectedOption(BottomBarOptions value) {
+    _selectedOption = value;
     notifyListeners();
   }
 
-  Widget get currentPage {
-    switch (_currentIndex) {
-      case 0:
-        return const MainScreen();
-      case 1:
-        return const ReportsScreens();
-      default:
-        return const MainScreen();
-    }
-  }
+  List<BottomBarItemsModel> get bottomBarItems => [
+        BottomBarItemsModel(
+            icon: Icons.drag_indicator_sharp, // TODO Change the icon
+            label: BottomBarOptions.invoices,
+            buttonAction: () {
+              if (_selectedOption != BottomBarOptions.invoices) {
+                selectedOption = BottomBarOptions.invoices;
+              }
+            }),
+        BottomBarItemsModel(
+            icon: Icons.drag_indicator_sharp, // TODO Change the icon
+            label: BottomBarOptions.reports,
+            buttonAction: () {
+              if (_selectedOption != BottomBarOptions.reports) {
+                selectedOption = BottomBarOptions.reports;
+              }
+            })
+      ];
 }

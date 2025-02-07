@@ -69,7 +69,7 @@ class AppButton extends StatelessWidget {
         onPressed: action,
         child: Text(
           label,
-          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900),
+          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -101,7 +101,7 @@ class AppButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900),
+          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -160,7 +160,7 @@ class AppButton extends StatelessWidget {
             const SizedBox(width: AppSizes.s8),
             Text(
               label,
-              style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900),
+              style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
               textAlign: TextAlign.center,
             ),
           ],

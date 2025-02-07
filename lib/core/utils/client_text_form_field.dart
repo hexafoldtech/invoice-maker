@@ -29,7 +29,7 @@ class ClientTextFormField extends StatelessWidget {
             width: AppSizes.s80.r,
             child: Text(title,
                 style: AppTextStyles.helveticaNeue(
-                    AppColors.darkGrey, FontWeight.normal)),
+                    AppColors.darkGrey, FontWeight.normal, AppSizes.s12.r)),
           ),
           const SizedBox(width: AppSizes.s3),
           SizedBox(

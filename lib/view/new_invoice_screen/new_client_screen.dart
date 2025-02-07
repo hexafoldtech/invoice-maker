@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_maker/boxes/client_boxes.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
+import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
@@ -113,7 +114,7 @@ class NewClientScreen extends StatelessWidget {
                     child: Text(
                       AppStrings.importFromContactsText,
                       style: AppTextStyles.helveticaNeue(
-                          AppColors.green, FontWeight.bold),
+                          AppColors.green, FontWeightStyles.bold, AppSizes.s12),
                     ),
                   ),
                 ),
