@@ -3,10 +3,10 @@ import 'package:invoice_maker/core/constants/app_sizes.dart';
 
 class AppTextStyles {
   //textStyle for helveticaNeue
-  static TextStyle helveticaNeue(Color color, FontWeight fontWeight) {
+  static TextStyle helveticaNeue(Color color, FontWeight fontWeight, double fontSize) {
     return TextStyle(
       fontFamily: 'Helvetica Neue',
-      fontSize: AppSizes.s20,
+      fontSize: fontSize,
       fontWeight: fontWeight,
       height: 1.5,
       color: color,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
@@ -26,10 +27,10 @@ class TotalInvoiceAmount extends StatelessWidget {
             children: [
               Text(title,
                   style: AppTextStyles.helveticaNeue(
-                      AppColors.black, FontWeight.bold)),
+                      AppColors.black, FontWeight.bold, AppSizes.s12.r)),
               Text('₹ $amount',
                   style: AppTextStyles.helveticaNeue(
-                      AppColors.black, FontWeight.bold)),
+                      AppColors.black, FontWeight.bold, AppSizes.s12.r)),
             ],
           ),
         ),
@@ -54,12 +55,12 @@ Widget buildQuarterSection(
             Text(
               quarter,
               style:
-                  AppTextStyles.helveticaNeue(AppColors.black, FontWeight.bold),
+                  AppTextStyles.helveticaNeue(AppColors.black, FontWeight.bold, AppSizes.s12.r),
             ),
             Text(
               total,
               style:
-                  AppTextStyles.helveticaNeue(AppColors.black, FontWeight.bold),
+                  AppTextStyles.helveticaNeue(AppColors.black, FontWeight.bold, AppSizes.s12.r),
             ),
           ],
         ),
