@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/boxes/client_boxes.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-import 'package:invoice_maker/core/utils/client_text_form_field.dart';
-import 'package:invoice_maker/models/clients_model.dart';
+import 'package:provider/provider.dart';
+import '../../providers/client_provider.dart';
+import '../../models/ClientModel/clients_model.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_fonts_styles.dart';
+import '../../core/constants/app_sizes.dart';
+import '../../core/constants/app_strings.dart';
+import '../../core/utils/app_text_styles.dart';
+import '../../core/utils/client_text_form_field.dart';
 
 class NewClientScreen extends StatelessWidget {
   const NewClientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final clientProvider = Provider.of<ClientProvider>(context);
     TextEditingController clientNameController = TextEditingController();
     TextEditingController clientPhoneNumberController = TextEditingController();
     TextEditingController clientEmailController = TextEditingController();
@@ -39,14 +41,12 @@ class NewClientScreen extends StatelessWidget {
                   clientPhoneNumber: clientPhoneNumberController.text,
                   clientEmail: clientEmailController.text,
                   clientAddress: clientAddressController.text);
-              final clientBox = ClientBoxes.getData();
-              clientBox.add(data);
-              data.save();
+              clientProvider.addClient(data);
               clientAddressController.clear;
               clientNameController.clear;
               clientEmailController.clear;
               clientPhoneNumberController.clear;
-              print(clientBox);
+              // print(clientBox);
             },
             child: Text(
               AppStrings.doneText,
