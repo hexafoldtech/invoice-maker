@@ -6,6 +6,7 @@ import 'providers/bottom_navigation_provider.dart';
 import 'providers/tab_provider.dart';
 import 'providers/dashboard_provider.dart';
 import 'providers/client_provider.dart';
+import 'providers/item_provider.dart';
 
 List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<AppInitializationProvider>(
@@ -15,4 +16,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<DashboardProvider>(
       create: (context) => DashboardProvider()),
   ChangeNotifierProvider(create: (_) => ClientProvider()),
+  ChangeNotifierProvider(create: (_) => ItemProvider())
 ];
