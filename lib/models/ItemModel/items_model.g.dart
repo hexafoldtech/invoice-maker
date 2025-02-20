@@ -17,30 +17,33 @@ class ItemsModelAdapter extends TypeAdapter<ItemsModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ItemsModel(
-      itemName: fields[0] as String,
-      itemDetails: fields[1] as String,
-      itemUnitPrice: fields[2] as double,
-      itemQuantity: fields[3] as int,
-      itemDiscount: fields[4] as double,
-      itemTaxable: fields[5] as bool,
+      id: fields[0] as int,
+      itemName: fields[1] as String,
+      itemDetails: fields[2] as String,
+      itemUnitPrice: fields[3] as double,
+      itemQuantity: fields[4] as int,
+      itemDiscount: fields[5] as double,
+      itemTaxable: fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ItemsModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.itemName)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.itemDetails)
+      ..write(obj.itemName)
       ..writeByte(2)
-      ..write(obj.itemUnitPrice)
+      ..write(obj.itemDetails)
       ..writeByte(3)
-      ..write(obj.itemQuantity)
+      ..write(obj.itemUnitPrice)
       ..writeByte(4)
-      ..write(obj.itemDiscount)
+      ..write(obj.itemQuantity)
       ..writeByte(5)
+      ..write(obj.itemDiscount)
+      ..writeByte(6)
       ..write(obj.itemTaxable);
   }
 
