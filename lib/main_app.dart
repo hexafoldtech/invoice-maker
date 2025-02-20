@@ -6,14 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/models/ItemModel/items_model.dart';
-import 'package:invoice_maker/models/clients_model.dart';
+import 'core/constants/app_colors.dart';
+import 'core/constants/app_sizes.dart';
+import 'core/constants/app_strings.dart';
+import 'data/local/database/database_service.dart';
 import 'package:loggy/loggy.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -33,14 +30,8 @@ void mainApp() {
   runZonedGuarded(() async {
     /// Ensure Flutter framework is initialized.
     WidgetsFlutterBinding.ensureInitialized();
-    var directory = await getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
-
-    Hive.registerAdapter(ClientsModelAdapter());
-    await Hive.openBox<ClientsModel>('Clients');
-
-    // Hive.registerAdapter(ItemsModelAdapter());
-    // await Hive.openBox<ItemsModel>('Items');
+    // Initialize Hive
+    await DatabaseService().openConnection();
 
     /// Set device orientation to portrait only.
     await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
