@@ -15,7 +15,7 @@ class EstimatesItem extends StatelessWidget {
         // Icon on the left
         title: Text('Quantum',
             style: AppTextStyles.helveticaNeue(
-                AppColors.black, FontWeightStyles.semiBold, AppSizes.s12.r)),
+                AppColors.black, FontWeightStyles.semiBold, AppSizes.s14.r)),
         subtitle: Text('#EST1,2 Jan',
             style: AppTextStyles.helveticaNeue(
                 AppColors.grey, FontWeightStyles.regular, AppSizes.s12.r)),
@@ -23,9 +23,9 @@ class EstimatesItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text("\$ 4500.00",
+              Text("₹ 4500.00",
                   style: AppTextStyles.helveticaNeue(AppColors.black,
-                      FontWeightStyles.semiBold, AppSizes.s12.r))
+                      FontWeightStyles.semiBold, AppSizes.s14.r))
             ]),
         onTap: () {});
   }

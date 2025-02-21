@@ -19,12 +19,12 @@ class EstimatesScreen extends StatelessWidget {
           style: AppTextStyles.helveticaNeue(
               AppColors.black, FontWeight.bold, AppSizes.s30.r)),
       SizedBox(height: AppSizes.s11.r),
-      const TotalReceivedAmount(title: AppStrings.total, amount: 5000.00),
+      const TotalReceivedAmount(title: AppStrings.total, amount: 4500.00),
       SizedBox(height: AppSizes.s5.r),
       SizedBox(
           height: AppSizes.s400.r,
           child: ListView.builder(
-              itemCount: 4,
+              itemCount: 1,
               itemBuilder: (context, index) {
                 return const EstimatesItem();
               })),
