@@ -50,4 +50,6 @@ class AppStrings {
   static const String emailText = "Email";
   static const String addressText = "Address";
   static const String importFromContactsText = "Import from contacts";
+  static const String createInvoiceText = "Create Invoice";
+  static const String createEstimateText = "Create Estimate";
 }

@@ -5,7 +5,9 @@ import '../../view/app_screens/under_development_screen.dart';
 import '../../view/app_screens/loading_screen.dart';
 import '../../view/dashboard_screen/dashboard_screen.dart';
 import '../../view/login_screen/login_screen.dart';
-
+import '../../view/new_invoice_screen/new_invoice_screen.dart';
+import '../../view/new_estimate_screen/new_estimate_screen.dart';
+import '../utils/transition.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -15,6 +17,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case RouteNames.dashboardScreen:
         return MaterialPageRoute(builder: (_) => const DashboardScreen());
+      case RouteNames.createInvoiceScreen:
+        return CustomPageTransition(
+          child: const NewInvoiceScreen(),
+        );
+      case RouteNames.createEstimateScreen:
+        return CustomPageTransition(
+          child: const NewEstimateScreen(),
+        );
       case RouteNames.underDevelopmentScreen:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());

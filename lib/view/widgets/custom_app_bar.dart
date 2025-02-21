@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-import 'package:invoice_maker/core/utils/extensions/string_formatter.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_fonts_styles.dart';
+import '../../core/constants/app_sizes.dart';
+import '../../core/utils/app_text_styles.dart';
+import '../../core/utils/extensions/string_formatter.dart';
 
 enum DashboardAppBarButtons { invoices, estimates }
 
@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
       AppBar(
+          forceMaterialTransparency: true,
           leading: SizedBox(
               height: 40,
               width: 40,
@@ -71,13 +72,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           centerTitle: true,
           elevation: 3,
           backgroundColor: Colors.white),
-      Divider(
-          height: AppSizes.s0, thickness: AppSizes.s1.r, color: AppColors.grey)
+      // Divider(
+      //     height: AppSizes.s0, thickness: AppSizes.s1.r, color: AppColors.grey)
     ]);
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(40);
+  Size get preferredSize => const Size.fromHeight(40);
 }
 
 class CenterButtonItems {
