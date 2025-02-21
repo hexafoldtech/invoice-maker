@@ -8,6 +8,7 @@ import 'package:invoice_maker/view/new_invoice_screen/client_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/invoice_issued_due_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/item_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/summary.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_floating_button.dart';
 
 class NewInvoiceScreen extends StatefulWidget {
@@ -21,29 +22,9 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: EdgeInsets.only(top: AppSizes.s15.r, left: AppSizes.s8.r),
-            child: appBarLeadingAndActionsText(
-                AppStrings.cancelText, AppColors.black, FontWeight.normal),
-          ),
-        ),
-        centerTitle: false,
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: appBarLeadingAndActionsText(
-                AppStrings.previewText, AppColors.black, FontWeight.normal),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: appBarLeadingAndActionsText(
-                AppStrings.doneText, AppColors.black, FontWeight.w500),
-          ),
-        ],
+      appBar: CustomAppBar(
+        appBarType: AppBarType.create,
+        onCancel: () => Navigator.pop(context),
       ),
       body: Center(
         child: Column(
@@ -89,14 +70,6 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           text: AppStrings.createInvoice,
           onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  Text appBarLeadingAndActionsText(
-      String title, Color color, FontWeight fontWeight) {
-    return Text(
-      title,
-      style: AppTextStyles.helveticaNeueSmall(color, fontWeight),
     );
   }
 }

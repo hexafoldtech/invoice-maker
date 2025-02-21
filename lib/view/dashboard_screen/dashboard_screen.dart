@@ -50,7 +50,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     DashboardAppBarButtons.estimates)
                           ]
                         : null;
-                return CustomAppBar(centerButtons: buttonItems);
+                return CustomAppBar(
+                    appBarType: AppBarType.dashboard,
+                    centerButtons: buttonItems);
               },
             ),
           ),
@@ -60,17 +62,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         floatingActionButton: Consumer<DashboardProvider>(
           builder: (context, value, child) {
             if (value.buttonTapped == DashboardAppBarButtons.invoices) {
-              return CustomFloatingButton(
-                text: AppStrings.createInvoice,
-                onPressed: () => Navigator.pushNamed(
-                    context, RouteNames.createInvoiceScreen),
-              );
+              return _invoiceFAB();
             } else if (value.buttonTapped == DashboardAppBarButtons.estimates) {
-              return CustomFloatingButton(
-                text: AppStrings.createEstimate,
-                onPressed: () => Navigator.pushNamed(
-                    context, RouteNames.createEstimateScreen),
-              );
+              return _estimateFAB();
             }
 
             return const SizedBox();
@@ -101,5 +95,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const SizedBox();
       });
     }));
+  }
+
+  /// [FloatingActionButton] for creating invoice
+  Widget _invoiceFAB() {
+    return CustomFloatingButton(
+      text: AppStrings.createInvoice,
+      onPressed: () =>
+          Navigator.pushNamed(context, RouteNames.createInvoiceScreen),
+    );
+  }
+
+  /// [FloatingActionButton] for creating estimates
+  Widget _estimateFAB() {
+    return CustomFloatingButton(
+      text: AppStrings.createEstimate,
+      onPressed: () =>
+          Navigator.pushNamed(context, RouteNames.createEstimateScreen),
+    );
   }
 }

@@ -4,7 +4,7 @@ import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 
-enum ButtonType { elevated, invoice, selectTimer, export }
+enum ButtonType { elevated, invoice, selectTimer, export, flat }
 
 class AppButton extends StatelessWidget {
   final ButtonType type;
@@ -43,6 +43,8 @@ class AppButton extends StatelessWidget {
       return selectYearButton(context);
     } else if (type == ButtonType.export) {
       return exportInvoiceButton(context);
+    } else if (type == ButtonType.flat) {
+      return flatButton(context);
     } else {
       return buildIconButton(context);
     }
@@ -69,7 +71,8 @@ class AppButton extends StatelessWidget {
         onPressed: action,
         child: Text(
           label,
-          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
+          style:
+              AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -101,7 +104,8 @@ class AppButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
+          style:
+              AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -160,12 +164,26 @@ class AppButton extends StatelessWidget {
             const SizedBox(width: AppSizes.s8),
             Text(
               label,
-              style: AppTextStyles.helveticaNeue(textColor, FontWeight.w900, fontSize),
+              style: AppTextStyles.helveticaNeue(
+                  textColor, FontWeight.w900, fontSize),
               textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget flatButton(BuildContext context) {
+    return GestureDetector(
+      onTap: action,
+      child: Padding(
+          padding: EdgeInsets.only(top: AppSizes.s15.r, left: AppSizes.s8.r),
+          child: Text(
+            label,
+            style: AppTextStyles.helveticaNeueSmall(
+                AppColors.black, FontWeight.normal),
+          )),
     );
   }
 }

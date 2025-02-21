@@ -23,7 +23,7 @@ class EstimatesItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text("₹ 4500.00", // inr symbol added
+              Text("₹ 4500.00",
                   style: AppTextStyles.helveticaNeue(AppColors.black,
                       FontWeightStyles.semiBold, AppSizes.s14.r))
             ]),
