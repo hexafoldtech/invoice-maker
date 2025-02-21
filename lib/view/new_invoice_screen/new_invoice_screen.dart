@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/utils/app_button.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/view/new_invoice_screen/client_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/invoice_issued_due_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/item_section.dart';
 import 'package:invoice_maker/view/new_invoice_screen/summary.dart';
+import '../widgets/custom_floating_button.dart';
 
 class NewInvoiceScreen extends StatefulWidget {
   const NewInvoiceScreen({super.key});
@@ -22,24 +23,25 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: appBarLeadingAndActionsText(
-              AppStrings.cancelText, AppColors.darkGrey, FontWeight.normal),
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: EdgeInsets.only(top: AppSizes.s15.r, left: AppSizes.s8.r),
+            child: appBarLeadingAndActionsText(
+                AppStrings.cancelText, AppColors.black, FontWeight.normal),
+          ),
         ),
         centerTitle: false,
         actions: [
           TextButton(
             onPressed: () {},
             child: appBarLeadingAndActionsText(
-                AppStrings.previewText, AppColors.darkGrey, FontWeight.normal),
+                AppStrings.previewText, AppColors.black, FontWeight.normal),
           ),
           TextButton(
             onPressed: () {},
             child: appBarLeadingAndActionsText(
-                AppStrings.doneText, AppColors.black, FontWeight.normal),
+                AppStrings.doneText, AppColors.black, FontWeight.w500),
           ),
         ],
       ),
@@ -82,23 +84,11 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppButton(
-            type: ButtonType.invoice,
-            label: AppStrings.createInvoice,
-            action: () {},
-            textColor: AppColors.white,
-            fontSize: AppSizes.s20,
-            borderColor: AppColors.white,
-            backgroundColor: AppColors.black,
-          ),
-          const SizedBox(
-            height: AppSizes.s10,
-          ),
-        ],
-      ),
+      floatingActionButton: CustomFloatingButton(
+          padding: EdgeInsets.only(bottom: AppSizes.s20.r),
+          text: AppStrings.createInvoiceText,
+          onPressed: () {}),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
