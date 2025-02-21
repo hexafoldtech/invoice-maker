@@ -61,13 +61,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           builder: (context, value, child) {
             if (value.buttonTapped == DashboardAppBarButtons.invoices) {
               return CustomFloatingButton(
-                text: AppStrings.createInvoiceText,
+                text: AppStrings.createInvoice,
                 onPressed: () => Navigator.pushNamed(
                     context, RouteNames.createInvoiceScreen),
               );
             } else if (value.buttonTapped == DashboardAppBarButtons.estimates) {
               return CustomFloatingButton(
-                text: AppStrings.createEstimateText,
+                text: AppStrings.createEstimate,
                 onPressed: () => Navigator.pushNamed(
                     context, RouteNames.createEstimateScreen),
               );

@@ -86,7 +86,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       ),
       floatingActionButton: CustomFloatingButton(
           padding: EdgeInsets.only(bottom: AppSizes.s20.r),
-          text: AppStrings.createInvoiceText,
+          text: AppStrings.createInvoice,
           onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

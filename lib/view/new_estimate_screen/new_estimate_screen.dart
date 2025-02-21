@@ -38,7 +38,7 @@ class NewEstimateScreen extends StatelessWidget {
       ),
       floatingActionButton: CustomFloatingButton(
           padding: EdgeInsets.only(bottom: AppSizes.s20.r),
-          text: AppStrings.createEstimateText,
+          text: AppStrings.createEstimate,
           onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
