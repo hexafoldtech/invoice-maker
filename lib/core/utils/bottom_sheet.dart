@@ -6,7 +6,7 @@ import '../constants/global_key.dart';
 
 class CustomBottomSheet {
   final ctx = navigatorKey.currentContext;
-
+  // bottom sheet for creating new item and clients
   void showCustomHeightBottomSheet(double heightFactor) {
     if (ctx != null && ctx!.mounted) {
       showModalBottomSheet(

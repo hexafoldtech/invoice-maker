@@ -56,6 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
         bottomNavigationBar: const CustomBottomBar(),
+        // FAButton for navigating to create invoice or estimate screen
         floatingActionButton: Consumer<DashboardProvider>(
           builder: (context, value, child) {
             if (value.buttonTapped == DashboardAppBarButtons.invoices) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/view/dashboard_screen/invoices_view/invoice_item.dart';
@@ -10,7 +9,7 @@ class ToggleButton extends StatefulWidget {
   const ToggleButton({super.key});
 
   @override
-  _ToggleButtonState createState() => _ToggleButtonState();
+  State<ToggleButton> createState() => _ToggleButtonState();
 }
 
 class _ToggleButtonState extends State<ToggleButton> {
@@ -20,6 +19,7 @@ class _ToggleButtonState extends State<ToggleButton> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
+      /// [custom toggle buttons] for polished UI
       Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
@@ -78,6 +78,7 @@ class _ToggleButtonState extends State<ToggleButton> {
     ]);
   }
 
+  /// individual [toggleButtonItem] with animation 
   Widget _toggleButtonItem(String text, bool isSelected) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
