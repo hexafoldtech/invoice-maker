@@ -6,38 +6,41 @@ import 'package:invoice_maker/core/utils/app_text_styles.dart';
 
 class ClientTextFormField extends StatelessWidget {
   final String title;
-  final String textFormType;
+  final TextInputType textFormType;
+  final String hintText;
   final TextEditingController controller;
   const ClientTextFormField(
       {super.key,
       required this.title,
       required this.textFormType,
-      required this.controller});
+      required this.controller,
+      required this.hintText});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSizes.s8),
+      padding: EdgeInsets.all(AppSizes.s8.r),
       decoration: BoxDecoration(
-          border: Border.all(color: AppColors.grey.withOpacity(0.2)),
-          borderRadius: BorderRadius.circular(AppSizes.s8),
+          border: Border.all(color: AppColors.grey),
+          borderRadius: BorderRadius.circular(AppSizes.s20.r),
           color: AppColors.white),
       child: Row(
         children: [
           SizedBox(
-            width: AppSizes.s80.r,
+            width: AppSizes.s60.r,
             child: Text(title,
                 style: AppTextStyles.helveticaNeue(
-                    AppColors.darkGrey, FontWeight.normal, AppSizes.s12.r)),
+                    AppColors.black, FontWeight.normal, AppSizes.s12.r)),
           ),
           const SizedBox(width: AppSizes.s3),
           SizedBox(
             width: AppSizes.s200.r,
             child: TextFormField(
+              keyboardType: textFormType,
               controller: controller,
               decoration: InputDecoration(
-                hintText: textFormType,
+                hintText: hintText,
                 border: InputBorder.none,
               ),
               validator: (value) {
