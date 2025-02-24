@@ -20,7 +20,7 @@ class AppStrings {
   static const String doneText = "Done";
   static const String newInvoiceText = "New Invoice";
   static const String summaryText = "Summary";
-  static const String totalCapitalText = "Total:";
+  static const String totalCapitalText = "Total";
   static const String issuedDateText = "issued:";
   static const String dueDateText = "due:";
   static const String numberText = "#";
@@ -50,4 +50,10 @@ class AppStrings {
   static const String emailText = "Email";
   static const String addressText = "Address";
   static const String importFromContactsText = "Import from contacts";
+  static const String selectDueDateText = "Select Due Date";
+  static const String onReceiptDueDateText = "On Receipt";
+  static const String noDueDateText = "No Due Date";
+  static const String tenDaysDueDateText = "10 days";
+  static const String fifteenDaysDueDateText = "15 days";
+  static const String thirtyDaysDueDateText = "30 days";
 }
