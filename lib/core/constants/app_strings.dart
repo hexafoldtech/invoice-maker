@@ -44,10 +44,10 @@ class AppStrings {
   static const String discountText = "Discount";
   static const String taxableText = "Taxable?";
   static const String newClientText = "New Client";
-  static const String billToText = "Bill to";
+  static const String billToText = "Bill To";
   static const String contactsText = "Contacts";
   static const String phoneText = "Phone";
-  static const String emailText = "Email";
+  static const String emailText = "E-mail";
   static const String addressText = "Address";
   static const String importFromContactsText = "Import from contacts";
   static const String selectDueDateText = "Select Due Date";
@@ -56,4 +56,5 @@ class AppStrings {
   static const String tenDaysDueDateText = "10 days";
   static const String fifteenDaysDueDateText = "15 days";
   static const String thirtyDaysDueDateText = "30 days";
+    static const String saveToClientsCatalogText = "Save to clients catalog";
 }
