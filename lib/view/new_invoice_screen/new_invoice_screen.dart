@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
+import 'package:invoice_maker/providers/client_provider.dart';
+import 'package:provider/provider.dart';
 import 'client_screen.dart';
 import 'item_screen.dart';
 import 'summary.dart';
@@ -30,6 +33,8 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
 
   String formattedDate = DateFormat('dd MMM yyyy').format(DateTime.now());
 
+  String number = '';
+
   void _updateDueDate(String newDate) {
     setState(() {
       dueDate = newDate;
@@ -44,6 +49,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     const MapEntry(AppStrings.thirtyDaysDueDateText, 30),
     const MapEntry(AppStrings.cancelText, -1) //  used to close the bottom sheet
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,11 +104,36 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                   id: '001',
                 ),
                 const SizedBox(height: AppSizes.s20),
-                const CustomNewInvoiceScreenButton(
-                  appbarTitle: AppStrings.addClientText,
-                  title: AppStrings.addClientText,
-                  header: AppStrings.clientText,
-                  mainChild: ClientScreen(),
+                Consumer<ClientProvider>(
+                  builder: (context, clientProvider, child) {
+                    if (clientProvider.selectedClient != null) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.clientText,
+                            style: AppTextStyles.helveticaNeueSmall(
+                                AppColors.darkGrey, FontWeightStyles.regular),
+                          ),
+                          SizedBox(
+                            height: AppSizes.s10.r,
+                          ),
+                          Text(
+                            clientProvider.selectedClient!.clientName,
+                            style: AppTextStyles.helveticaNeue(AppColors.black,
+                                FontWeightStyles.regular, AppSizes.s18.r),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const CustomNewInvoiceScreenButton(
+                        appbarTitle: AppStrings.addClientText,
+                        title: AppStrings.addClientText,
+                        header: AppStrings.clientText,
+                        mainChild: ClientScreen(),
+                      );
+                    }
+                  },
                 ),
                 const SizedBox(height: AppSizes.s20),
                 const CustomNewInvoiceScreenButton(
