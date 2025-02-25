@@ -26,7 +26,9 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(header, style: TextStyle(fontSize: AppSizes.s16.r)),
+        Text(header,
+            style: AppTextStyles.helveticaNeueSmall(
+                AppColors.darkGrey, FontWeightStyles.regular)),
         const SizedBox(height: AppSizes.s8),
         GestureDetector(
           onTap: () {

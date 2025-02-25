@@ -21,8 +21,8 @@ class AppStrings {
   static const String newInvoiceText = "New Invoice";
   static const String summaryText = "Summary";
   static const String totalCapitalText = "Total";
-  static const String issuedDateText = "issued:";
-  static const String dueDateText = "due:";
+  static const String issuedDateText = "Issued:";
+  static const String dueDateText = "Due:";
   static const String numberText = "#";
   static const String clientText = "Client:";
   static const String addClientText = "Add Client";
@@ -56,5 +56,7 @@ class AppStrings {
   static const String tenDaysDueDateText = "10 days";
   static const String fifteenDaysDueDateText = "15 days";
   static const String thirtyDaysDueDateText = "30 days";
-    static const String saveToClientsCatalogText = "Save to clients catalog";
+  static const String saveToClientsCatalogText = "Save to clients catalog";
+  static const String errorText = "Error Occured";
+  static const String enterValidPhoneNumberText = "Enter a Valid Phone Number";
 }
