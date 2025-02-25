@@ -14,6 +14,7 @@ class CustomBottomSheet {
   final Widget header;
   final Widget mainContent;
   final double fixedheightFactor;
+  final double fixedwidthFactor;
   final double floatingHeight;
 
   CustomBottomSheet({
@@ -23,6 +24,7 @@ class CustomBottomSheet {
     this.isScrollControlled = true,
     this.backgroundColor = Colors.transparent,
     this.fixedheightFactor = 0.4,
+    this.fixedwidthFactor = 1.0,
     double? floatingHeight,
   }) : floatingHeight = floatingHeight ?? AppSizes.s330.r;
 
@@ -48,7 +50,7 @@ class CustomBottomSheet {
   Widget _fixedTypeWidget() {
     return FractionallySizedBox(
       heightFactor: fixedheightFactor,
-      widthFactor: 1,
+      widthFactor: fixedwidthFactor,
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
