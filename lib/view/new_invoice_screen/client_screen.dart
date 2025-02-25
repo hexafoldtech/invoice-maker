@@ -25,6 +25,7 @@ class _ClientScreenState extends State<ClientScreen> {
   @override
   void initState() {
     super.initState();
+
     /// Focus on the first [text field] when page is rendered
     Future.delayed(
       Durations.medium1,
@@ -32,92 +33,171 @@ class _ClientScreenState extends State<ClientScreen> {
         _focusNode.requestFocus();
       },
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ClientProvider>(context, listen: false).fetchAllClients();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<ClientProvider>(context, listen: false).fetchAllClients();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var ctx = navigatorKey.currentContext!;
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(AppSizes.s16.r),
-          child: TextField(
-            focusNode: _focusNode,
-            decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: AppStrings.searchText,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.s15),
-                ),
-                fillColor: AppColors.darkGrey),
-          ),
-        ),
-        const SizedBox(
-          height: AppSizes.s14,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: AppSizes.s16.r, bottom: AppSizes.s7.r),
-          child: GestureDetector(
-            child: Row(
+    return Consumer<ClientProvider>(
+      builder: (context, clientProvider, child) {
+        return Stack(
+          children: [
+            Column(
               children: [
-                const Icon(
-                  Icons.add,
-                  color: AppColors.green,
-                  size: AppSizes.s20,
+                Padding(
+                  padding: EdgeInsets.all(AppSizes.s16.r),
+                  child: TextField(
+                    focusNode: _focusNode,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: AppStrings.searchText,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.s15),
+                        ),
+                        fillColor: AppColors.darkGrey),
+                  ),
                 ),
-                const SizedBox(width: AppSizes.s8),
-                GestureDetector(
-                  onTap: () {
-                    Provider.of<ClientProvider>(context, listen: false)
-                        .clearForm();
-                    CustomBottomSheet(
-                            type: CustomBottomSheetType.fixed,
-                            header: _buildHeader(ctx),
-                            fixedheightFactor: 0.88,
-                            mainContent:
-                                const Expanded(child: NewClientScreen()))
-                        .showCustomBottomSheet();
-                  },
-                  child: Text(
-                    AppStrings.addNewClientText,
-                    style: AppTextStyles.helveticaNeueItem(
-                        AppColors.green, FontWeight.bold),
+                const SizedBox(
+                  height: AppSizes.s14,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: AppSizes.s16.r, bottom: AppSizes.s7.r),
+                  child: GestureDetector(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.add,
+                          color: AppColors.green,
+                          size: AppSizes.s20,
+                        ),
+                        const SizedBox(width: AppSizes.s8),
+                        GestureDetector(
+                          onTap: () {
+                            Provider.of<ClientProvider>(context, listen: false)
+                                .clearForm();
+                            CustomBottomSheet(
+                              type: CustomBottomSheetType.fixed,
+                              header: _buildHeader(ctx),
+                              fixedheightFactor: 0.88,
+                              mainContent: const Expanded(
+                                child: NewClientScreen(),
+                              ),
+                            ).showCustomBottomSheet();
+                          },
+                          child: Text(
+                            AppStrings.addNewClientText,
+                            style: AppTextStyles.helveticaNeueItem(
+                                AppColors.green, FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: AppSizes.s6.r),
+                    child: Consumer<ClientProvider>(
+                      builder: (context, provider, child) {
+                        switch (provider.state) {
+                          case AppUIStates.loading:
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+
+                          case AppUIStates.empty:
+                            return Center(
+                              child: Text(
+                                "No existing clients",
+                                style: AppTextStyles.helveticaNeue(
+                                    AppColors.grey,
+                                    FontWeight.w500,
+                                    AppSizes.s16.r),
+                              ),
+                            );
+
+                          case AppUIStates.success:
+                            return ListView.builder(
+                              itemCount: provider.clients.length,
+                              itemBuilder: (context, index) {
+                                final client = provider.clients[index];
+                                return ListTile(
+                                  title: Text(client.clientName),
+                                  onTap: () {
+                                    provider.selectClient(client);
+                                    Navigator.pop(ctx);
+                                  },
+                                );
+                              },
+                            );
+
+                          case AppUIStates.none:
+                            return const SizedBox.shrink();
+                        }
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: AppSizes.s6.r),
-            child: Consumer<ClientProvider>(
-              builder: (context, provider, child) {
-                if (provider.clients.isNotEmpty) {
-                  return ListView.builder(
-                    itemCount: provider.clients.length,
-                    itemBuilder: (context, index) {
-                      final client = provider.clients[index];
-                      return ListTile(
-                        title: Text(client.clientName),
-                        onTap: () {
-                          provider.selectClient(client);
-                          Navigator.pop(ctx);
-                        },
-                      );
-                    },
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        ),
-      ],
+            if (clientProvider.isLoading)
+              Positioned.fill(
+                child: Container(
+                  color: AppColors.darkGrey,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
+  }
+
+  void onSaveClient(BuildContext ctx) {
+    final clientProvider = Provider.of<ClientProvider>(ctx, listen: false);
+    final newClient = clientProvider.createClientModel();
+    if (Provider.of<FormProvider>(ctx, listen: false).validateForm()) {
+      clientProvider.setLoading(true);
+      if (clientProvider.saveToClients) {
+        clientProvider.addClient(newClient).then(
+          (_) {
+            clientProvider.selectClient(newClient);
+            if (ctx.mounted) {
+              Navigator.pop(ctx);
+              Future.delayed(
+                Durations.short4,
+                () {
+                  if (ctx.mounted) {
+                    Navigator.pop(ctx);
+                  }
+                },
+              );
+            }
+            clientProvider.clearForm();
+          },
+        ).whenComplete(() => clientProvider.setLoading(false));
+      } else {
+        clientProvider.selectClient(newClient);
+        Navigator.pop(ctx);
+        Future.delayed(
+          Durations.short4,
+          () {
+            if (ctx.mounted) {
+              Navigator.pop(ctx);
+            }
+          },
+        );
+        clientProvider.clearForm();
+      }
+    }
   }
 
   Widget _buildHeader(BuildContext ctx) {
@@ -140,42 +220,7 @@ class _ClientScreenState extends State<ClientScreen> {
         ),
         GestureDetector(
           onTap: () {
-            final clientProvider =
-                Provider.of<ClientProvider>(ctx, listen: false);
-            final newClient = clientProvider.createClientModel();
-            if (Provider.of<FormProvider>(ctx, listen: false).validateForm()) {
-              if (clientProvider.saveToClients) {
-                clientProvider.addClient(newClient).then(
-                  (_) {
-                    clientProvider.selectClient(newClient);
-                    if (ctx.mounted) {
-                      Navigator.pop(ctx);
-                      Future.delayed(
-                        Durations.short4,
-                        () {
-                          if (ctx.mounted) {
-                            Navigator.pop(ctx);
-                          }
-                        },
-                      );
-                    }
-                    clientProvider.clearForm();
-                  },
-                );
-              } else {
-                clientProvider.selectClient(newClient);
-                Navigator.pop(ctx);
-                Future.delayed(
-                  Durations.short4,
-                  () {
-                    if (ctx.mounted) {
-                      Navigator.pop(ctx);
-                    }
-                  },
-                );
-                clientProvider.clearForm();
-              }
-            }
+            onSaveClient(ctx);
           },
           child: Padding(
             padding: EdgeInsets.only(right: AppSizes.s12.r),

@@ -3,11 +3,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../models/ClientModel/clients_model.dart';
 import '../repository/client_repo.dart';
 
+enum AppUIStates { loading, empty, success, none }
+
 class ClientProvider extends ChangeNotifier {
   final ClientRepo _clientRepo = ClientRepo();
   List<ClientsModel> _clients = [];
+  AppUIStates _state = AppUIStates.none;
 
   List<ClientsModel> get clients => _clients;
+  AppUIStates get state => _state;
 
   final TextEditingController _clientNameController = TextEditingController();
   final TextEditingController _clientPhoneNumberController =
@@ -23,9 +27,11 @@ class ClientProvider extends ChangeNotifier {
 
   bool _saveToClients = false;
   bool _isclientFilled = false;
+  bool _isLoading = false;
 
   get saveToClients => _saveToClients;
   get isclientFilled => _isclientFilled;
+  bool get isLoading => _isLoading;
 
   ClientsModel? _selectedClient;
 
@@ -35,6 +41,11 @@ class ClientProvider extends ChangeNotifier {
   void _toggleSwitchVisibility() {
     _isclientFilled = _clientNameController.text.isNotEmpty;
     _saveToClients = _clientNameController.text.isNotEmpty;
+    notifyListeners();
+  }
+
+  void setLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
@@ -96,17 +107,26 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<void> addClient(ClientsModel client) async {
-    await _clientRepo.saveClient(client);
-    await fetchAllClients();
+    setLoading(true);
+    try {
+      await _clientRepo.saveClient(client);
+      await fetchAllClients();
+    } finally {
+      setLoading(false);
+    }
   }
 
   Future<void> fetchAllClients() async {
+    _state = AppUIStates.loading;
+    notifyListeners();
     try {
       final clients = await _clientRepo.getAllClients();
       _clients = clients;
+      _state = _clients.isEmpty ? AppUIStates.empty : AppUIStates.success;
       notifyListeners();
     } catch (e) {
       debugPrint("Error fetching clients");
+      _state = AppUIStates.empty;
     }
   }
 
@@ -128,7 +148,5 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  // String getNextInvoiceId() {
-  //   return (_invoices.length + 1).toString().padLeft(3, '0');
-  // }
+  ///TODO: create a function to get next id for invoice
 }
