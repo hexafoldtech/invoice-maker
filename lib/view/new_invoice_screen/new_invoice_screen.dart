@@ -55,7 +55,11 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         appBarType: AppBarType.create,
-        onCancel: () => Navigator.pop(context),
+        onCancel: () {
+          Navigator.pop(context);
+          Provider.of<ClientProvider>(context, listen: false)
+              .clearSelectedClient();
+        },
       ),
       floatingActionButton: CustomFloatingButton(
           padding: EdgeInsets.only(bottom: AppSizes.s20.r),
@@ -118,10 +122,21 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                           SizedBox(
                             height: AppSizes.s10.r,
                           ),
-                          Text(
-                            clientProvider.selectedClient!.clientName,
-                            style: AppTextStyles.helveticaNeue(AppColors.black,
-                                FontWeightStyles.regular, AppSizes.s18.r),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                clientProvider.selectedClient!.clientName,
+                                style: AppTextStyles.helveticaNeue(
+                                    AppColors.black,
+                                    FontWeightStyles.regular,
+                                    AppSizes.s18.r),
+                              ),
+                              IconButton(
+                                  onPressed: () =>
+                                      clientProvider.clearSelectedClient(),
+                                  icon: const Icon(Icons.close_rounded))
+                            ],
                           ),
                         ],
                       );

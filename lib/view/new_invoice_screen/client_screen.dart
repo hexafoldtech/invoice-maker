@@ -151,7 +151,14 @@ class _ClientScreenState extends State<ClientScreen> {
               } else {
                 clientProvider.selectClient(newClient);
                 Navigator.pop(ctx);
-                Navigator.pop(ctx);
+                Future.delayed(
+                  Durations.short4,
+                  () {
+                    if (ctx.mounted) {
+                      Navigator.pop(ctx);
+                    }
+                  },
+                );
               }
             }
           },
