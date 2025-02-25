@@ -13,7 +13,7 @@ class BottomNavigationProvider with ChangeNotifier {
 
   List<BottomBarItemsModel> get bottomBarItems => [
         BottomBarItemsModel(
-            icon: Icons.drag_indicator_sharp, // TODO Change the icon
+            icon: Icons.receipt_long,
             label: BottomBarOptions.invoices,
             buttonAction: () {
               if (_selectedOption != BottomBarOptions.invoices) {
@@ -21,7 +21,7 @@ class BottomNavigationProvider with ChangeNotifier {
               }
             }),
         BottomBarItemsModel(
-            icon: Icons.drag_indicator_sharp, // TODO Change the icon
+            icon: Icons.pie_chart_rounded,
             label: BottomBarOptions.reports,
             buttonAction: () {
               if (_selectedOption != BottomBarOptions.reports) {
