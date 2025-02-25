@@ -60,7 +60,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
               controller: clientNameController,
               title: AppStrings.billToText,
               hintText: '',
-              textFormType: TextInputType.datetime,
+              textFormType: TextInputType.name,
             ),
             if (isclientFilled)
               Row(
@@ -93,21 +93,21 @@ class _NewClientScreenState extends State<NewClientScreen> {
               controller: clientPhoneNumberController,
               title: AppStrings.phoneText,
               hintText: '',
-              textFormType: TextInputType.datetime,
+              textFormType: TextInputType.phone,
             ),
             const SizedBox(height: AppSizes.s16),
             ClientTextFormField(
               controller: clientEmailController,
               title: AppStrings.emailText,
               hintText: '',
-              textFormType: TextInputType.datetime,
+              textFormType: TextInputType.emailAddress,
             ),
             const SizedBox(height: AppSizes.s16),
             ClientTextFormField(
               controller: clientAddressController,
               title: AppStrings.addressText,
               hintText: '',
-              textFormType: TextInputType.datetime,
+              textFormType: TextInputType.streetAddress,
             ),
             SizedBox(
               height: AppSizes.s30.r,
