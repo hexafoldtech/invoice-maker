@@ -31,6 +31,7 @@ class ClientProvider extends ChangeNotifier {
 
   ClientsModel? get selectedClient => _selectedClient;
 
+  /// for checking and rendering toggle Switch if field is filled
   void _toggleSwitchVisibility() {
     _isclientFilled = _clientNameController.text.isNotEmpty;
     _saveToClients = _clientNameController.text.isNotEmpty;

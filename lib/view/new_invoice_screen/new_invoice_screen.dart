@@ -166,4 +166,10 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Provider.of<ClientProvider>(context, listen: false).dispose();
+  }
 }

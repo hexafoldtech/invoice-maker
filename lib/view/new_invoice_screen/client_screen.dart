@@ -25,6 +25,7 @@ class _ClientScreenState extends State<ClientScreen> {
   @override
   void initState() {
     super.initState();
+    /// Focus on the first [text field] when page is rendered
     Future.delayed(
       Durations.medium1,
       () {
@@ -70,6 +71,8 @@ class _ClientScreenState extends State<ClientScreen> {
                 const SizedBox(width: AppSizes.s8),
                 GestureDetector(
                   onTap: () {
+                    Provider.of<ClientProvider>(context, listen: false)
+                        .clearForm();
                     CustomBottomSheet(
                             type: CustomBottomSheetType.fixed,
                             header: _buildHeader(ctx),
@@ -122,7 +125,10 @@ class _ClientScreenState extends State<ClientScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(ctx),
+          onTap: () {
+            Provider.of<ClientProvider>(context, listen: false).clearForm();
+            Navigator.pop(ctx);
+          },
           child: Padding(
             padding: EdgeInsets.only(left: AppSizes.s12.r),
             child: Text(
@@ -144,8 +150,16 @@ class _ClientScreenState extends State<ClientScreen> {
                     clientProvider.selectClient(newClient);
                     if (ctx.mounted) {
                       Navigator.pop(ctx);
-                      Navigator.pop(ctx);
+                      Future.delayed(
+                        Durations.short4,
+                        () {
+                          if (ctx.mounted) {
+                            Navigator.pop(ctx);
+                          }
+                        },
+                      );
                     }
+                    clientProvider.clearForm();
                   },
                 );
               } else {
@@ -159,6 +173,7 @@ class _ClientScreenState extends State<ClientScreen> {
                     }
                   },
                 );
+                clientProvider.clearForm();
               }
             }
           },

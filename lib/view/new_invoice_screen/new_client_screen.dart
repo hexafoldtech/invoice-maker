@@ -119,10 +119,4 @@ class _NewClientScreenState extends State<NewClientScreen> {
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   Provider.of<ClientProvider>(context, listen: false).dispose();
-  // }
 }
