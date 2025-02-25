@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-import 'package:invoice_maker/view/new_invoice_screen/new_item_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_sizes.dart';
+import '../../core/constants/app_strings.dart';
+import '../../core/utils/app_text_styles.dart';
+import 'new_item_screen.dart';
 
-class ItemScreen extends StatelessWidget {
+class ItemScreen extends StatefulWidget {
   const ItemScreen({super.key});
+
+  @override
+  State<ItemScreen> createState() => _ItemScreenState();
+}
+
+class _ItemScreenState extends State<ItemScreen> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      Durations.medium1,
+      () {
+        _focusNode.requestFocus();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            AppStrings.cancelText,
-            style: AppTextStyles.helveticaNeueSmall(
-                AppColors.black, FontWeight.normal),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          AppStrings.newitemsText,
-          style: AppTextStyles.helveticaNeueMedium(
-              AppColors.black, FontWeight.bold),
-        ),
-        elevation: 0,
-      ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(AppSizes.s16.r),
             child: TextField(
+              focusNode: _focusNode,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   hintText: AppStrings.searchText,
@@ -48,7 +49,8 @@ class ItemScreen extends StatelessWidget {
             height: AppSizes.s14,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.s16),
+            padding:
+                EdgeInsets.only(left: AppSizes.s16.r, bottom: AppSizes.s7.r),
             child: GestureDetector(
               child: Row(
                 children: [
@@ -78,17 +80,20 @@ class ItemScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: [
-                ListTile(
-                  title: const Text(AppStrings.developmentText),
-                  trailing: Text(
-                    "₹ 25.00 / hr",
-                    style: AppTextStyles.helveticaNeueItem(
-                        AppColors.grey, FontWeight.normal),
+            child: Padding(
+              padding: EdgeInsets.only(left: AppSizes.s6.r),
+              child: ListView(
+                children: [
+                  ListTile(
+                    title: const Text(AppStrings.developmentText),
+                    trailing: Text(
+                      "₹ 25.00 / hr",
+                      style: AppTextStyles.helveticaNeueItem(
+                          AppColors.grey, FontWeight.normal),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

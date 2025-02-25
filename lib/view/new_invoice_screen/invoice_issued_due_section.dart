@@ -7,11 +7,13 @@ import 'package:invoice_maker/core/utils/app_text_styles.dart';
 class InvoiceIssuedDueSection extends StatelessWidget {
   final String issuedDate;
   final String dueDate;
+  final VoidCallback dueDateOntap;
   final String id;
   const InvoiceIssuedDueSection(
       {super.key,
       required this.issuedDate,
       required this.dueDate,
+      required this.dueDateOntap,
       required this.id});
 
   @override
@@ -38,9 +40,12 @@ class InvoiceIssuedDueSection extends StatelessWidget {
                 style: AppTextStyles.helveticaNeueSmall(
                     AppColors.darkGrey, FontWeight.normal)),
             const SizedBox(height: AppSizes.s8),
-            Text(dueDate,
-                style: AppTextStyles.helveticaNeueSmall(
-                    AppColors.black, FontWeight.bold)),
+            GestureDetector(
+              onTap: dueDateOntap,
+              child: Text(dueDate,
+                  style: AppTextStyles.helveticaNeueSmall(
+                      AppColors.black, FontWeight.bold)),
+            ),
           ],
         ),
         Column(

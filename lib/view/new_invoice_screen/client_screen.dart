@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 import 'package:invoice_maker/view/new_invoice_screen/new_client_screen.dart';
 
-class ClientScreen extends StatelessWidget {
+class ClientScreen extends StatefulWidget {
   const ClientScreen({super.key});
+
+  @override
+  State<ClientScreen> createState() => _ClientScreenState();
+}
+
+class _ClientScreenState extends State<ClientScreen> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      Durations.medium1,
+      () {
+        _focusNode.requestFocus();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            AppStrings.cancelText,
-            style: AppTextStyles.helveticaNeueSmall(
-                AppColors.black, FontWeight.normal),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          AppStrings.clientsText,
-          style: AppTextStyles.helveticaNeueMedium(
-              AppColors.black, FontWeight.bold),
-        ),
-        elevation: 0,
-      ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(AppSizes.s16.r),
             child: TextField(
+              focusNode: _focusNode,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   hintText: AppStrings.searchText,
@@ -48,7 +49,8 @@ class ClientScreen extends StatelessWidget {
             height: AppSizes.s14,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.s16),
+            padding:
+                EdgeInsets.only(left: AppSizes.s16.r, bottom: AppSizes.s7.r),
             child: GestureDetector(
               child: Row(
                 children: [
@@ -78,12 +80,15 @@ class ClientScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: const [
-                ListTile(
-                  title: Text(AppStrings.developmentText),
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(left: AppSizes.s6.r),
+              child: ListView(
+                children: const [
+                  ListTile(
+                    title: Text(AppStrings.developmentText),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
