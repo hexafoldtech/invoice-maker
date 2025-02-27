@@ -8,7 +8,7 @@ import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/utils/app_text_styles.dart';
-import '../../core/utils/client_text_form_field.dart';
+import '../../core/utils/custom_text_form_field.dart';
 import '../../providers/client_provider.dart';
 import '../../providers/form_provider.dart';
 
@@ -45,11 +45,12 @@ class _NewClientScreenState extends State<NewClientScreen> {
             const SizedBox(
               height: AppSizes.s18,
             ),
-            ClientTextFormField(
+            CustomTextFormField(
+              formType: FormType.client,
               controller: clientProvider.nameController,
               title: AppStrings.billToText,
               hintText: '',
-              textFormType: TextInputType.name,
+              textInputType: TextInputType.name,
             ),
             if (clientProvider.isclientFilled)
               Row(
@@ -75,27 +76,30 @@ class _NewClientScreenState extends State<NewClientScreen> {
                   AppColors.darkGrey, FontWeight.normal),
             ),
             const SizedBox(height: AppSizes.s10),
-            ClientTextFormField(
+            CustomTextFormField(
+              formType: FormType.client,
               controller: clientProvider.phoneController,
               title: AppStrings.phoneText,
               hintText: '',
-              textFormType: TextInputType.phone,
+              textInputType: TextInputType.phone,
               validator: TextFormValidator.validatePhoneNumber,
             ),
             const SizedBox(height: AppSizes.s16),
-            ClientTextFormField(
+            CustomTextFormField(
+              formType: FormType.client,
               controller: clientProvider.emailController,
               title: AppStrings.emailText,
               hintText: '',
-              textFormType: TextInputType.emailAddress,
+              textInputType: TextInputType.emailAddress,
               validator: TextFormValidator.validateEmail,
             ),
             const SizedBox(height: AppSizes.s16),
-            ClientTextFormField(
+            CustomTextFormField(
+              formType: FormType.client,
               controller: clientProvider.addressController,
               title: AppStrings.addressText,
               hintText: '',
-              textFormType: TextInputType.streetAddress,
+              textInputType: TextInputType.streetAddress,
               validator: TextFormValidator.validate,
             ),
             SizedBox(
