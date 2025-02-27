@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/utils/switch_button.dart';
 import 'package:invoice_maker/core/utils/text_form_validator.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
@@ -59,12 +60,11 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     style: AppTextStyles.helveticaNeueItem(
                         AppColors.darkGrey, FontWeight.normal),
                   ),
-                  Switch(
+                  SwitchButton(
                     value: clientProvider.saveToClients,
                     onChanged: (value) {
                       clientProvider.setSaveToClients(value);
                     },
-                    activeColor: AppColors.green,
                   ),
                 ],
               ),

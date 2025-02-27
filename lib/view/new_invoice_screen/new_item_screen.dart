@@ -74,14 +74,15 @@ class NewItemScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         AppStrings.saveToCatalogText,
                       ),
                       SwitchButton(
-                        isOn: true,
+                        value: false,
+                        onChanged: (p0) {},
                       ),
                     ],
                   ),
@@ -152,10 +153,10 @@ class NewItemScreen extends StatelessWidget {
                                 color: AppColors.grey.withOpacity(0.2)),
                             borderRadius: BorderRadius.circular(AppSizes.s8),
                             color: AppColors.white),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: AppSizes.s80,
                               child: TextField(
                                 decoration: InputDecoration(
@@ -166,7 +167,8 @@ class NewItemScreen extends StatelessWidget {
                               ),
                             ),
                             SwitchButton(
-                              isOn: false,
+                              value: false,
+                              onChanged: (p0) {},
                             ),
                           ],
                         ),
@@ -174,12 +176,13 @@ class NewItemScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSizes.s16),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(AppStrings.taxableText),
+                      const Text(AppStrings.taxableText),
                       SwitchButton(
-                        isOn: true,
+                        value: false,
+                        onChanged: (p0) {},
                       ),
                     ],
                   ),
