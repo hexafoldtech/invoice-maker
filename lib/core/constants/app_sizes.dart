@@ -52,6 +52,7 @@ class AppSizes {
   static const double s48 = 48.0;
   static const double s49 = 49.0;
   static const double s50 = 50.0;
+  static const double s63 = 63.0;
 
   /// Sizes from 50 to 350 (incrementing by 10).
   static const double s60 = 60.0;
