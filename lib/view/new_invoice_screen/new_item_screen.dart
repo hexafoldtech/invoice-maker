@@ -1,207 +1,164 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/utils/app_button.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-import 'package:invoice_maker/core/utils/switch_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../widgets/custom_floating_button.dart';
+import '../../core/utils/add_new_item_details.dart';
+import '../../core/utils/custom_text_form_field.dart';
+import '../../core/utils/add_new_item_discount.dart';
+import '../../core/utils/switch_button.dart';
+import "../../core/utils/app_text_styles.dart";
+import '../../core/constants/global_key.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_sizes.dart';
+import '../../core/constants/app_strings.dart';
 
-class NewItemScreen extends StatelessWidget {
+class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
 
   @override
+  State<NewItemScreen> createState() => _NewItemScreenState();
+}
+
+class _NewItemScreenState extends State<NewItemScreen> {
+  var ctx = navigatorKey.currentContext!;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _discountController = TextEditingController();
+  final TextEditingController _moneyController = TextEditingController();
+
+  /// default [unit type selection]
+  String _unitType = AppStrings.optionalText;
+
+  /// for showing the discount row of which type
+  bool _showDiscountTypeRow = false;
+  bool _saveToItems = true;
+  bool _isDiscountEnabled = false;
+  bool _isTaxable = false;
+
+  String _selectedDiscountType = AppStrings.rupeeSymbolText;
+
+  final List<String> _unitTypeOptions = [
+    AppStrings.noDueDateText,
+    AppStrings.hoursText,
+    AppStrings.daysText,
+    AppStrings.cancelText //  used to close the bottom sheet
+  ];
+
+  /// onselect update the type
+  void _updateUnitType(String newUnitType) {
+    setState(() {
+      _unitType = newUnitType;
+    });
+  }
+
+  void _checkDiscountInput() {
+    setState(() {
+      _showDiscountTypeRow = _discountController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _discountController.addListener(_checkDiscountInput);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text(
-            AppStrings.cancelText,
-            style: TextStyle(color: AppColors.black),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              AppStrings.doneText,
-              style: TextStyle(color: AppColors.black),
+    return Padding(
+      padding: const EdgeInsets.all(AppSizes.s16),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: AppSizes.s10),
+            Text(
+              AppStrings.newItemText,
+              style: AppTextStyles.helveticaNeueMedium(
+                  AppColors.black, FontWeight.bold),
             ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.s16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: AppSizes.s10),
-              Text(
-                AppStrings.newItemText,
-                style: AppTextStyles.helveticaNeueMedium(
-                    AppColors.black, FontWeight.bold),
-              ),
-              const SizedBox(height: AppSizes.s20),
-              Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(AppSizes.s10),
-                    decoration: BoxDecoration(
-                        border:
-                            Border.all(color: AppColors.grey.withOpacity(0.2)),
-                        borderRadius: BorderRadius.circular(AppSizes.s8),
-                        color: AppColors.white),
-                    child: const Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: AppStrings.nameText,
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        SizedBox(height: AppSizes.s5),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: AppStrings.detailsCompletedText,
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        SizedBox(height: AppSizes.s5),
-                      ],
+            const SizedBox(height: AppSizes.s20),
+            Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppSizes.s10),
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                          formType: FormType.item,
+                          textInputType: TextInputType.number,
+                          controller: _nameController,
+                          hintText: AppStrings.nameText),
+                      const SizedBox(height: AppSizes.s5),
+                      CustomTextFormField(
+                          formType: FormType.item,
+                          textInputType: TextInputType.number,
+                          controller: _detailsController,
+                          hintText: AppStrings.detailsCompletedText),
+                      const SizedBox(height: AppSizes.s5),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      AppStrings.saveToCatalogText,
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        AppStrings.saveToCatalogText,
-                      ),
-                      SwitchButton(
-                        value: false,
-                        onChanged: (p0) {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSizes.s16),
-                  Column(
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(AppStrings.unitPriceText),
-                          Text(AppStrings.quantityText),
-                          Text(AppStrings.unitTypeText),
-                        ],
-                      ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(AppSizes.s8),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.grey.withOpacity(0.2)),
-                            borderRadius: BorderRadius.circular(AppSizes.s8),
-                            color: AppColors.white),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: AppSizes.s80,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  labelText: "Rs 1",
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: AppSizes.s40,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  labelText: "1",
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: AppSizes.s80,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  labelText: "Optional",
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSizes.s16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(AppStrings.discountText),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(AppSizes.s8),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.grey.withOpacity(0.2)),
-                            borderRadius: BorderRadius.circular(AppSizes.s8),
-                            color: AppColors.white),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const SizedBox(
-                              width: AppSizes.s80,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: "0",
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            SwitchButton(
-                              value: false,
-                              onChanged: (p0) {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSizes.s16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(AppStrings.taxableText),
-                      SwitchButton(
-                        value: false,
-                        onChanged: (p0) {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: AppSizes.s34,
-                  ),
-                  AppButton(
-                    type: ButtonType.invoice,
-                    label: AppStrings.addItemText,
-                    action: () {},
-                    textColor: AppColors.white,
-                    fontSize: AppSizes.s20,
-                    borderColor: AppColors.white,
-                    backgroundColor: AppColors.black,
-                  ),
-                ],
-              ),
-            ],
-          ),
+                    SwitchButton(
+                      value: _saveToItems,
+                      onChanged: (value) {
+                        _saveToItems = value;
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSizes.s16.r),
+                AddNewItemDetailsSection(
+                        moneyController: _moneyController,
+                        clearMoneyField: () {
+                          _moneyController.clear();
+                          setState(() {});
+                        },
+                        moneyFieldOnChanged: (val) {
+                          setState(() {});
+                        },
+                        unitType: _unitType,
+                        unitTypeOptions: _unitTypeOptions,
+                        updateUnitType: _updateUnitType,
+                        context: context)
+                    .buildUnitSection(),
+                AddNewItemDiscountSection(
+                        isDiscountEnabled: _isDiscountEnabled,
+                        discountController: _discountController,
+                        onSelectDiscountType: (value) {
+                          setState(() {
+                            _selectedDiscountType = value;
+                          });
+                        },
+                        showDiscountTypeRow: _showDiscountTypeRow,
+                        selectedDiscountType: _selectedDiscountType)
+                    .buildDiscountSection(),
+                Row(
+                  children: [
+                    const Expanded(child: Text(AppStrings.taxableText)),
+                    SwitchButton(
+                      value: _isTaxable,
+                      onChanged: (value) {
+                        _isTaxable = value;
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: AppSizes.s35.r,
+                ),
+                CustomFloatingButton(
+                    text: AppStrings.addItemText, onPressed: () {})
+              ],
+            ),
+          ],
         ),
       ),
     );

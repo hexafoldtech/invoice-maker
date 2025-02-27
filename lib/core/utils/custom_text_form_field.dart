@@ -17,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
   final VoidCallback? onEditingComplete;
+  final bool? isEnabled;
   CustomTextFormField({
     super.key,
     required this.formType,
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.onEditingComplete,
+    this.isEnabled,
   }) : hintTextStyle = hintTextStyle ??
             AppTextStyles.helveticaNeue(
               AppColors.grey,
@@ -67,6 +69,7 @@ class CustomTextFormField extends StatelessWidget {
             child: TextFormField(
               keyboardType: textInputType,
               controller: controller,
+              enabled: isEnabled,
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: hintTextStyle,
@@ -93,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
           onEditingComplete: onEditingComplete,
           keyboardType: textInputType,
           controller: controller,
+          enabled: isEnabled,
           decoration: InputDecoration(
               hintText: hintText,
               border: InputBorder.none,
