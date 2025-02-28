@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
 import 'package:invoice_maker/providers/client_provider.dart';
+import 'package:invoice_maker/providers/item_provider.dart';
 import 'package:provider/provider.dart';
 import 'client_screen.dart';
 import 'item_screen.dart';
@@ -71,100 +72,98 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
   }
 
   Widget _buildMainUI() {
-    return Center(
-      child: Column(
-        children: [
-          Text(
-            AppStrings.newInvoiceText,
-            style: AppTextStyles.helveticaNeueMedium(
-                AppColors.black, FontWeight.bold),
-          ),
-          const SizedBox(
-            height: AppSizes.s20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppSizes.s16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InvoiceIssuedDueSection(
-                  dueDateOntap: () {
-                    CustomBottomSheet(
-                      type: CustomBottomSheetType.floating,
-                      header: const Text(AppStrings.selectDueDateText),
-                      mainContent: Column(
-                        children:
-                            [].addDueDateItems(dueDateOptions, (selectedDate) {
-                          if (selectedDate != AppStrings.cancelText) {
-                            _updateDueDate(selectedDate);
-                          }
-                          Navigator.pop(ctx);
-                        }),
-                      ),
-                    ).showCustomBottomSheet();
-                  },
-                  issuedDate: formattedDate,
-                  dueDate: dueDate,
-                  id: '001',
-                ),
-                const SizedBox(height: AppSizes.s20),
-                Consumer<ClientProvider>(
-                  builder: (context, clientProvider, child) {
-                    if (clientProvider.selectedClient != null) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppStrings.clientText,
-                            style: AppTextStyles.helveticaNeueSmall(
-                                AppColors.darkGrey, FontWeightStyles.regular),
-                          ),
-                          SizedBox(
-                            height: AppSizes.s10.r,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                clientProvider.selectedClient!.clientName,
-                                style: AppTextStyles.helveticaNeue(
-                                    AppColors.black,
-                                    FontWeightStyles.regular,
-                                    AppSizes.s18.r),
-                              ),
-                              IconButton(
-                                  onPressed: () =>
-                                      clientProvider.clearSelectedClient(),
-                                  icon: const Icon(Icons.close_rounded))
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return const CustomNewInvoiceScreenButton(
-                        appbarTitle: AppStrings.addClientText,
-                        title: AppStrings.addClientText,
-                        header: AppStrings.clientText,
-                        mainChild: ClientScreen(),
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(height: AppSizes.s20),
-                const CustomNewInvoiceScreenButton(
-                  appbarTitle: AppStrings.newitemsText,
-                  title: AppStrings.addItemText,
-                  header: AppStrings.itemsText,
-                  mainChild: ItemScreen(),
-                ),
-                const SizedBox(height: AppSizes.s20),
-                const Summary(amount: 15.00),
-              ],
+    return Consumer2<ClientProvider, ItemProvider>(
+        builder: (context, clientProvider, itemProvider, child) {
+      return Center(
+        child: Column(
+          children: [
+            Text(
+              AppStrings.newInvoiceText,
+              style: AppTextStyles.helveticaNeueMedium(
+                  AppColors.black, FontWeight.bold),
             ),
-          )
-        ],
-      ),
-    );
+            const SizedBox(
+              height: AppSizes.s20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(AppSizes.s16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InvoiceIssuedDueSection(
+                    dueDateOntap: () {
+                      CustomBottomSheet(
+                        type: CustomBottomSheetType.floating,
+                        header: const Text(AppStrings.selectDueDateText),
+                        mainContent: Column(
+                          children: [].addDueDateItems(dueDateOptions,
+                              (selectedDate) {
+                            if (selectedDate != AppStrings.cancelText) {
+                              _updateDueDate(selectedDate);
+                            }
+                            Navigator.pop(ctx);
+                          }),
+                        ),
+                      ).showCustomBottomSheet();
+                    },
+                    issuedDate: formattedDate,
+                    dueDate: dueDate,
+                    id: '001',
+                  ),
+                  const SizedBox(height: AppSizes.s20),
+                  if (clientProvider.selectedClient != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.clientText,
+                          style: AppTextStyles.helveticaNeueSmall(
+                              AppColors.darkGrey, FontWeightStyles.regular),
+                        ),
+                        SizedBox(
+                          height: AppSizes.s10.r,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              clientProvider.selectedClient!.clientName,
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.black,
+                                  FontWeightStyles.regular,
+                                  AppSizes.s18.r),
+                            ),
+                            IconButton(
+                                onPressed: () =>
+                                    clientProvider.clearSelectedClient(),
+                                icon: const Icon(Icons.close_rounded))
+                          ],
+                        ),
+                      ],
+                    ),
+                  if (clientProvider.selectedClient == null)
+                    const CustomNewInvoiceScreenButton(
+                      appbarTitle: AppStrings.addClientText,
+                      title: AppStrings.addClientText,
+                      header: AppStrings.clientText,
+                      mainChild: ClientScreen(),
+                    ),
+                  const SizedBox(height: AppSizes.s20),
+                  const CustomNewInvoiceScreenButton(
+                    appbarTitle: AppStrings.newitemsText,
+                    title: AppStrings.addItemText,
+                    header: AppStrings.itemsText,
+                    mainChild: ItemScreen(),
+                  ),
+                  const SizedBox(height: AppSizes.s20),
+                  const Summary(amount: 15.00),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   @override

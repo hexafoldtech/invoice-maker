@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/providers/item_provider.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
@@ -26,6 +28,11 @@ class _ItemScreenState extends State<ItemScreen> {
       Durations.medium1,
       () {
         _focusNode.requestFocus();
+      },
+    );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<ItemProvider>(context, listen: false).fetchAllItems();
       },
     );
   }
@@ -83,20 +90,42 @@ class _ItemScreenState extends State<ItemScreen> {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(left: AppSizes.s6.r),
-            child: ListView(
-              children: [
-                ListTile(
-                  title: const Text(AppStrings.developmentText),
-                  trailing: Text(
-                    "₹ 25.00 / hr",
-                    style: AppTextStyles.helveticaNeueItem(
-                        AppColors.grey, FontWeight.normal),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              padding: EdgeInsets.only(left: AppSizes.s6.r),
+              child: Consumer<ItemProvider>(
+                builder: (context, provider, child) {
+                  switch (provider.state) {
+                    case AppUIStates.loading:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    case AppUIStates.empty:
+                      return Center(
+                        child: Text(
+                          AppStrings.noItemsText,
+                          style: AppTextStyles.helveticaNeue(
+                              AppColors.grey, FontWeight.w500, AppSizes.s16.r),
+                        ),
+                      );
+                    case AppUIStates.success:
+                      return ListView.builder(
+                        itemCount: provider.items.length,
+                        itemBuilder: (context, index) {
+                          final items = provider.items[index];
+                          return ListTile(
+                            title: Text(items.itemName),
+                            onTap: () {
+                              provider.selectItems(items);
+                              Navigator.pop(ctx);
+                            },
+                          );
+                        },
+                      );
+
+                    case AppUIStates.none:
+                      return const SizedBox.shrink();
+                  }
+                },
+              )),
         ),
       ],
     );
@@ -112,45 +141,6 @@ class _ItemScreenState extends State<ItemScreen> {
             padding: EdgeInsets.only(left: AppSizes.s12.r),
             child: Text(
               AppStrings.cancelText,
-              style: AppTextStyles.helveticaNeue(
-                  AppColors.black, FontWeightStyles.regular, AppSizes.s17.r),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // final clientProvider =
-            //     Provider.of<ClientProvider>(ctx, listen: false);
-            // final newClient = clientProvider.createClientModel();
-            // if (Provider.of<FormProvider>(ctx, listen: false).validateForm()) {
-            //   if (clientProvider.saveToClients) {
-            //     clientProvider.addClient(newClient).then(
-            //       (_) {
-            //         clientProvider.selectClient(newClient);
-            //         if (ctx.mounted) {
-            //           Navigator.pop(ctx);
-            //           Navigator.pop(ctx);
-            //         }
-            //       },
-            //     );
-            //   } else {
-            //     clientProvider.selectClient(newClient);
-            Navigator.pop(ctx);
-            Future.delayed(
-              Durations.short4,
-              () {
-                if (ctx.mounted) {
-                  Navigator.pop(ctx);
-                }
-              },
-            );
-            // }
-            // }
-          },
-          child: Padding(
-            padding: EdgeInsets.only(right: AppSizes.s12.r),
-            child: Text(
-              AppStrings.doneText,
               style: AppTextStyles.helveticaNeue(
                   AppColors.black, FontWeightStyles.regular, AppSizes.s17.r),
             ),

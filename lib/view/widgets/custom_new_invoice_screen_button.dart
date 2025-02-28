@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../../providers/item_provider.dart';
 import '../../core/utils/bottom_sheet.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/constants/app_colors.dart';
@@ -7,6 +9,7 @@ import '../../core/constants/global_key.dart';
 import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
+import 'item_display.dart';
 
 class CustomNewInvoiceScreenButton extends StatelessWidget {
   final Widget mainChild;
@@ -23,6 +26,7 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var ctx = navigatorKey.currentContext!;
+    var itemProvider = Provider.of<ItemProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -30,6 +34,25 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
             style: AppTextStyles.helveticaNeueSmall(
                 AppColors.darkGrey, FontWeightStyles.regular)),
         const SizedBox(height: AppSizes.s8),
+        if (itemProvider.selectedItems.isNotEmpty &&
+            !header.contains(AppStrings.clientText))
+          Column(
+            children: List.generate(
+              itemProvider.selectedItems.length,
+              growable: true,
+              (index) {
+                var item = itemProvider.selectedItems[index];
+                return ItemDisplay(
+                  title: item.itemName,
+                  desc: item.itemDetails,
+                  price: item.itemUnitPrice.toString(),
+                  quantity: item.itemQuantity.toString(),
+                  finalPrice: item.itemUnitPrice.toString(),
+                  discount: item.itemDiscount?.toString() ?? '0.0',
+                );
+              },
+            ),
+          ),
         GestureDetector(
           onTap: () {
             CustomBottomSheet(
