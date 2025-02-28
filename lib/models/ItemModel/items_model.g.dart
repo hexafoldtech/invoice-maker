@@ -22,15 +22,18 @@ class ItemsModelAdapter extends TypeAdapter<ItemsModel> {
       itemDetails: fields[2] as String,
       itemUnitPrice: fields[3] as double,
       itemQuantity: fields[4] as int,
-      itemDiscount: fields[5] as double,
-      itemTaxable: fields[6] as bool,
+      isDiscount: fields[5] as bool,
+      itemDiscount: fields[6] as double?,
+      itemPrice: fields[7] as double,
+      itemTaxable: fields[8] as bool,
+      tax: fields[9] as double?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ItemsModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -42,9 +45,15 @@ class ItemsModelAdapter extends TypeAdapter<ItemsModel> {
       ..writeByte(4)
       ..write(obj.itemQuantity)
       ..writeByte(5)
-      ..write(obj.itemDiscount)
+      ..write(obj.isDiscount)
       ..writeByte(6)
-      ..write(obj.itemTaxable);
+      ..write(obj.itemDiscount)
+      ..writeByte(7)
+      ..write(obj.itemPrice)
+      ..writeByte(8)
+      ..write(obj.itemTaxable)
+      ..writeByte(9)
+      ..write(obj.tax);
   }
 
   @override
