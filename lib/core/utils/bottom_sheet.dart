@@ -78,12 +78,6 @@ class CustomBottomSheet {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            spreadRadius: 2,
-          ),
-        ],
       ),
       child: Column(
         children: [

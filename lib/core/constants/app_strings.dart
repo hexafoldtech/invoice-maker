@@ -59,4 +59,10 @@ class AppStrings {
   static const String saveToClientsCatalogText = "Save to clients catalog";
   static const String errorText = "Error Occured";
   static const String enterValidPhoneNumberText = "Enter a Valid Phone Number";
+  static const String optionalText = "Optional";
+  static const String noneText = "None";
+  static const String hoursText = "Hours";
+  static const String daysText = "Days";
+  static const String rupeeSymbolText = "₹";
+  static const String percentSymbolText = "%";
 }
