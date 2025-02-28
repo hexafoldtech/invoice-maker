@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -26,12 +24,6 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
   var ctx = navigatorKey.currentContext!;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Provider.of<ItemProvider>(context, listen: false).initListeners();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +147,6 @@ class _NewItemScreenState extends State<NewItemScreen> {
         itemProvider.addItem(newItem).then(
           (_) {
             itemProvider.selectItems(newItem);
-            log(itemProvider.selectedItems.toString());
             if (ctx.mounted) {
               Navigator.pop(ctx);
               Future.delayed(
