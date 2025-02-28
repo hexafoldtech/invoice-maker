@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../core/constants/hive_box_names.dart';
 import '../models/ClientModel/clients_model.dart';
 import '../repository/client_repo.dart';
 
@@ -70,7 +71,7 @@ class ClientProvider extends ChangeNotifier {
   }
 
   ClientsModel createClientModel() {
-    final box = Hive.box<ClientsModel>('clients');
+    final box = Hive.box<ClientsModel>(HiveBoxNames.client);
     final int newId = (box.isEmpty)
         ? 0
         : box.keys
@@ -125,7 +126,6 @@ class ClientProvider extends ChangeNotifier {
       _state = _clients.isEmpty ? AppUIStates.empty : AppUIStates.success;
       notifyListeners();
     } catch (e) {
-      debugPrint("Error fetching clients");
       _state = AppUIStates.empty;
     }
   }
