@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:provider/provider.dart';
-// import '../../providers/client_provider.dart';
+import 'package:invoice_maker/core/utils/switch_button.dart';
+import 'package:invoice_maker/core/utils/text_form_validator.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/client_text_form_field.dart';
+import '../../providers/client_provider.dart';
+import '../../providers/form_provider.dart';
 
 class NewClientScreen extends StatefulWidget {
   const NewClientScreen({super.key});
@@ -17,34 +20,20 @@ class NewClientScreen extends StatefulWidget {
 }
 
 class _NewClientScreenState extends State<NewClientScreen> {
-  // final clientProvider = Provider.of<ClientProvider>(context);
-  TextEditingController clientNameController = TextEditingController();
-  TextEditingController clientPhoneNumberController = TextEditingController();
-  TextEditingController clientEmailController = TextEditingController();
-  TextEditingController clientAddressController = TextEditingController();
-  bool isclientFilled = false;
-  bool saveToClients = false;
-
-  /// Toggles switch visibility based on client name input
-  void _toggleSwitchVisibility() {
-    setState(() {
-      isclientFilled = clientNameController.text.isNotEmpty;
-      saveToClients = clientNameController.text.isNotEmpty;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    Future.delayed(Durations.medium4,
-        () => clientNameController.addListener(_toggleSwitchVisibility));
+    Provider.of<ClientProvider>(context, listen: false).initListners();
   }
 
   @override
   Widget build(BuildContext context) {
+    final clientProvider = Provider.of<ClientProvider>(context);
+    final formProvider = Provider.of<FormProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(AppSizes.s16.r),
       child: Form(
+        key: formProvider.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,12 +46,12 @@ class _NewClientScreenState extends State<NewClientScreen> {
               height: AppSizes.s18,
             ),
             ClientTextFormField(
-              controller: clientNameController,
+              controller: clientProvider.nameController,
               title: AppStrings.billToText,
               hintText: '',
               textFormType: TextInputType.name,
             ),
-            if (isclientFilled)
+            if (clientProvider.isclientFilled)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -71,14 +60,11 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     style: AppTextStyles.helveticaNeueItem(
                         AppColors.darkGrey, FontWeight.normal),
                   ),
-                  Switch(
-                    value: saveToClients,
+                  SwitchButton(
+                    value: clientProvider.saveToClients,
                     onChanged: (value) {
-                      setState(() {
-                        saveToClients = value;
-                      });
+                      clientProvider.setSaveToClients(value);
                     },
-                    activeColor: AppColors.green,
                   ),
                 ],
               ),
@@ -90,24 +76,27 @@ class _NewClientScreenState extends State<NewClientScreen> {
             ),
             const SizedBox(height: AppSizes.s10),
             ClientTextFormField(
-              controller: clientPhoneNumberController,
+              controller: clientProvider.phoneController,
               title: AppStrings.phoneText,
               hintText: '',
               textFormType: TextInputType.phone,
+              validator: TextFormValidator.validatePhoneNumber,
             ),
             const SizedBox(height: AppSizes.s16),
             ClientTextFormField(
-              controller: clientEmailController,
+              controller: clientProvider.emailController,
               title: AppStrings.emailText,
               hintText: '',
               textFormType: TextInputType.emailAddress,
+              validator: TextFormValidator.validateEmail,
             ),
             const SizedBox(height: AppSizes.s16),
             ClientTextFormField(
-              controller: clientAddressController,
+              controller: clientProvider.addressController,
               title: AppStrings.addressText,
               hintText: '',
               textFormType: TextInputType.streetAddress,
+              validator: TextFormValidator.validate,
             ),
             SizedBox(
               height: AppSizes.s30.r,
