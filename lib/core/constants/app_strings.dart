@@ -67,4 +67,10 @@ class AppStrings {
   static const String percentSymbolText = "%";
   static const String noClientsText = "No existing clients";
   static const String noItemsText = "No existing items";
+  static const String subTotalText = "Subtotal";
+  static const String taxText = "Tax";
+  static const String comingSoonText = "Coming Soon!";
+  static const String okText = "Ok";
+  static const String underDevText =
+      "This feature is under development and will be available soon.";
 }
