@@ -65,4 +65,6 @@ class AppStrings {
   static const String daysText = "Days";
   static const String rupeeSymbolText = "₹";
   static const String percentSymbolText = "%";
+  static const String noClientsText = "No existing clients";
+  static const String noItemsText = "No existing items";
 }

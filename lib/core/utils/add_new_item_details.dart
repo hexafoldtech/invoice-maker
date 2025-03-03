@@ -8,10 +8,12 @@ import 'extensions/unit_type_calculator.dart';
 import 'app_text_styles.dart';
 import 'bottom_sheet.dart';
 import 'custom_text_form_field.dart';
+import 'text_form_validator.dart';
 
 /// widget for building item details section in add new item
 class AddNewItemDetailsSection {
   final TextEditingController moneyController;
+  final TextEditingController quantityController;
   final Function(String) moneyFieldOnChanged;
   final VoidCallback clearMoneyField;
   final List<String> unitTypeOptions;
@@ -21,6 +23,7 @@ class AddNewItemDetailsSection {
 
   AddNewItemDetailsSection({
     required this.moneyController,
+    required this.quantityController,
     required this.moneyFieldOnChanged,
     required this.clearMoneyField,
     required this.unitType,
@@ -74,6 +77,7 @@ class AddNewItemDetailsSection {
             controller: moneyController,
             hintText: '1',
             onChanged: moneyFieldOnChanged,
+            validator: TextFormValidator.validate,
           ),
         ),
         SizedBox(
@@ -95,12 +99,13 @@ class AddNewItemDetailsSection {
 
   Widget _buildQuantityInput() {
     return SizedBox(
-      width: AppSizes.s40.r,
+      width: AppSizes.s80.r,
       child: CustomTextFormField(
         formType: FormType.item,
         textInputType: TextInputType.number,
-        controller: TextEditingController(),
+        controller: quantityController,
         hintText: '1',
+        validator: TextFormValidator.validate,
       ),
     );
   }

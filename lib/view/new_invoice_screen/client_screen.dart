@@ -78,7 +78,7 @@ class _ClientScreenState extends State<ClientScreen> {
                           case AppUIStates.empty:
                             return Center(
                               child: Text(
-                                "No existing clients",
+                                AppStrings.noClientsText,
                                 style: AppTextStyles.helveticaNeue(
                                     AppColors.grey,
                                     FontWeight.w500,
@@ -128,7 +128,7 @@ class _ClientScreenState extends State<ClientScreen> {
   void onSaveClient(BuildContext ctx) {
     final clientProvider = Provider.of<ClientProvider>(ctx, listen: false);
     final newClient = clientProvider.createClientModel();
-    if (Provider.of<FormProvider>(ctx, listen: false).validateForm()) {
+    if (Provider.of<FormProvider>(ctx, listen: false).validateClientForm()) {
       clientProvider.setLoading(true);
       if (clientProvider.saveToClients) {
         clientProvider.addClient(newClient).then(
