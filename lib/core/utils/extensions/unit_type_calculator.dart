@@ -7,8 +7,8 @@ import '../../constants/app_sizes.dart';
 import '../app_text_styles.dart';
 
 extension UnitTypeExtension on List {
-  List<Widget> addUnitTypeItems(
-      List<String> unitTypeOptions, ValueChanged<String> onSelect) {
+  List<Widget> addUnitTypeItems(List<MapEntry<String, String>> unitTypeOptions,
+      ValueChanged<String> onSelect) {
     return [
       ...this,
       for (var entry in unitTypeOptions)
@@ -17,14 +17,14 @@ extension UnitTypeExtension on List {
             const Divider(),
             GestureDetector(
               onTap: () {
-                if (!entry.contains(AppStrings.cancelText)) {
-                  onSelect(entry);
+                if (!entry.value.contains(AppStrings.cancelText)) {
+                  onSelect(entry.key);
                 } else {
                   onSelect(AppStrings.optionalText);
                 }
               },
               child: Text(
-                entry,
+                entry.key,
                 style: AppTextStyles.helveticaNeue(
                     AppColors.blue, FontWeightStyles.medium, AppSizes.s23.r),
               ),

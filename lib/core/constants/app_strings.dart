@@ -59,6 +59,7 @@ class AppStrings {
   static const String saveToClientsCatalogText = "Save to clients catalog";
   static const String errorText = "Error Occured";
   static const String enterValidPhoneNumberText = "Enter a Valid Phone Number";
+  static const String enterRequiredPhoneNumberText = "Phone Number is required";
   static const String optionalText = "Optional";
   static const String noneText = "None";
   static const String hoursText = "Hours";
@@ -74,4 +75,21 @@ class AppStrings {
   static const String underDevText =
       "This feature is under development and will be available soon.";
   static const String hourText = "hr";
+  static const String enterRequiredNameText = "Name is required";
+  static const String enterValidNameText =
+      "Enter a valid name (only alphabets and spaces)";
+  static const String enterRequiredAddressText = "Address is required";
+  static const String enterValidAddressText =
+      "Enter a valid address (5-100 characters)";
+  static const String enterRequiredEmailText = "Email is required";
+  static const String enterValidEmailText =
+      "Please enter a valid email address";
+  static const String enterRequiredFieldText = "Field is required";
+  static const String enterValidPriceText = "Enter a valid price";
+  static const String enterRequiredPriceText = "Price is required";
+  static const String enterGreaterPriceText = "Price must be greater than zero";
+  static const String enterValidQuantityText = "Enter a valid Quantity";
+  static const String enterRequiredQuantityText = "Quantity is required";
+  static const String enterValidDiscountText = "Enter a valid discount";
+  static const String enterGreaterDiscountText = "Discount must be greater than zero";
 }

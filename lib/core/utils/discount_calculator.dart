@@ -1,15 +1,12 @@
-import 'package:flutter/widgets.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/providers/item_provider.dart';
 import 'package:provider/provider.dart';
+import '../../providers/item_provider.dart';
+import '../constants/global_key.dart';
+import '../constants/app_strings.dart';
 
 class AddItemUtils {
-  final BuildContext context;
-
-  AddItemUtils({required this.context});
-
   double calcTotalPrice() {
-    final itemsProvider = Provider.of<ItemProvider>(context, listen: false);
+    final itemsProvider =
+        Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
 
     var unitPrice = double.parse(itemsProvider.moneyController.text);
     var quantity = double.parse(itemsProvider.quantityController.text);
@@ -18,8 +15,27 @@ class AddItemUtils {
     return totalPrice;
   }
 
+  double calcDiscountRate() {
+    final itemsProvider =
+        Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
+    var discount = double.parse(itemsProvider.discountController.text);
+    var totalPrice = calcTotalPrice();
+
+    double discountRate;
+    if (itemsProvider.selectedDiscountType
+        .contains(AppStrings.rupeeSymbolText)) {
+      discountRate =
+          double.parse(((discount * 100) / totalPrice).toStringAsFixed(2));
+    } else {
+      discountRate = discount;
+    }
+
+    return discountRate;
+  }
+
   double calcDiscount() {
-    final itemsProvider = Provider.of<ItemProvider>(context, listen: false);
+    final itemsProvider =
+        Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
     var totalPrice = calcTotalPrice();
     var discountRate = double.parse(itemsProvider.discountController.text);
     double discount;
@@ -36,7 +52,8 @@ class AddItemUtils {
   }
 
   double calcDiscountedPrice() {
-    final itemsProvider = Provider.of<ItemProvider>(context, listen: false);
+    final itemsProvider =
+        Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
 
     var totalPrice = calcTotalPrice();
 
