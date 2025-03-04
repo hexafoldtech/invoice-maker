@@ -20,7 +20,7 @@ class DatabaseService implements DatabaseServices {
     await Hive.openBox<ItemsModel>(HiveBoxNames.items);
 
     Hive.registerAdapter(InvoiceModelAdapter());
-    await Hive.openBox<ItemsModel>(HiveBoxNames.items);
+    await Hive.openBox<InvoiceModel>(HiveBoxNames.invoices);
   }
 
   @override
