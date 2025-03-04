@@ -7,4 +7,5 @@ class RouteNames {
   static const String underDevelopmentScreen = "under_development_screen";
   static const String errorScreen = "error_screen";
   static const String bottomNavigation = "bottom_navigation";
+  static const String addTaxScreen = "add_tax";
 }

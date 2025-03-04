@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_maker/core/definitions/route_names.dart';
+import 'package:invoice_maker/view/new_invoice_screen/add_tax_screen.dart';
 import '../../view/app_screens/error_screen.dart';
 import '../../view/app_screens/under_development_screen.dart';
 import '../../view/app_screens/loading_screen.dart';
@@ -8,6 +9,7 @@ import '../../view/login_screen/login_screen.dart';
 import '../../view/new_invoice_screen/new_invoice_screen.dart';
 import '../../view/new_estimate_screen/new_estimate_screen.dart';
 import '../utils/transition.dart';
+
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -30,6 +32,8 @@ class RouteGenerator {
             builder: (_) => const UnderDevelopmentScreen());
       case RouteNames.errorScreen:
         return MaterialPageRoute(builder: (_) => const ErrorScreen());
+      case RouteNames.addTaxScreen:
+        return MaterialPageRoute(builder: (_) => const AddTaxScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());
