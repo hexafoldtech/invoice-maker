@@ -19,17 +19,11 @@ class ItemScreen extends StatefulWidget {
 }
 
 class _ItemScreenState extends State<ItemScreen> {
-  final FocusNode _focusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      Durations.medium1,
-      () {
-        _focusNode.requestFocus();
-      },
-    );
+
+    /// Call inital fetch items after page building to populate the list
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Provider.of<ItemProvider>(context, listen: false).fetchAllItems();
@@ -45,7 +39,6 @@ class _ItemScreenState extends State<ItemScreen> {
         Padding(
           padding: EdgeInsets.all(AppSizes.s16.r),
           child: TextField(
-            focusNode: _focusNode,
             decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: AppStrings.searchText,
@@ -111,12 +104,29 @@ class _ItemScreenState extends State<ItemScreen> {
                         itemCount: provider.items.length,
                         itemBuilder: (context, index) {
                           final items = provider.items[index];
+                          var unit = '';
+                          if (items.unitType != null) {
+                            unit = "/ ${items.unitType!}";
+                          }
                           return ListTile(
-                            title: Text(items.itemName),
+                            title: Text(
+                              items.itemName,
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.black,
+                                  FontWeight.w500,
+                                  AppSizes.s16.r),
+                            ),
                             onTap: () {
                               provider.selectItems(items);
                               Navigator.pop(ctx);
                             },
+                            trailing: Text(
+                              "${items.itemPrice.toString()} $unit",
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.darkGrey,
+                                  FontWeight.w500,
+                                  AppSizes.s12.r),
+                            ),
                           );
                         },
                       );
@@ -136,7 +146,12 @@ class _ItemScreenState extends State<ItemScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(ctx),
+          onTap: () {
+            Provider.of<ItemProvider>(navigatorKey.currentContext!,
+                    listen: false)
+                .clearForm();
+            Navigator.pop(ctx);
+          },
           child: Padding(
             padding: EdgeInsets.only(left: AppSizes.s12.r),
             child: Text(

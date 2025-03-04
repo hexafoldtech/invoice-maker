@@ -147,6 +147,4 @@ class ClientProvider extends ChangeNotifier {
       return null;
     }
   }
-
-  ///TODO: create a function to get next id for invoice
 }

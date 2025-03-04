@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/constants/global_key.dart';
 import 'package:invoice_maker/core/utils/app_button.dart';
+import 'package:invoice_maker/core/utils/coming_soon_dialog.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
@@ -35,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return appBarType == AppBarType.dashboard
         ? _buildDashboardAppBar()
-        : _buildCreateAppBar(context);
+        : _buildCreateAppBar();
   }
 
   /// 📌 Dashboard App Bar
@@ -48,14 +50,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           leading: IconButton(
             icon: Icon(Icons.message_outlined, size: AppSizes.s24.r),
             onPressed: () {
-              // TODO Handle message icon tap
+              DialogBoxes().showComingSoonDialog(navigatorKey.currentContext!);
             },
           ),
           actions: [
             IconButton(
               icon: Icon(Icons.settings_outlined, size: AppSizes.s24.r),
               onPressed: () {
-                // TODO Handle settings icon tap
+                DialogBoxes()
+                    .showComingSoonDialog(navigatorKey.currentContext!);
               },
             ),
           ],
@@ -107,8 +110,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   /// 📌 Create App Bar
-  Widget _buildCreateAppBar(BuildContext context) {
+  Widget _buildCreateAppBar() {
     return AppBar(
+      forceMaterialTransparency: true,
       elevation: 0,
       leading: AppButton(
           type: ButtonType.flat,
@@ -117,7 +121,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       actions: [
         TextButton(
-          onPressed: onPreview ?? () {},
+          onPressed: onPreview ??
+              () {
+                DialogBoxes()
+                    .showComingSoonDialog(navigatorKey.currentContext!);
+              },
           child: _appBarText(
               AppStrings.previewText, AppColors.black, FontWeight.normal),
         ),

@@ -42,13 +42,20 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
               growable: true,
               (index) {
                 var item = itemProvider.selectedItems[index];
-                return ItemDisplay(
-                  title: item.itemName,
-                  desc: item.itemDetails,
-                  price: item.itemUnitPrice.toString(),
-                  quantity: item.itemQuantity.toString(),
-                  finalPrice: item.itemUnitPrice.toString(),
-                  discount: item.itemDiscount?.toString() ?? '0.0',
+                return Column(
+                  children: [
+                    ItemDisplay(
+                      title: item.itemName,
+                      desc: item.itemDetails,
+                      price: item.itemUnitPrice.toString(),
+                      quantity: item.itemQuantity.toString(),
+                      finalPrice: item.itemPrice.toString(),
+                      discount: item.itemDiscountRate?.toString(),
+                    ),
+                    SizedBox(
+                      height: AppSizes.s7.r,
+                    )
+                  ],
                 );
               },
             ),
@@ -69,7 +76,7 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
-                  Icons.add_circle_outlined,
+                  Icons.add,
                   color: AppColors.black,
                 ),
                 SizedBox(

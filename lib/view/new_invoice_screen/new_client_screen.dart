@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/constants/global_key.dart';
+import 'package:invoice_maker/core/utils/coming_soon_dialog.dart';
 import 'package:invoice_maker/core/utils/switch_button.dart';
 import 'package:invoice_maker/core/utils/text_form_validator.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +22,19 @@ class NewClientScreen extends StatefulWidget {
 }
 
 class _NewClientScreenState extends State<NewClientScreen> {
+  final FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
+
+    /// To focus on the first [text field]
+    Future.delayed(
+      Durations.medium1,
+      () {
+        _focusNode.requestFocus();
+      },
+    );
+
     Provider.of<ClientProvider>(context, listen: false).initListners();
   }
 
@@ -46,11 +58,13 @@ class _NewClientScreenState extends State<NewClientScreen> {
               height: AppSizes.s18,
             ),
             CustomTextFormField(
+              focusNode: _focusNode,
               formType: FormType.client,
               controller: clientProvider.nameController,
               title: AppStrings.billToText,
               hintText: '',
               textInputType: TextInputType.name,
+              validator: TextFormValidator.validate,
             ),
             if (clientProvider.isclientFilled)
               Row(
@@ -109,7 +123,10 @@ class _NewClientScreenState extends State<NewClientScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    DialogBoxes()
+                        .showComingSoonDialog(navigatorKey.currentContext!);
+                  },
                   child: Text(
                     AppStrings.importFromContactsText,
                     style: AppTextStyles.helveticaNeue(

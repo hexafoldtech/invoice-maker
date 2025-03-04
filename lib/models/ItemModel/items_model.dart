@@ -25,24 +25,35 @@ class ItemsModel extends HiveObject {
   double? itemDiscount;
 
   @HiveField(7)
-  double itemPrice;
+  double? itemDiscountRate;
 
   @HiveField(8)
-  bool itemTaxable;
+  double itemPrice;
 
   @HiveField(9)
+  double totalItemPrice;
+
+  @HiveField(10)
+  bool itemTaxable;
+
+  @HiveField(11)
   double? tax;
 
-  ItemsModel({
-    required this.id,
-    required this.itemName,
-    required this.itemDetails,
-    required this.itemUnitPrice,
-    required this.itemQuantity,
-    required this.isDiscount,
-    this.itemDiscount,
-    required this.itemPrice,
-    required this.itemTaxable,
-    this.tax,
-  });
+  @HiveField(12)
+  String? unitType;
+
+  ItemsModel(
+      {required this.id,
+      required this.itemName,
+      required this.itemDetails,
+      required this.itemUnitPrice,
+      required this.itemQuantity,
+      required this.isDiscount,
+      this.itemDiscount,
+      this.itemDiscountRate,
+      required this.itemPrice,
+      required this.totalItemPrice,
+      required this.itemTaxable,
+      this.tax,
+      this.unitType});
 }

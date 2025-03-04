@@ -24,6 +24,19 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
   var ctx = navigatorKey.currentContext!;
+  final FocusNode _focusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+
+    /// To focus on the first [text field]
+    Future.delayed(
+      Durations.medium1,
+      () {
+        _focusNode.requestFocus();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +65,17 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     child: Column(
                       children: [
                         CustomTextFormField(
+                          focusNode: _focusNode,
                           formType: FormType.item,
-                          textInputType: TextInputType.number,
+                          textInputType: TextInputType.name,
                           controller: itemProvider.nameController,
                           hintText: AppStrings.nameText,
-                          validator: TextFormValidator.validate,
+                          validator: TextFormValidator.validateName,
                         ),
                         const SizedBox(height: AppSizes.s5),
                         CustomTextFormField(
                           formType: FormType.item,
-                          textInputType: TextInputType.number,
+                          textInputType: TextInputType.text,
                           controller: itemProvider.detailsController,
                           hintText: AppStrings.detailsCompletedText,
                           validator: TextFormValidator.validate,
@@ -86,20 +100,19 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   ),
                   SizedBox(height: AppSizes.s16.r),
                   AddNewItemDetailsSection(
-                          moneyController: itemProvider.moneyController,
-                          quantityController: itemProvider.quantityController,
-                          clearMoneyField: () {
-                            itemProvider.moneyController.clear();
-                            setState(() {});
-                          },
-                          moneyFieldOnChanged: (val) {
-                            setState(() {});
-                          },
-                          unitType: itemProvider.unitType,
-                          unitTypeOptions: itemProvider.unitTypeOptions,
-                          updateUnitType: itemProvider.updateUnitType,
-                          context: context)
-                      .buildUnitSection(),
+                    moneyController: itemProvider.moneyController,
+                    quantityController: itemProvider.quantityController,
+                    clearMoneyField: () {
+                      itemProvider.moneyController.clear();
+                      setState(() {});
+                    },
+                    moneyFieldOnChanged: (val) {
+                      setState(() {});
+                    },
+                    unitType: itemProvider.unitType,
+                    unitTypeOptions: itemProvider.unitTypeOptions,
+                    updateUnitType: itemProvider.updateUnitType,
+                  ).buildUnitSection(),
                   AddNewItemDiscountSection(
                           ctx: ctx,
                           isDiscountEnabled: itemProvider.isDiscountEnabled,
@@ -128,7 +141,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   CustomFloatingButton(
                       text: AppStrings.addItemText,
                       onPressed: () {
-                        _onSaveItem(ctx);
+                        _onSaveItem();
                       })
                 ],
               ),
@@ -139,13 +152,16 @@ class _NewItemScreenState extends State<NewItemScreen> {
     );
   }
 
-  void _onSaveItem(BuildContext ctx) {
-    final itemProvider = Provider.of<ItemProvider>(ctx, listen: false);
-    final newItem = itemProvider.createClientModel();
+  void _onSaveItem() {
     if (Provider.of<FormProvider>(ctx, listen: false).validateItemForm()) {
+      final itemProvider = Provider.of<ItemProvider>(ctx, listen: false);
+      final newItem = itemProvider.createItemModel();
       if (itemProvider.saveToItems) {
         itemProvider.addItem(newItem).then(
           (_) {
+            Provider.of<ItemProvider>(navigatorKey.currentContext!,
+                    listen: false)
+                .clearForm();
             itemProvider.selectItems(newItem);
             if (ctx.mounted) {
               Navigator.pop(ctx);

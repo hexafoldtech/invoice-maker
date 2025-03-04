@@ -4,6 +4,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_fonts_styles.dart';
 import '../constants/app_sizes.dart';
 import '../constants/app_strings.dart';
+import '../constants/global_key.dart';
 import 'extensions/unit_type_calculator.dart';
 import 'app_text_styles.dart';
 import 'bottom_sheet.dart';
@@ -16,10 +17,9 @@ class AddNewItemDetailsSection {
   final TextEditingController quantityController;
   final Function(String) moneyFieldOnChanged;
   final VoidCallback clearMoneyField;
-  final List<String> unitTypeOptions;
+  final List<MapEntry<String, String>> unitTypeOptions;
   final String unitType;
   final Function(String) updateUnitType;
-  final BuildContext context;
 
   AddNewItemDetailsSection({
     required this.moneyController,
@@ -29,7 +29,6 @@ class AddNewItemDetailsSection {
     required this.unitType,
     required this.unitTypeOptions,
     required this.updateUnitType,
-    required this.context,
   });
 
   Widget buildUnitSection() {
@@ -62,7 +61,7 @@ class AddNewItemDetailsSection {
     return Row(
       children: [
         Text(
-          "₹",
+          AppStrings.rupeeSymbolText,
           style: AppTextStyles.helveticaNeue(
             AppColors.black,
             FontWeightStyles.regular,
@@ -77,7 +76,7 @@ class AddNewItemDetailsSection {
             controller: moneyController,
             hintText: '1',
             onChanged: moneyFieldOnChanged,
-            validator: TextFormValidator.validate,
+            validator: TextFormValidator.validatePrice,
           ),
         ),
         SizedBox(
@@ -105,7 +104,7 @@ class AddNewItemDetailsSection {
         textInputType: TextInputType.number,
         controller: quantityController,
         hintText: '1',
-        validator: TextFormValidator.validate,
+        validator: TextFormValidator.validateQuantity,
       ),
     );
   }
@@ -122,7 +121,7 @@ class AddNewItemDetailsSection {
               if (unitType != AppStrings.cancelText) {
                 updateUnitType(unitType);
               }
-              Navigator.pop(context);
+              Navigator.pop(navigatorKey.currentContext!);
             }),
           ),
         ).showCustomBottomSheet();

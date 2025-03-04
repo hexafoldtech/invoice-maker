@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../models/ClientModel/clients_model.dart';
 import '../../../core/constants/hive_box_names.dart';
@@ -13,10 +14,13 @@ class DatabaseService implements DatabaseServices {
     Hive.init(dir.path);
 
     Hive.registerAdapter(ClientsModelAdapter());
-    await Hive.openBox<ClientsModel>('Clients');
+    await Hive.openBox<ClientsModel>(HiveBoxNames.client);
 
     Hive.registerAdapter(ItemsModelAdapter());
-    await Hive.openBox<ItemsModel>('Items');
+    await Hive.openBox<ItemsModel>(HiveBoxNames.items);
+
+    Hive.registerAdapter(InvoiceModelAdapter());
+    await Hive.openBox<InvoiceModel>(HiveBoxNames.invoices);
   }
 
   @override
