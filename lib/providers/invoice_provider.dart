@@ -27,12 +27,18 @@ class InvoiceProvider extends ChangeNotifier {
     const MapEntry(AppStrings.thirtyDaysDueDateText, 30),
     const MapEntry(AppStrings.cancelText, -1) //  used to close the bottom sheet
   ];
+  final TextEditingController _taxController = TextEditingController();
+  bool _showTaxTypeRow = false;
+  String _selectedTaxType = AppStrings.inclusiveText;
 
   List<InvoiceModel> get invoices => _invoices;
   AppUIStates get state => _state;
   bool get isLoading => _isLoading;
   String get dueDate => _dueDate;
   List<MapEntry<String, int>> get dueDateOptions => _dueDateOptions;
+  TextEditingController get taxController => _taxController;
+  bool get showTaxTypeRow => _showTaxTypeRow;
+  String get selectedTaxType => _selectedTaxType;
 
   double get subTotal => Provider.of<ItemProvider>(context, listen: false)
       .selectedItems
@@ -51,15 +57,30 @@ class InvoiceProvider extends ChangeNotifier {
 
   double get totalDiscount => _calculateTotalDiscount();
 
-  // double get totalTax =>
-  //     Provider.of<ItemProvider>(context).selectedItems.fold(0, (sum, item) {
-  //       if (item.itemTaxable) {
-  //         return sum + (item.itemUnitPrice * item.itemQuantity * 0.18);
-  //       }
-  //       return sum;
-  //     });
+  double _calculateTotalTax() {
+    String taxText =
+        taxController.text.replaceAll('%', ''); // Remove '%' if present
+    double taxRate = double.tryParse(taxText) ?? 0.0; // Convert to double
+    double priceAfterDiscount = subTotal - totalDiscount;
 
-  double get totalAmount => subTotal - totalDiscount;
+    if (_selectedTaxType == AppStrings.exclusiveText) {
+      // Tax is added on top of the price
+      return priceAfterDiscount * (taxRate / 100);
+    } else if (_selectedTaxType == AppStrings.inclusiveText) {
+      // Tax is already included in the price, reverse calculate
+      return priceAfterDiscount - (priceAfterDiscount / (1 + (taxRate / 100)));
+    }
+    return 0.0;
+  }
+
+  double get tax => _calculateTotalTax();
+
+  double get totalAmount {
+    double priceAfterDiscount = subTotal - totalDiscount;
+    return _selectedTaxType == AppStrings.exclusiveText
+        ? (priceAfterDiscount + tax)
+        : priceAfterDiscount;
+  }
 
   void updateDueDate(String newDueDate) {
     _dueDate = newDueDate;
@@ -90,6 +111,24 @@ class InvoiceProvider extends ChangeNotifier {
         discount: totalDiscount,
         subTotal: subTotal,
         total: totalAmount);
+  }
+
+  void initListners() {
+    _taxController.addListener(_handleTaxInputChange);
+  }
+
+  void _handleTaxInputChange() {
+    bool shouldShow = taxController.text.isNotEmpty;
+    if (_showTaxTypeRow != shouldShow) {
+      _showTaxTypeRow = shouldShow;
+      notifyListeners();
+    }
+  }
+
+  /// Update the selected discount type
+  void updateTaxType(String newTaxType) {
+    _selectedTaxType = newTaxType;
+    notifyListeners();
   }
 
   Future<void> fetchInvoices() async {
@@ -140,5 +179,12 @@ class InvoiceProvider extends ChangeNotifier {
       _state = AppUIStates.empty;
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    taxController.removeListener(_handleTaxInputChange);
+    taxController.dispose();
+    super.dispose();
   }
 }

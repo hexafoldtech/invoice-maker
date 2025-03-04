@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import "../../../providers/invoice_provider.dart";
 import 'invoice_item.dart';
 import '../estimates_view/total_recieved_amount.dart';
 import '../../../core/utils/app_text_styles.dart';
@@ -20,81 +22,146 @@ class _ToggleButtonState extends State<ToggleButton> {
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<InvoiceProvider>(context, listen: false).fetchInvoices();
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        /// [custom toggle buttons] for polished UI
-        Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppSizes.s25.r),
-            color: Colors.grey[200],
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 2,
-                offset: Offset(0, 1),
+    return Consumer<InvoiceProvider>(
+      builder: (context, invoiceProvider, child) {
+        final paidInvoices = invoiceProvider.invoices
+            .where(
+                (invoice) => invoice.status == AppStrings.toggleButtonPaidText)
+            .toList();
+        final unpaidInvoices = invoiceProvider.invoices
+            .where((invoice) =>
+                invoice.status == AppStrings.toggleButtonUnpaidText)
+            .toList();
+
+        final amount =
+            invoiceProvider.invoices.fold(0.0, (sum, e) => sum + e.total);
+        return Column(
+          children: [
+            /// [custom toggle buttons] for polished UI
+            Container(
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppSizes.s25.r),
+                color: Colors.grey[200],
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 2,
+                    offset: Offset(0, 1),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: ToggleButtons(
-            borderRadius: BorderRadius.circular(AppSizes.s20.r),
-            borderWidth: 0,
-            renderBorder: false,
-            borderColor: Colors.transparent,
-            selectedBorderColor: Colors.transparent,
-            selectedColor: Colors.white,
-            fillColor: AppColors.transparent,
-            color: Colors.grey[700],
-            constraints: BoxConstraints(
-              minHeight: AppSizes.s36.r,
-              minWidth: AppSizes.s70.r,
-            ),
-            isSelected: isSelected,
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < isSelected.length; i++) {
-                  isSelected[i] = i == index;
-                }
-                selectedIndex = index;
-              });
-            },
-            children: [
-              _toggleButtonItem(AppStrings.toggleButtonAllText, isSelected[0]),
-              _toggleButtonItem(
-                  AppStrings.toggleButtonUnpaidText, isSelected[1]),
-              _toggleButtonItem(AppStrings.toggleButtonPaidText, isSelected[2]),
-            ],
-          ),
-        ),
-        SizedBox(height: AppSizes.s10.r),
-        const TotalReceivedAmount(title: AppStrings.total, amount: 4500.00),
-        const TotalReceivedAmount(title: AppStrings.received, amount: 4500.00),
-        SizedBox(
-          height: AppSizes.s400.r,
-          child: IndexedStack(
-            index: selectedIndex,
-            children: [
-              ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return const InvoiceItem(paid: true);
-                  }),
-              ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return const InvoiceItem(paid: false);
-                  }),
-              ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return const InvoiceItem(paid: true);
+              child: ToggleButtons(
+                borderRadius: BorderRadius.circular(AppSizes.s20.r),
+                borderWidth: 0,
+                renderBorder: false,
+                borderColor: Colors.transparent,
+                selectedBorderColor: Colors.transparent,
+                selectedColor: Colors.white,
+                fillColor: AppColors.transparent,
+                color: Colors.grey[700],
+                constraints: BoxConstraints(
+                  minHeight: AppSizes.s36.r,
+                  minWidth: AppSizes.s70.r,
+                ),
+                isSelected: isSelected,
+                onPressed: (int index) {
+                  setState(() {
+                    for (int i = 0; i < isSelected.length; i++) {
+                      isSelected[i] = i == index;
+                    }
+                    selectedIndex = index;
+                  });
                 },
-              )
-            ],
-          ),
-        ),
-      ],
+                children: [
+                  _toggleButtonItem(
+                      AppStrings.toggleButtonAllText, isSelected[0]),
+                  _toggleButtonItem(
+                      AppStrings.toggleButtonUnpaidText, isSelected[1]),
+                  _toggleButtonItem(
+                      AppStrings.toggleButtonPaidText, isSelected[2]),
+                ],
+              ),
+            ),
+            SizedBox(height: AppSizes.s10.r),
+            TotalReceivedAmount(title: AppStrings.total, amount: amount),
+            const TotalReceivedAmount(title: AppStrings.received, amount: 0.00),
+            SizedBox(
+              height: AppSizes.s400.r,
+              child: IndexedStack(
+                index: selectedIndex,
+                children: [
+                  invoiceProvider.invoices.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: invoiceProvider.invoices.length,
+                          itemBuilder: (context, index) {
+                            return InvoiceItem(
+                              paid: invoiceProvider.invoices[index].status ==
+                                  AppStrings.toggleButtonPaidText,
+                              clientName: invoiceProvider
+                                  .invoices[index].client.clientName,
+                              date: invoiceProvider.invoices[index].dueDate,
+                              price: invoiceProvider.invoices[index].total,
+                              id: (invoiceProvider.invoices[index].id + 1)
+                                  .toString()
+                                  .padLeft(3, '0'),
+                            );
+                          })
+                      : const SizedBox.shrink(),
+                  unpaidInvoices.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: unpaidInvoices.length,
+                          itemBuilder: (context, index) {
+                            return InvoiceItem(
+                              paid: false,
+                              clientName:
+                                  unpaidInvoices[index].client.clientName,
+                              date: unpaidInvoices[index].dueDate,
+                              price: unpaidInvoices[index].total,
+                              id: (unpaidInvoices[index].id + 1)
+                                  .toString()
+                                  .padLeft(3, '0'),
+                            );
+                          },
+                        )
+                      : const SizedBox.shrink(),
+
+                  // Paid Invoices
+                  paidInvoices.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: paidInvoices.length,
+                          itemBuilder: (context, index) {
+                            return InvoiceItem(
+                              paid: true,
+                              clientName: paidInvoices[index].client.clientName,
+                              date: paidInvoices[index].dueDate,
+                              price: paidInvoices[index].total,
+                              id: (paidInvoices[index].id + 1)
+                                  .toString()
+                                  .padLeft(3, '0'),
+                            );
+                          },
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

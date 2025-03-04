@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:provider/provider.dart";
+import '../../providers/invoice_provider.dart';
 import '../../providers/item_provider.dart';
+import '../../core/definitions/route_names.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/constants/global_key.dart';
 import "../../core/constants/app_colors.dart";
@@ -14,12 +16,11 @@ class Summary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ItemProvider>(
-      builder: (context, itemProvider, child) {
-        var totalAmount = itemProvider.selectedItems
-            .fold(0.0, (sum, e) => sum + e.totalItemPrice);
-        var discountAmount = itemProvider.selectedItems
-            .fold(0.0, (sum, e) => sum + e.itemDiscount!);
+    return Consumer<InvoiceProvider>(
+      builder: (context, invoiceProvider, child) {
+        var subTotal = invoiceProvider.subTotal;
+        var discountAmount = invoiceProvider.totalDiscount;
+        var tax = double.parse(invoiceProvider.tax.toStringAsFixed(2));
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,16 +30,20 @@ class Summary extends StatelessWidget {
                   AppColors.darkGrey, FontWeightStyles.regular),
             ),
             const SizedBox(height: AppSizes.s4),
-            itemProvider.selectedItems.isNotEmpty
+            Provider.of<ItemProvider>(context).selectedItems.isNotEmpty
                 ? Column(
                     children: [
-                      _buildSummaryRow(AppStrings.subTotalText, totalAmount),
+                      _buildSummaryRow(AppStrings.subTotalText, subTotal),
                       _buildSummaryRow(AppStrings.discountText, discountAmount),
-                      _buildSummaryRow(AppStrings.taxText, 0,
-                          trailingIcon: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: AppSizes.s15,
-                            color: AppColors.darkGrey,
+                      _buildSummaryRow(AppStrings.taxText, tax,
+                          trailingIcon: GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, RouteNames.addTaxScreen),
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: AppSizes.s15.r,
+                              color: AppColors.darkGrey,
+                            ),
                           )),
                     ],
                   )
@@ -50,7 +55,7 @@ class Summary extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryRow(String title, double amount, {Icon? trailingIcon}) {
+  Widget _buildSummaryRow(String title, double amount, {Widget? trailingIcon}) {
     return Column(
       children: [
         Row(
@@ -90,9 +95,8 @@ class Summary extends StatelessWidget {
   }
 
   Widget _buildTotalRow() {
-    var totalAmount = Provider.of<ItemProvider>(navigatorKey.currentContext!)
-        .selectedItems
-        .fold(0.0, (sum, e) => sum + e.itemPrice);
+    var totalAmount =
+        Provider.of<InvoiceProvider>(navigatorKey.currentContext!).totalAmount;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

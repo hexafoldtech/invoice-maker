@@ -42,22 +42,34 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
         appBarType: AppBarType.create,
         onCancel: () {
           Navigator.pop(context);
-          Provider.of<ClientProvider>(context, listen: false)
-              .clearSelectedClient();
+          if (Provider.of<ClientProvider>(context, listen: false)
+                      .selectedClient !=
+                  null ||
+              Provider.of<ItemProvider>(context, listen: false)
+                  .selectedItems
+                  .isNotEmpty) {
+            Provider.of<ClientProvider>(context, listen: false)
+                .clearSelectedClient();
+            Provider.of<ItemProvider>(context, listen: false)
+                .clearSelectedItems();
+          }
         },
       ),
-      floatingActionButton: CustomFloatingButton(
-          padding: EdgeInsets.only(bottom: AppSizes.s20.r),
+      bottomNavigationBar: CustomFloatingButton(
+          padding: EdgeInsets.only(
+            left: AppSizes.s20.r,
+            right: AppSizes.s20.r,
+            bottom: AppSizes.s20.r,
+          ),
           text: AppStrings.createInvoice,
           onPressed: () {
             _onSaveInvoice();
           }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: _buildMainUI(),
     );
   }
 
-  /// TODO scroll for page and button visibility
   Widget _buildMainUI() {
     return SingleChildScrollView(
       child: Consumer2<ClientProvider, InvoiceProvider>(
@@ -175,7 +187,5 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
   @override
   void dispose() {
     super.dispose();
-    Provider.of<ClientProvider>(context, listen: false).dispose();
-    Provider.of<ItemProvider>(context, listen: false).dispose();
   }
 }
