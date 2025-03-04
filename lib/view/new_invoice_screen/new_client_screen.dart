@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/constants/global_key.dart';
+import 'package:invoice_maker/core/utils/coming_soon_dialog.dart';
 import 'package:invoice_maker/core/utils/switch_button.dart';
 import 'package:invoice_maker/core/utils/text_form_validator.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +111,10 @@ class _NewClientScreenState extends State<NewClientScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    DialogBoxes()
+                        .showComingSoonDialog(navigatorKey.currentContext!);
+                  },
                   child: Text(
                     AppStrings.importFromContactsText,
                     style: AppTextStyles.helveticaNeue(

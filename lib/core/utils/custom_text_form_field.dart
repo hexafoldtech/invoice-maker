@@ -53,7 +53,7 @@ class CustomTextFormField extends StatelessWidget {
       padding: EdgeInsets.all(AppSizes.s8.r),
       decoration: BoxDecoration(
           border: Border.all(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(AppSizes.s20.r),
+          borderRadius: BorderRadius.circular(AppSizes.s10.r),
           color: AppColors.white),
       child: Row(
         children: [

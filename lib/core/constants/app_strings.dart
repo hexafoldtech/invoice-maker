@@ -73,4 +73,5 @@ class AppStrings {
   static const String okText = "Ok";
   static const String underDevText =
       "This feature is under development and will be available soon.";
+  static const String hourText = "hr";
 }

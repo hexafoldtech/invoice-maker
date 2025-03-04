@@ -24,12 +24,14 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   void initState() {
     super.initState();
+    /// To focus on the search bar
     Future.delayed(
       Durations.medium1,
       () {
         _focusNode.requestFocus();
       },
     );
+    /// Call inital fetch items after page building to populate the list
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Provider.of<ItemProvider>(context, listen: false).fetchAllItems();
@@ -111,12 +113,29 @@ class _ItemScreenState extends State<ItemScreen> {
                         itemCount: provider.items.length,
                         itemBuilder: (context, index) {
                           final items = provider.items[index];
+                          var unit = '';
+                          if (items.unitType != null) {
+                            unit = "/ ${items.unitType!}";
+                          }
                           return ListTile(
-                            title: Text(items.itemName),
+                            title: Text(
+                              items.itemName,
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.black,
+                                  FontWeight.w500,
+                                  AppSizes.s16.r),
+                            ),
                             onTap: () {
                               provider.selectItems(items);
                               Navigator.pop(ctx);
                             },
+                            trailing: Text(
+                              "${items.itemPrice.toString()} $unit",
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.darkGrey,
+                                  FontWeight.w500,
+                                  AppSizes.s12.r),
+                            ),
                           );
                         },
                       );

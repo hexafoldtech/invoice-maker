@@ -63,7 +63,7 @@ class _ClientScreenState extends State<ClientScreen> {
                 const SizedBox(
                   height: AppSizes.s14,
                 ),
-                buildAddClientButton(ctx, onSaveClient),
+                buildAddClientButton(onSaveClient),
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: AppSizes.s6.r),
@@ -125,22 +125,25 @@ class _ClientScreenState extends State<ClientScreen> {
     );
   }
 
-  void onSaveClient(BuildContext ctx) {
-    final clientProvider = Provider.of<ClientProvider>(ctx, listen: false);
-    final newClient = clientProvider.createClientModel();
-    if (Provider.of<FormProvider>(ctx, listen: false).validateClientForm()) {
+  void onSaveClient() {
+    if (Provider.of<FormProvider>(navigatorKey.currentContext!, listen: false)
+        .validateClientForm()) {
+      final clientProvider = Provider.of<ClientProvider>(
+          navigatorKey.currentContext!,
+          listen: false);
+      final newClient = clientProvider.createClientModel();
       clientProvider.setLoading(true);
       if (clientProvider.saveToClients) {
         clientProvider.addClient(newClient).then(
           (_) {
             clientProvider.selectClient(newClient);
-            if (ctx.mounted) {
-              Navigator.pop(ctx);
+            if (navigatorKey.currentContext!.mounted) {
+              Navigator.pop(navigatorKey.currentContext!);
               Future.delayed(
                 Durations.short4,
                 () {
-                  if (ctx.mounted) {
-                    Navigator.pop(ctx);
+                  if (navigatorKey.currentContext!.mounted) {
+                    Navigator.pop(navigatorKey.currentContext!);
                   }
                 },
               );
@@ -150,12 +153,12 @@ class _ClientScreenState extends State<ClientScreen> {
         ).whenComplete(() => clientProvider.setLoading(false));
       } else {
         clientProvider.selectClient(newClient);
-        Navigator.pop(ctx);
+        Navigator.pop(navigatorKey.currentContext!);
         Future.delayed(
           Durations.short4,
           () {
-            if (ctx.mounted) {
-              Navigator.pop(ctx);
+            if (navigatorKey.currentContext!.mounted) {
+              Navigator.pop(navigatorKey.currentContext!);
             }
           },
         );

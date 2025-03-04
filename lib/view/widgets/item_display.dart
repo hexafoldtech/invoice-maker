@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
+import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
 
 class ItemDisplay extends StatelessWidget {
@@ -57,9 +58,17 @@ class ItemDisplay extends StatelessWidget {
         RichText(
           text: TextSpan(
             children: [
-              TextSpan(text: "$quantity x $price"),
+              TextSpan(
+                text: "$quantity x $price",
+                style: AppTextStyles.helveticaNeue(
+                    AppColors.grey, FontWeightStyles.regular, AppSizes.s15.r),
+              ),
               discount!.isNotEmpty
-                  ? TextSpan(text: " - $discount DISC")
+                  ? TextSpan(
+                      text: " - $discount ${AppStrings.percentSymbolText} DISC",
+                      style: AppTextStyles.helveticaNeue(AppColors.grey,
+                          FontWeightStyles.regular, AppSizes.s15.r),
+                    )
                   : const TextSpan(),
             ],
           ),
