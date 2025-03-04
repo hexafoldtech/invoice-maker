@@ -63,7 +63,7 @@ class ItemDisplay extends StatelessWidget {
                 style: AppTextStyles.helveticaNeue(
                     AppColors.grey, FontWeightStyles.regular, AppSizes.s15.r),
               ),
-              discount!.isNotEmpty
+              discount!.isNotEmpty && discount!.contains('0.0')
                   ? TextSpan(
                       text: " - $discount ${AppStrings.percentSymbolText} DISC",
                       style: AppTextStyles.helveticaNeue(AppColors.grey,
