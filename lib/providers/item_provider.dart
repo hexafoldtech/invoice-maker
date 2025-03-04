@@ -45,13 +45,14 @@ class ItemProvider extends ChangeNotifier {
   String _unitType = AppStrings.optionalText;
   String get unitType => _unitType;
 
-  final List<String> _unitTypeOptions = [
-    AppStrings.noDueDateText,
-    AppStrings.hoursText,
-    AppStrings.daysText,
-    AppStrings.cancelText, // Used to close the bottom sheet
+  final List<MapEntry<String, String>> _unitTypeOptions = [
+    const MapEntry(AppStrings.noneText, AppStrings.noneText),
+    const MapEntry(AppStrings.hoursText, AppStrings.hoursText),
+    const MapEntry(AppStrings.daysText, AppStrings.daysText),
+    const MapEntry(AppStrings.cancelText,
+        AppStrings.cancelText), // Used to close the bottom sheet
   ];
-  List<String> get unitTypeOptions => _unitTypeOptions;
+  List<MapEntry<String, String>> get unitTypeOptions => _unitTypeOptions;
 
   /// Selected discount type
   String _selectedDiscountType = AppStrings.percentSymbolText;
@@ -76,9 +77,11 @@ class ItemProvider extends ChangeNotifier {
   }
 
   void calculateDiscount(BuildContext context) {
-    _discount = AddItemUtils(context: context).calcDiscount();
-    _discountedPrice = AddItemUtils(context: context).calcDiscountedPrice();
-    notifyListeners();
+    if (_discountController.text.isNotEmpty) {
+      _discount = AddItemUtils().calcDiscount();
+      _discountedPrice = AddItemUtils().calcDiscountedPrice();
+      notifyListeners();
+    }
   }
 
   /// Toggle discount switch visibility based on input
@@ -117,13 +120,12 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// TODO call when create invoice clicked
   void clearSelectedItems() {
     _selectedItems = [];
     notifyListeners();
   }
 
-  ItemsModel createClientModel() {
+  ItemsModel createItemModel() {
     final box = Hive.box<ItemsModel>(HiveBoxNames.items);
     final int newId = (box.isEmpty)
         ? 0
@@ -131,7 +133,9 @@ class ItemProvider extends ChangeNotifier {
                 .cast<int>()
                 .reduce((value, element) => value > element ? value : element) +
             1;
-
+    var totalPrice = AddItemUtils().calcTotalPrice();
+    var discount = AddItemUtils().calcDiscount();
+    var discountRate = AddItemUtils().calcDiscountRate();
     return ItemsModel(
         id: newId,
         itemName: _nameController.text,
@@ -139,10 +143,12 @@ class ItemProvider extends ChangeNotifier {
         isDiscount: _isDiscountEnabled,
         itemQuantity: int.parse(_quantityController.text),
         itemUnitPrice: double.parse(_moneyController.text),
-        itemDiscount:
-            _isDiscountEnabled ? double.parse(_discountController.text) : null,
+        itemDiscount: _isDiscountEnabled ? discount : null,
+        itemDiscountRate: discountRate,
         itemTaxable: _isTaxable,
-        itemPrice: _discountedPrice);
+        totalItemPrice: totalPrice,
+        itemPrice: _discountedPrice,
+        unitType: unitType != AppStrings.optionalText ? unitType : null);
   }
 
   /// Fetch all items from the repository
