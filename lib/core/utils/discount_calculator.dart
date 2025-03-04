@@ -18,7 +18,10 @@ class AddItemUtils {
   double calcDiscountRate() {
     final itemsProvider =
         Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
-    var discount = double.parse(itemsProvider.discountController.text);
+
+    var discountText = itemsProvider.discountController.text.trim();
+    var discount = discountText.isEmpty ? 0.0 : double.parse(discountText);
+
     var totalPrice = calcTotalPrice();
 
     double discountRate;
@@ -37,7 +40,10 @@ class AddItemUtils {
     final itemsProvider =
         Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
     var totalPrice = calcTotalPrice();
-    var discountRate = double.parse(itemsProvider.discountController.text);
+
+    var discountText = itemsProvider.discountController.text.trim();
+    var discountRate = discountText.isEmpty ? 0.0 : double.parse(discountText);
+
     double discount;
 
     if (itemsProvider.selectedDiscountType
@@ -57,17 +63,20 @@ class AddItemUtils {
 
     var totalPrice = calcTotalPrice();
 
-    var discount = double.parse(itemsProvider.discountController.text);
-    double disCountedPrice;
+    var discountText = itemsProvider.discountController.text.trim();
+    var discount = discountText.isEmpty ? 0.0 : double.parse(discountText);
+
+    double discountedPrice;
+
     if (itemsProvider.selectedDiscountType
         .contains(AppStrings.percentSymbolText)) {
-      disCountedPrice = double.parse(
+      discountedPrice = double.parse(
           (totalPrice - (totalPrice * (discount / 100))).toStringAsFixed(2));
     } else {
-      disCountedPrice =
+      discountedPrice =
           double.parse((totalPrice - discount).toStringAsFixed(2));
     }
 
-    return disCountedPrice;
+    return discountedPrice;
   }
 }
