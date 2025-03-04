@@ -38,6 +38,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: CustomAppBar(
         appBarType: AppBarType.create,
         onCancel: () {
@@ -179,6 +180,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       invoiceProvider.addInvoice(newInvoice).then((_) {
         if (ctx.mounted) {
           Provider.of<ItemProvider>(ctx, listen: false).clearSelectedItems();
+          Navigator.pop(context);
         }
       });
     }
