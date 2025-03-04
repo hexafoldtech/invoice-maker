@@ -9,8 +9,9 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
+import '../constants/global_key.dart';
 
-Widget buildAddClientButton(BuildContext ctx, Function(BuildContext) onTap) {
+Widget buildAddClientButton(VoidCallback onTap) {
   return Padding(
     padding: EdgeInsets.only(left: AppSizes.s16.r, bottom: AppSizes.s7.r),
     child: GestureDetector(
@@ -24,10 +25,12 @@ Widget buildAddClientButton(BuildContext ctx, Function(BuildContext) onTap) {
           const SizedBox(width: AppSizes.s8),
           GestureDetector(
             onTap: () {
-              Provider.of<ClientProvider>(ctx, listen: false).clearForm();
+              Provider.of<ClientProvider>(navigatorKey.currentContext!,
+                      listen: false)
+                  .clearForm();
               CustomBottomSheet(
                 type: CustomBottomSheetType.fixed,
-                header: _buildHeader(ctx, onTap),
+                header: _buildHeader(onTap),
                 fixedheightFactor: 0.88,
                 mainContent: const Expanded(
                   child: NewClientScreen(),
@@ -46,14 +49,16 @@ Widget buildAddClientButton(BuildContext ctx, Function(BuildContext) onTap) {
   );
 }
 
-Widget _buildHeader(BuildContext ctx, Function(BuildContext) onTap) {
+Widget _buildHeader(VoidCallback onTap) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       GestureDetector(
         onTap: () {
-          Provider.of<ClientProvider>(ctx, listen: false).clearForm();
-          Navigator.pop(ctx);
+          Provider.of<ClientProvider>(navigatorKey.currentContext!,
+                  listen: false)
+              .clearForm();
+          Navigator.pop(navigatorKey.currentContext!);
         },
         child: Padding(
           padding: EdgeInsets.only(left: AppSizes.s12.r),
@@ -66,7 +71,7 @@ Widget _buildHeader(BuildContext ctx, Function(BuildContext) onTap) {
       ),
       GestureDetector(
         onTap: () {
-          onTap;
+          onTap();
         },
         child: Padding(
           padding: EdgeInsets.only(right: AppSizes.s12.r),

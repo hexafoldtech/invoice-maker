@@ -53,15 +53,13 @@ class AddNewItemDiscountSection {
                   controller: discountController,
                   hintText: '0',
                   isEnabled: isDiscountEnabled,
-                  validator: itemProvider.isDiscountEnabled
-                      ? TextFormValidator.validate
-                      : null,
+                  validator: TextFormValidator.validateDiscount,
                   onChanged: (p0) {
-                    itemProvider
-                        .calculateDiscount(ctx);
+                    itemProvider.calculateDiscount(ctx);
                   },
                   onEditingComplete: () {
                     itemProvider.calculateDiscount(ctx);
+                    FocusScope.of(ctx).unfocus();
                   },
                 ),
               ),

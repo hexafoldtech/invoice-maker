@@ -39,7 +39,7 @@ class _AppState extends State<App> {
       });
 
       /// Simulate a delay to display the loading screen.
-      Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(milliseconds: 300), () {
         /// Check for stored credentials to determine the initial screen.
         appProvider.hasCredentials().then((hasCredentials) {
           setState(() {

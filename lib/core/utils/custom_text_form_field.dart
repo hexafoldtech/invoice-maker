@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final VoidCallback? onEditingComplete;
   final bool? isEnabled;
+  final FocusNode? focusNode;
   CustomTextFormField({
     super.key,
     required this.formType,
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.onEditingComplete,
     this.isEnabled,
+    this.focusNode,
   }) : hintTextStyle = hintTextStyle ??
             AppTextStyles.helveticaNeue(
               AppColors.grey,
@@ -67,6 +69,7 @@ class CustomTextFormField extends StatelessWidget {
           SizedBox(
             width: AppSizes.s200.r,
             child: TextFormField(
+              focusNode: focusNode,
               keyboardType: textInputType,
               controller: controller,
               enabled: isEnabled,
@@ -93,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
       child: SizedBox(
         width: AppSizes.s60.r,
         child: TextFormField(
+          focusNode: focusNode,
           onEditingComplete: onEditingComplete,
           keyboardType: textInputType,
           controller: controller,

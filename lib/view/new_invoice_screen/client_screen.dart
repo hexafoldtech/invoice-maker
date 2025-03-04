@@ -18,19 +18,9 @@ class ClientScreen extends StatefulWidget {
 }
 
 class _ClientScreenState extends State<ClientScreen> {
-  final FocusNode _focusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
-
-    /// Focus on the first [text field] when page is rendered
-    Future.delayed(
-      Durations.medium1,
-      () {
-        _focusNode.requestFocus();
-      },
-    );
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Provider.of<ClientProvider>(context, listen: false).fetchAllClients();
@@ -50,7 +40,6 @@ class _ClientScreenState extends State<ClientScreen> {
                 Padding(
                   padding: EdgeInsets.all(AppSizes.s16.r),
                   child: TextField(
-                    focusNode: _focusNode,
                     decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
                         hintText: AppStrings.searchText,

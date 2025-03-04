@@ -19,18 +19,10 @@ class ItemScreen extends StatefulWidget {
 }
 
 class _ItemScreenState extends State<ItemScreen> {
-  final FocusNode _focusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
-    /// To focus on the search bar
-    Future.delayed(
-      Durations.medium1,
-      () {
-        _focusNode.requestFocus();
-      },
-    );
+
     /// Call inital fetch items after page building to populate the list
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -47,7 +39,6 @@ class _ItemScreenState extends State<ItemScreen> {
         Padding(
           padding: EdgeInsets.all(AppSizes.s16.r),
           child: TextField(
-            focusNode: _focusNode,
             decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: AppStrings.searchText,
@@ -155,7 +146,12 @@ class _ItemScreenState extends State<ItemScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(ctx),
+          onTap: () {
+            Provider.of<ItemProvider>(navigatorKey.currentContext!,
+                    listen: false)
+                .clearForm();
+            Navigator.pop(ctx);
+          },
           child: Padding(
             padding: EdgeInsets.only(left: AppSizes.s12.r),
             child: Text(

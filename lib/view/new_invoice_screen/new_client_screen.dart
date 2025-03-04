@@ -22,9 +22,19 @@ class NewClientScreen extends StatefulWidget {
 }
 
 class _NewClientScreenState extends State<NewClientScreen> {
+  final FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
+
+    /// To focus on the first [text field]
+    Future.delayed(
+      Durations.medium1,
+      () {
+        _focusNode.requestFocus();
+      },
+    );
+
     Provider.of<ClientProvider>(context, listen: false).initListners();
   }
 
@@ -48,11 +58,13 @@ class _NewClientScreenState extends State<NewClientScreen> {
               height: AppSizes.s18,
             ),
             CustomTextFormField(
+              focusNode: _focusNode,
               formType: FormType.client,
               controller: clientProvider.nameController,
               title: AppStrings.billToText,
               hintText: '',
               textInputType: TextInputType.name,
+              validator: TextFormValidator.validate,
             ),
             if (clientProvider.isclientFilled)
               Row(
