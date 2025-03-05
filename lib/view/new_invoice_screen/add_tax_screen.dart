@@ -29,6 +29,7 @@ class _AddTaxScreenState extends State<AddTaxScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.white,
         leadingWidth: AppSizes.s70,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
