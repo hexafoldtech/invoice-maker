@@ -57,29 +57,9 @@ class InvoiceProvider extends ChangeNotifier {
 
   double get totalDiscount => _calculateTotalDiscount();
 
-  double _calculateTotalTax() {
-    String taxText =
-        taxController.text.replaceAll('%', ''); // Remove '%' if present
-    double taxRate = double.tryParse(taxText) ?? 0.0; // Convert to double
-    double priceAfterDiscount = subTotal - totalDiscount;
-
-    if (_selectedTaxType == AppStrings.exclusiveText) {
-      // Tax is added on top of the price
-      return priceAfterDiscount * (taxRate / 100);
-    } else if (_selectedTaxType == AppStrings.inclusiveText) {
-      // Tax is already included in the price, reverse calculate
-      return priceAfterDiscount - (priceAfterDiscount / (1 + (taxRate / 100)));
-    }
-    return 0.0;
-  }
-
-  double get tax => _calculateTotalTax();
-
   double get totalAmount {
     double priceAfterDiscount = subTotal - totalDiscount;
-    return _selectedTaxType == AppStrings.exclusiveText
-        ? (priceAfterDiscount + tax)
-        : priceAfterDiscount;
+    return priceAfterDiscount;
   }
 
   void updateDueDate(String newDueDate) {
