@@ -13,6 +13,7 @@ class ItemDisplay extends StatelessWidget {
   final String quantity;
   final String? discount;
   final String finalPrice;
+  final VoidCallback onDelete;
   const ItemDisplay(
       {super.key,
       required this.title,
@@ -20,7 +21,8 @@ class ItemDisplay extends StatelessWidget {
       required this.price,
       required this.quantity,
       this.discount,
-      required this.finalPrice});
+      required this.finalPrice,
+      required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +44,13 @@ class ItemDisplay extends StatelessWidget {
                   style: AppTextStyles.helveticaNeue(AppColors.black,
                       FontWeightStyles.regular, AppSizes.s15.r),
                 ),
-                Icon(
-                  Icons.keyboard_arrow_right,
-                  size: AppSizes.s20.r,
+                GestureDetector(
+                  onTap: onDelete,
+                  child: Icon(
+                    Icons.close,
+                    size: AppSizes.s15.r,
+                    color: AppColors.darkGrey,
+                  ),
                 )
               ],
             ),

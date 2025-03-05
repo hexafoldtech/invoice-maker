@@ -51,6 +51,9 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
                       quantity: item.itemQuantity.toString(),
                       finalPrice: item.itemPrice.toString(),
                       discount: item.itemDiscountRate?.toString(),
+                      onDelete: () {
+                        itemProvider.deleteSelectedItem(item);
+                      },
                     ),
                     SizedBox(
                       height: AppSizes.s7.r,
