@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +7,7 @@ import '../repository/invoice_repo.dart';
 import 'client_provider.dart';
 import 'item_provider.dart';
 import '../../../models/InvoiceModel/invoice_model.dart';
+import '../core/utils/extensions/string_formatter.dart';
 import '../core/constants/app_strings.dart';
 import '../core/constants/hive_box_names.dart';
 
@@ -30,6 +33,7 @@ class InvoiceProvider extends ChangeNotifier {
   final TextEditingController _taxController = TextEditingController();
   bool _showTaxTypeRow = false;
   String _selectedTaxType = AppStrings.inclusiveText;
+  String _taxText = AppStrings.taxText;
 
   List<InvoiceModel> get invoices => _invoices;
   AppUIStates get state => _state;
@@ -39,6 +43,7 @@ class InvoiceProvider extends ChangeNotifier {
   TextEditingController get taxController => _taxController;
   bool get showTaxTypeRow => _showTaxTypeRow;
   String get selectedTaxType => _selectedTaxType;
+  String get taxText => _taxText;
 
   double get subTotal => Provider.of<ItemProvider>(context, listen: false)
       .selectedItems
@@ -57,9 +62,49 @@ class InvoiceProvider extends ChangeNotifier {
 
   double get totalDiscount => _calculateTotalDiscount();
 
+  double _calculateTotalTax() {
+    String taxText =
+        taxController.text.replaceAll('%', ''); // Remove '%' if present
+    double taxRate = double.tryParse(taxText) ?? 0.0; // Convert to double
+
+    // Calculate subtotal only for taxable items
+    double taxableSubTotal = Provider.of<ItemProvider>(context, listen: false)
+        .selectedItems
+        .where((item) => item.itemTaxable)
+        .fold(0, (sum, item) => sum + (item.itemUnitPrice * item.itemQuantity));
+    log(taxableSubTotal.toString());
+    // Subtract total discount from taxable subtotal
+    double taxableSubTotalAfterDiscount = taxableSubTotal - totalDiscount;
+    log(taxableSubTotalAfterDiscount.toString());
+    if (selectedTaxType == AppStrings.exclusiveText) {
+      // Tax is added on top of the price, only for taxable items
+      return taxableSubTotalAfterDiscount * (taxRate / 100);
+    } else if (selectedTaxType == AppStrings.inclusiveText) {
+      // Tax is already included in the price, reverse calculate for taxable items
+      return taxableSubTotalAfterDiscount -
+          (taxableSubTotalAfterDiscount / (1 + (taxRate / 100)));
+    }
+
+    return 0.0;
+  }
+
+  double get tax => _calculateTotalTax();
+
   double get totalAmount {
     double priceAfterDiscount = subTotal - totalDiscount;
-    return priceAfterDiscount;
+    return _selectedTaxType == AppStrings.exclusiveText
+        ? (priceAfterDiscount + tax)
+        : priceAfterDiscount;
+  }
+
+  void _updateFormattedTaxText() {
+    if (taxController.text.isNotEmpty) {
+      _taxText =
+          "${AppStrings.taxText} (${taxController.text} $_selectedTaxType)";
+    } else {
+      _taxText = AppStrings.taxText;
+    }
+    notifyListeners(); // Ensure UI updates
   }
 
   void updateDueDate(String newDueDate) {
@@ -86,15 +131,19 @@ class InvoiceProvider extends ChangeNotifier {
         id: newId,
         client:
             Provider.of<ClientProvider>(context, listen: false).selectedClient!,
-        dueDate: dueDate,
+        issueDate: DateTime.now(),
+        dueDate: dueDate.toDateTime(),
         items: Provider.of<ItemProvider>(context, listen: false).selectedItems,
         discount: totalDiscount,
         subTotal: subTotal,
-        total: totalAmount);
+        total: totalAmount,
+        taxType: _selectedTaxType,
+        tax: tax);
   }
 
   void initListners() {
     _taxController.addListener(_handleTaxInputChange);
+    _taxController.addListener(_updateFormattedTaxText);
   }
 
   void _handleTaxInputChange() {
@@ -164,6 +213,7 @@ class InvoiceProvider extends ChangeNotifier {
   @override
   void dispose() {
     taxController.removeListener(_handleTaxInputChange);
+    taxController.removeListener(_updateFormattedTaxText);
     taxController.dispose();
     super.dispose();
   }

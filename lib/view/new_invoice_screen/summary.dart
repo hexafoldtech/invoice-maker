@@ -21,6 +21,7 @@ class Summary extends StatelessWidget {
         var subTotal = invoiceProvider.subTotal;
         var discountAmount = invoiceProvider.totalDiscount;
         var totalAmount = invoiceProvider.totalAmount;
+        var tax = double.parse(invoiceProvider.tax.toStringAsFixed(2));
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,16 +38,17 @@ class Summary extends StatelessWidget {
                           .buildSummaryRow(AppStrings.subTotalText, subTotal),
                       SummaryUtils().buildSummaryRow(
                           AppStrings.discountText, discountAmount),
-                      SummaryUtils().buildSummaryRow(AppStrings.taxText, 0,
-                          trailingIcon: GestureDetector(
-                            onTap: () => Navigator.pushNamed(
-                                context, RouteNames.addTaxScreen),
-                            child: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: AppSizes.s15.r,
-                              color: AppColors.darkGrey,
-                            ),
-                          )),
+                      SummaryUtils()
+                          .buildSummaryRow(invoiceProvider.taxText, tax,
+                              trailingIcon: GestureDetector(
+                                onTap: () => Navigator.pushNamed(
+                                    context, RouteNames.addTaxScreen),
+                                child: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: AppSizes.s15.r,
+                                  color: AppColors.darkGrey,
+                                ),
+                              )),
                     ],
                   )
                 : const SizedBox.shrink(),
