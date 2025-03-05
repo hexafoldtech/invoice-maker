@@ -21,6 +21,7 @@ class _AddTaxScreenState extends State<AddTaxScreen> {
   @override
   void initState() {
     super.initState();
+
     Provider.of<InvoiceProvider>(context, listen: false).initListners();
   }
 

@@ -170,6 +170,11 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteSelectedItem(ItemsModel item) {
+    _selectedItems.remove(item);
+    notifyListeners();
+  }
+
   /// Add a new item to the list
   Future<void> addItem(ItemsModel item) async {
     await _itemRepo.saveItem(item);
