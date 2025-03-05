@@ -147,7 +147,7 @@ class ItemProvider extends ChangeNotifier {
         itemDiscountRate: discountRate,
         itemTaxable: _isTaxable,
         totalItemPrice: totalPrice,
-        itemPrice: _discountedPrice,
+        itemPrice: _isDiscountEnabled ? _discountedPrice : totalPrice,
         unitType: unitType != AppStrings.optionalText ? unitType : null);
   }
 

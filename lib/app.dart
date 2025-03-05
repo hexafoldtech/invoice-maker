@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_strings.dart';
 import 'package:invoice_maker/core/definitions/route_names.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,9 @@ class _AppState extends State<App> {
         ? const LoadingScreen()
         : MaterialApp(
             title: AppStrings.invoiceMakerText,
-            theme: ThemeData(primarySwatch: Colors.blue),
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                scaffoldBackgroundColor: AppColors.white),
             initialRoute: _initialScreen,
             onGenerateRoute: RouteGenerator.generateRoute,
             debugShowCheckedModeBanner: kDebugMode);

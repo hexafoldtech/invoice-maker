@@ -13,32 +13,36 @@ class InvoiceModel extends HiveObject {
   ClientsModel client;
 
   @HiveField(2)
-  String dueDate;
+  DateTime issueDate;
 
   @HiveField(3)
-  double subTotal;
+  DateTime dueDate;
 
   @HiveField(4)
-  double discount;
+  double subTotal;
 
   @HiveField(5)
-  double? tax;
+  double discount;
 
   @HiveField(6)
-  String? taxType;
+  double? tax;
 
   @HiveField(7)
-  List<ItemsModel> items;
+  String? taxType;
 
   @HiveField(8)
-  double total;
+  List<ItemsModel> items;
 
   @HiveField(9)
+  double total;
+
+  @HiveField(10)
   String status;
 
   InvoiceModel({
     required this.id,
     required this.client,
+    required this.issueDate,
     required this.dueDate,
     required this.items,
     required this.discount,

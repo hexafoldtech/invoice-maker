@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension StringFormatter on String {
   String formatString({bool capitalizeWords = false}) {
     // Replace special characters with space
@@ -16,9 +18,8 @@ extension StringFormatter on String {
       // Capitalize each word
       formatted = formatted
           .split(' ')
-          .map((word) => word.isNotEmpty
-              ? word[0].toUpperCase() + word.substring(1)
-              : '')
+          .map((word) =>
+              word.isNotEmpty ? word[0].toUpperCase() + word.substring(1) : '')
           .join(' ');
     } else {
       // Capitalize only the first letter
@@ -28,5 +29,9 @@ extension StringFormatter on String {
     }
 
     return formatted.trim();
+  }
+
+  DateTime toDateTime() {
+    return DateFormat('dd MMM yyyy').parse(this);
   }
 }

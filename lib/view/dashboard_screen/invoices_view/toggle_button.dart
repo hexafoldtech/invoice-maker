@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import "../../../providers/invoice_provider.dart";
 import 'invoice_item.dart';
 import '../estimates_view/total_recieved_amount.dart';
+import '../../../core/utils/extensions/date_formatter.dart';
 import '../../../core/utils/app_text_styles.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_fonts_styles.dart';
@@ -111,7 +112,8 @@ class _ToggleButtonState extends State<ToggleButton> {
                                   AppStrings.toggleButtonPaidText,
                               clientName: invoiceProvider
                                   .invoices[index].client.clientName,
-                              date: invoiceProvider.invoices[index].dueDate,
+                              date: invoiceProvider.invoices[index].dueDate
+                                  .toFormattedString(),
                               price: invoiceProvider.invoices[index].total,
                               id: (invoiceProvider.invoices[index].id + 1)
                                   .toString()
@@ -128,7 +130,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                               paid: false,
                               clientName:
                                   unpaidInvoices[index].client.clientName,
-                              date: unpaidInvoices[index].dueDate,
+                              date: unpaidInvoices[index].dueDate.toFormattedString(),
                               price: unpaidInvoices[index].total,
                               id: (unpaidInvoices[index].id + 1)
                                   .toString()
@@ -147,7 +149,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                             return InvoiceItem(
                               paid: true,
                               clientName: paidInvoices[index].client.clientName,
-                              date: paidInvoices[index].dueDate,
+                              date: paidInvoices[index].dueDate.toFormattedString(),
                               price: paidInvoices[index].total,
                               id: (paidInvoices[index].id + 1)
                                   .toString()
