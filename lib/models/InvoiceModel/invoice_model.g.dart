@@ -19,40 +19,43 @@ class InvoiceModelAdapter extends TypeAdapter<InvoiceModel> {
     return InvoiceModel(
       id: fields[0] as int,
       client: fields[1] as ClientsModel,
-      dueDate: fields[2] as String,
-      items: (fields[7] as List).cast<ItemsModel>(),
-      discount: fields[4] as double,
-      subTotal: fields[3] as double,
-      tax: fields[5] as double?,
-      taxType: fields[6] as String?,
-      status: fields[9] as String,
-      total: fields[8] as double,
+      issueDate: fields[2] as DateTime,
+      dueDate: fields[3] as DateTime,
+      items: (fields[8] as List).cast<ItemsModel>(),
+      discount: fields[5] as double,
+      subTotal: fields[4] as double,
+      tax: fields[6] as double?,
+      taxType: fields[7] as String?,
+      status: fields[10] as String,
+      total: fields[9] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, InvoiceModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.client)
       ..writeByte(2)
-      ..write(obj.dueDate)
+      ..write(obj.issueDate)
       ..writeByte(3)
-      ..write(obj.subTotal)
+      ..write(obj.dueDate)
       ..writeByte(4)
-      ..write(obj.discount)
+      ..write(obj.subTotal)
       ..writeByte(5)
-      ..write(obj.tax)
+      ..write(obj.discount)
       ..writeByte(6)
-      ..write(obj.taxType)
+      ..write(obj.tax)
       ..writeByte(7)
-      ..write(obj.items)
+      ..write(obj.taxType)
       ..writeByte(8)
-      ..write(obj.total)
+      ..write(obj.items)
       ..writeByte(9)
+      ..write(obj.total)
+      ..writeByte(10)
       ..write(obj.status);
   }
 
