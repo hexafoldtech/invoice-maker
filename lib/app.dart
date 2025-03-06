@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/definitions/route_names.dart';
 import 'package:provider/provider.dart';
-import 'core/definitions/routes.dart';
 import 'providers/app_initialization_provider.dart';
 import 'view/app_screens/loading_screen.dart';
+import 'core/definitions/route_names.dart';
+import 'core/definitions/routes.dart';
+import 'core/constants/app_colors.dart';
+import 'core/constants/app_strings.dart';
 
 /// The main app widget that initializes the application and determines the initial route.
 class App extends StatefulWidget {
@@ -39,16 +37,13 @@ class _AppState extends State<App> {
         _isLoading = true;
       });
 
-      /// Simulate a delay to display the loading screen.
-      Timer(const Duration(milliseconds: 300), () {
-        /// Check for stored credentials to determine the initial screen.
-        appProvider.hasCredentials().then((hasCredentials) {
-          setState(() {
-            _isLoading = false;
-            _initialScreen = hasCredentials
-                ? RouteNames.dashboardScreen
-                : RouteNames.dashboardScreen;
-          });
+      /// Check for stored credentials to determine the initial screen.
+      appProvider.hasCredentials().then((hasCredentials) {
+        setState(() {
+          _isLoading = false;
+          _initialScreen = hasCredentials
+              ? RouteNames.splashScreen
+              : RouteNames.splashScreen;
         });
       });
     }

@@ -91,7 +91,13 @@ class AppStrings {
   static const String enterValidQuantityText = "Enter a valid Quantity";
   static const String enterRequiredQuantityText = "Quantity is required";
   static const String enterValidDiscountText = "Enter a valid discount";
-  static const String enterGreaterDiscountText = "Discount must be greater than zero";
+  static const String enterGreaterDiscountText =
+      "Discount must be greater than zero";
   static const String exclusiveText = "Exclusive";
   static const String inclusiveText = "Inclusive";
+  static const String welcomeText = "Welcome to Invoice Maker!";
+  static const String tagLineText = "Your Smart Invoice Solution";
+  static const String welcomeTagLineText =
+      "Create invoices easily and manage your finances.";
+  static const String getStartedText = "Get Started";
 }
