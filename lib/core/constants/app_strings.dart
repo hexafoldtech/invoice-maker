@@ -97,4 +97,7 @@ class AppStrings {
   static const String inclusiveText = "Inclusive";
   static const String welcomeText = "Welcome to Invoice Maker!";
   static const String tagLineText = "Your Smart Invoice Solution";
+  static const String welcomeTagLineText =
+      "Create invoices easily and manage your finances.";
+  static const String getStartedText = "Get Started";
 }

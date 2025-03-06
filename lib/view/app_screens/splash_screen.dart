@@ -1,14 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/definitions/route_names.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/definitions/route_names.dart';
+import '../../core/utils/app_text_styles.dart';
+import "../../core/constants/app_fonts_styles.dart";
+import '../../core/constants/app_sizes.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_strings.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,10 +21,19 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Navigate to Home after 2 seconds
-    Timer(const Duration(seconds: 2), () {
+    _navigateToNextScreen();
+  }
+
+  Future<void> _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 2)); // Splash duration
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('firstLaunch') ?? true;
+
+    if (isFirstLaunch) {
+      Navigator.pushReplacementNamed(context, RouteNames.welcomeScreen);
+    } else {
       Navigator.pushReplacementNamed(context, RouteNames.dashboardScreen);
-    });
+    }
   }
 
   @override
@@ -44,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: AppSizes.s15.r),
             Text(
-              AppStrings.welcomeText,
+              AppStrings.invoiceMakerText,
               style: AppTextStyles.helveticaNeue(
                   AppColors.black, FontWeightStyles.semiBold, AppSizes.s25.r),
             ),

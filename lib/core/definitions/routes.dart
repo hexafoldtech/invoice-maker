@@ -8,8 +8,9 @@ import '../../view/dashboard_screen/dashboard_screen.dart';
 import '../../view/login_screen/login_screen.dart';
 import '../../view/new_invoice_screen/new_invoice_screen.dart';
 import '../../view/new_estimate_screen/new_estimate_screen.dart';
-import '../utils/splash_screen.dart';
+import '../../view/app_screens/splash_screen.dart';
 import '../utils/transition.dart';
+import '../../view/app_screens/welcome_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -37,6 +38,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AddTaxScreen());
       case RouteNames.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case RouteNames.welcomeScreen:
+        return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());
