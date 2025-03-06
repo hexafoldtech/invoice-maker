@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_fonts_styles.dart';
+import '../constants/app_sizes.dart';
+import 'app_text_styles.dart';
 
 class TotalInvoiceAmount extends StatelessWidget {
   final String title;
@@ -80,7 +80,6 @@ Widget buildQuarterSection(String quarter, double total, List months) {
         children: months.isNotEmpty
             ? months.map((month) {
                 bool isCurrentMonth = month['month'] == currentMonth;
-                print(currentMonth);
                 return ListTile(
                   title: Row(
                     children: [
