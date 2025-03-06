@@ -90,7 +90,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
         } else if (bottomNavigationProvider.selectedOption ==
             BottomBarOptions.reports) {
-          return const ReportsScreens();
+          return ReportsScreens();
         }
         return const SizedBox();
       });

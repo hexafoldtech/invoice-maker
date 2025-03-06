@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/utils/app_button.dart';
 
@@ -19,11 +20,10 @@ class _YearPickerButtonState extends State<YearPickerButton> {
           title: Text("$_selectedYear"),
           content: SizedBox(
             width: double.maxFinite,
-            height: AppSizes.s200,
+            height: AppSizes.s200.r,
             child: YearPicker(
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
-              initialDate: DateTime(_selectedYear),
               selectedDate: DateTime(_selectedYear),
               onChanged: (DateTime selectedDate) {
                 setState(() {
