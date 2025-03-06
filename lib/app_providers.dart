@@ -1,3 +1,5 @@
+import 'package:invoice_maker/providers/reports_provider.dart';
+
 import 'main_app.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -21,4 +23,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(create: (_) => ItemProvider()),
   ChangeNotifierProvider(create: (_) => FormProvider()),
   ChangeNotifierProvider(create: (ctx) => InvoiceProvider(context: ctx)),
+  ChangeNotifierProvider(create: (_) => ReportsProvider()),
 ];
