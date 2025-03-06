@@ -100,4 +100,5 @@ class AppStrings {
   static const String welcomeTagLineText =
       "Create invoices easily and manage your finances.";
   static const String getStartedText = "Get Started";
+  static const String customizeText = "Customize";
 }

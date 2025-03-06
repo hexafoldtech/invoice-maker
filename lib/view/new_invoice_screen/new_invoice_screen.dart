@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:invoice_maker/core/definitions/route_names.dart';
 import '../../providers/client_provider.dart';
 import '../../providers/item_provider.dart';
 import '../../providers/invoice_provider.dart';
@@ -55,6 +56,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                 .clearSelectedItems();
           }
         },
+        onPreview: () => Navigator.pushNamed(context, RouteNames.previewScreen),
       ),
       bottomNavigationBar: CustomFloatingButton(
           padding: EdgeInsets.only(
