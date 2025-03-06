@@ -10,4 +10,5 @@ class RouteNames {
   static const String addTaxScreen = "add_tax";
   static const String splashScreen = "splash_screen";
   static const String welcomeScreen = "welcome_screen";
+  static const String previewScreen = "preview_screen";
 }
