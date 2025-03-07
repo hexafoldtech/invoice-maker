@@ -56,6 +56,19 @@ class Summary extends StatelessWidget {
             SizedBox(
               height: AppSizes.s25.r,
             ),
+            Provider.of<ItemProvider>(context).selectedItems.isNotEmpty
+                ? SummaryUtils()
+                    .buildSummaryRow(AppStrings.recievedPayText, 0.0,
+                        trailingIcon: GestureDetector(
+                          onTap: () => Navigator.pushNamed(
+                              context, RouteNames.paymentsScreen),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: AppSizes.s15.r,
+                            color: AppColors.darkGrey,
+                          ),
+                        ))
+                : const SizedBox.shrink()
           ],
         );
       },
