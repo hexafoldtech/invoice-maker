@@ -10,7 +10,7 @@ import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 
-enum AppBarType { dashboard, create, preview }
+enum AppBarType { dashboard, create, preview, payments }
 
 enum DashboardAppBarButtons { invoices, estimates }
 
@@ -29,6 +29,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onPreviewDone;
   final VoidCallback? onPreviewCustomize;
 
+  //Payments Mode
+  final VoidCallback? onPaymentsBack;
+
   const CustomAppBar({
     super.key,
     required this.appBarType,
@@ -38,6 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onDone,
     this.onPreviewDone,
     this.onPreviewCustomize,
+    this.onPaymentsBack,
   });
 
   @override
@@ -49,6 +53,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         return _buildCreateAppBar();
       case AppBarType.preview:
         return _buildPreviewAppBar();
+      case AppBarType.payments:
+        return _buildPaymentsAppBar();
     }
   }
 
@@ -128,6 +134,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       leading: AppButton(
           type: ButtonType.flat,
+          textColor: AppColors.black,
           label: AppStrings.cancelText,
           action: onCancel ?? () {}),
       centerTitle: false,
@@ -175,6 +182,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               FontWeightStyles.regular),
         ),
       ],
+    );
+  }
+
+  Widget _buildPaymentsAppBar() {
+    return AppBar(
+      forceMaterialTransparency: true,
+      elevation: 0,
+      leadingWidth: AppSizes.s70,
+      leading: GestureDetector(
+        onTap: onPaymentsBack ?? () {},
+        child: Row(
+          children: [
+            Icon(
+              Icons.arrow_back,
+              size: AppSizes.s22.r,
+            ),
+            SizedBox(
+              width: AppSizes.s5.r,
+            ),
+            Text(
+              AppStrings.backText,
+              style: AppTextStyles.helveticaNeue(
+                  AppColors.black, FontWeightStyles.regular, AppSizes.s16.r),
+            )
+          ],
+        ),
+      ),
+      centerTitle: true,
+      title: Text(
+        AppStrings.paymentsText,
+        style: AppTextStyles.helveticaNeue(
+            AppColors.black, FontWeightStyles.semiBold, AppSizes.s16.r),
+      ),
     );
   }
 
