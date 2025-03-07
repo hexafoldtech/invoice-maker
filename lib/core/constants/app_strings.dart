@@ -101,4 +101,12 @@ class AppStrings {
       "Create invoices easily and manage your finances.";
   static const String getStartedText = "Get Started";
   static const String customizeText = "Customize";
+  static const String blurayPreviewText = "Bluray";
+  static const String invoiceCapsPreviewText = "INVOICE";
+  static const String duePreviewText = "Due";
+  static const String issuedPreviewText = "Issued";
+  static const String descriptionPreviewText = "Description";
+  static const String qtyPreviewText = "QTY";
+  static const String pricePreviewText = "Price, INR";
+  static const String amountPreviewText = "Amount, INR";
 }
