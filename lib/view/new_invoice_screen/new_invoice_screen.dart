@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:invoice_maker/core/definitions/route_names.dart';
+import 'package:invoice_maker/core/utils/new_invoice_utils.dart';
 import '../../providers/client_provider.dart';
-import '../../providers/item_provider.dart';
 import '../../providers/invoice_provider.dart';
 import 'package:provider/provider.dart';
 import 'client_screen.dart';
@@ -42,21 +41,8 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       backgroundColor: AppColors.white,
       appBar: CustomAppBar(
         appBarType: AppBarType.create,
-        onCancel: () {
-          Navigator.pop(context);
-          if (Provider.of<ClientProvider>(context, listen: false)
-                      .selectedClient !=
-                  null ||
-              Provider.of<ItemProvider>(context, listen: false)
-                  .selectedItems
-                  .isNotEmpty) {
-            Provider.of<ClientProvider>(context, listen: false)
-                .clearSelectedClient();
-            Provider.of<ItemProvider>(context, listen: false)
-                .clearSelectedItems();
-          }
-        },
-        onPreview: () => Navigator.pushNamed(context, RouteNames.previewScreen),
+        onCancel: () => NewInvoiceUtils().onCancel(context),
+        onPreview: () => NewInvoiceUtils().onPreview(context),
       ),
       bottomNavigationBar: CustomFloatingButton(
           padding: EdgeInsets.only(
@@ -66,9 +52,8 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           ),
           text: AppStrings.createInvoice,
           onPressed: () {
-            _onSaveInvoice();
+            NewInvoiceUtils().onSaveInvoice(context);
           }),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: _buildMainUI(),
     );
   }
@@ -168,24 +153,6 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
         );
       }),
     );
-  }
-
-  void _onSaveInvoice() {
-    if (Provider.of<ClientProvider>(context, listen: false).selectedClient !=
-            null &&
-        Provider.of<ItemProvider>(context, listen: false)
-            .selectedItems
-            .isNotEmpty) {
-      var invoiceProvider =
-          Provider.of<InvoiceProvider>(context, listen: false);
-      var newInvoice = invoiceProvider.createInvoiceModel();
-      invoiceProvider.addInvoice(newInvoice).then((_) {
-        if (ctx.mounted) {
-          Provider.of<ItemProvider>(ctx, listen: false).clearSelectedItems();
-          Navigator.pop(context);
-        }
-      });
-    }
   }
 
   @override
