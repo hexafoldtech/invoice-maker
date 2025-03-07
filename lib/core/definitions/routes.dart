@@ -12,6 +12,7 @@ import '../../view/app_screens/splash_screen.dart';
 import '../utils/transition.dart';
 import '../../view/app_screens/welcome_screen.dart';
 import '../../view/new_invoice_screen/preview_screen.dart';
+import '../../view/new_invoice_screen/payments_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -45,6 +46,8 @@ class RouteGenerator {
         return CustomPageTransition(
           child: const PreviewScreen(),
         );
+      case RouteNames.paymentsScreen:
+        return MaterialPageRoute(builder: (_) => const PaymentScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());

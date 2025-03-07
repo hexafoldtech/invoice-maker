@@ -11,4 +11,5 @@ class RouteNames {
   static const String splashScreen = "splash_screen";
   static const String welcomeScreen = "welcome_screen";
   static const String previewScreen = "preview_screen";
+  static const String paymentsScreen = "payments_screen";
 }
