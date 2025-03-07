@@ -109,4 +109,9 @@ class AppStrings {
   static const String qtyPreviewText = "QTY";
   static const String pricePreviewText = "Price, INR";
   static const String amountPreviewText = "Amount, INR";
+  static const String fromPreviewText = "FROM";
+  static const String billToPreviewText = "BILL TO";
+  static const String completeInvoicePreviewText =
+      "Please fill the whole invoice to preview";
+  static const String completeInvoiceText = "Please fill the whole invoice";
 }

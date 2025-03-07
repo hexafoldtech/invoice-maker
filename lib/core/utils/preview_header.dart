@@ -47,7 +47,7 @@ class PreviewHeaderUtils {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text("FROM",
+            pw.Text(AppStrings.fromPreviewText,
                 style: pw.TextStyle(
                     fontSize: AppSizes.s10, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: AppSizes.s10),
@@ -60,7 +60,7 @@ class PreviewHeaderUtils {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text("BILL TO",
+            pw.Text(AppStrings.billToPreviewText,
                 style: pw.TextStyle(
                     fontSize: AppSizes.s10, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: AppSizes.s10),
