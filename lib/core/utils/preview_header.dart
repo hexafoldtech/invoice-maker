@@ -6,7 +6,7 @@ import '../constants/app_sizes.dart';
 import '../constants/app_strings.dart';
 
 class PreviewHeaderUtils {
-  buildHeader(String currentDate) {
+  buildHeader(String invNo, String currentDate, String dueDate) {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
@@ -28,8 +28,8 @@ class PreviewHeaderUtils {
                       fontSize: AppSizes.s20.r,
                       color: PdfColor.fromHex("#690623"),
                       fontWeight: pw.FontWeight.bold)),
-              pw.Text('#003'),
-              pw.Text("${AppStrings.dueDateText} $currentDate"),
+              pw.Text(invNo),
+              pw.Text("${AppStrings.dueDateText} $dueDate"),
               pw.Text("${AppStrings.issuedDateText} $currentDate"),
             ],
           ),
@@ -38,7 +38,8 @@ class PreviewHeaderUtils {
     );
   }
 
-  buildClientDetails() {
+  buildClientDetails(String clientName, String clientPh, String clientMail,
+      String clientAddress) {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.start,
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -46,7 +47,7 @@ class PreviewHeaderUtils {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text("FROM",
+            pw.Text(AppStrings.fromPreviewText,
                 style: pw.TextStyle(
                     fontSize: AppSizes.s10, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: AppSizes.s10),
@@ -59,21 +60,22 @@ class PreviewHeaderUtils {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text("BILL TO",
+            pw.Text(AppStrings.billToPreviewText,
                 style: pw.TextStyle(
                     fontSize: AppSizes.s10, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: AppSizes.s10),
-            pw.Text("Demo Client",
+            pw.Text(clientName,
                 style: pw.TextStyle(
                     fontSize: AppSizes.s15, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: AppSizes.s3),
-            pw.Text("9876433861",
+            pw.Text(clientPh,
                 style: const pw.TextStyle(fontSize: AppSizes.s13)),
             pw.SizedBox(height: AppSizes.s3),
-            pw.Text("abc@xyz.com",
+            pw.Text(clientMail,
                 style: const pw.TextStyle(fontSize: AppSizes.s13)),
             pw.SizedBox(height: AppSizes.s3),
-            pw.Text("XYZ", style: const pw.TextStyle(fontSize: AppSizes.s13)),
+            pw.Text(clientAddress,
+                style: const pw.TextStyle(fontSize: AppSizes.s13)),
             pw.SizedBox(height: AppSizes.s3),
           ],
         ),

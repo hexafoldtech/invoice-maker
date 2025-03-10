@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:invoice_maker/core/constants/global_key.dart';
-import 'package:invoice_maker/core/utils/app_button.dart';
-import 'package:invoice_maker/core/utils/coming_soon_dialog.dart';
+import '../../core/utils/app_button.dart';
+import '../../core/utils/dialog_boxes.dart';
+import '../../core/utils/app_text_styles.dart';
+import '../../core/utils/extensions/string_formatter.dart';
+import '../../core/constants/global_key.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
-import '../../core/utils/app_text_styles.dart';
-import '../../core/utils/extensions/string_formatter.dart';
 
 enum AppBarType { dashboard, create, preview }
 

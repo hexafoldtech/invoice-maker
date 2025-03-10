@@ -1,31 +1,49 @@
+import 'package:invoice_maker/core/constants/global_key.dart';
 import 'package:invoice_maker/core/utils/preview_header.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
+import '../../providers/client_provider.dart';
+import '../../providers/invoice_provider.dart';
+import '../../providers/item_provider.dart';
 
 class PreviewUtils {
   Future<Uint8List> generatePdf() async {
     final pdf = pw.Document();
 
     final String currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-
-    var items = [
-      {"description": 'Item A', "quantity": 5, "Price": 300.0, "Amount": 300.0},
-      {"description": 'Item B', "quantity": 2, "Price": 450.0, "Amount": 300.0},
-      {"description": 'Item C', "quantity": 3, "Price": 450.0, "Amount": 300.0},
-    ];
-
-    List<List<dynamic>> tableData = items
+    var itemProvider =
+        Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
+    var selectedItems = itemProvider.selectedItems;
+    List<List<dynamic>> tableData = selectedItems
         .map((item) => [
-              item["description"],
-              item["quantity"],
-              item["Price"],
-              item['Amount']
+              "${item.itemName}\n${item.itemDetails}${item.isDiscount ? "\nIncl. ${item.itemDiscountRate}% discount" : ""}",
+              item.itemQuantity,
+              item.totalItemPrice,
+              item.itemPrice
             ])
         .toList();
+
+    var client =
+        Provider.of<ClientProvider>(navigatorKey.currentContext!, listen: false)
+            .selectedClient;
+
+    var invoiceProvider = Provider.of<InvoiceProvider>(
+        navigatorKey.currentContext!,
+        listen: false);
+    var dueDate = DateFormat('dd/MM/yyyy')
+        .format(DateFormat('dd MMM yyyy').parse(invoiceProvider.dueDate));
+    var totalAmount = invoiceProvider.totalAmount;
+    var subtotal = invoiceProvider.subTotal;
+    var tax = invoiceProvider.tax.toStringAsFixed(2);
+    var taxText = invoiceProvider.taxText == AppStrings.taxText
+        ? ''
+        : invoiceProvider.taxText.substring(4);
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -34,9 +52,16 @@ class PreviewUtils {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              PreviewHeaderUtils().buildHeader(currentDate),
+              PreviewHeaderUtils().buildHeader(
+                  "#${invoiceProvider.generateInvoiceId()}",
+                  currentDate,
+                  dueDate),
               pw.SizedBox(height: 40),
-              PreviewHeaderUtils().buildClientDetails(),
+              PreviewHeaderUtils().buildClientDetails(
+                  client!.clientName,
+                  client.clientPhoneNumber,
+                  client.clientEmail,
+                  client.clientAddress),
               pw.SizedBox(height: AppSizes.s30),
               pw.Table(
                 border: pw.TableBorder.all(),
@@ -78,13 +103,10 @@ class PreviewUtils {
                   /// **Invoice Items**
                   ...tableData.map((row) {
                     return pw.TableRow(
-                      decoration: pw.BoxDecoration(
+                      decoration: const pw.BoxDecoration(
                         border: pw.Border(
-                          right: pw.BorderSide(
-                              width: row == tableData[2]
-                                  ? 1.5
-                                  : 0, // **Add vertical border after 3rd row**
-                              color: PdfColors.black),
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
                         ),
                       ),
                       children: row.map((cell) {
@@ -109,7 +131,7 @@ class PreviewUtils {
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(5),
-                        child: pw.Text("2000.0",
+                        child: pw.Text(subtotal.toString(),
                             style:
                                 pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ),
@@ -121,13 +143,13 @@ class PreviewUtils {
                       pw.SizedBox(),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(5),
-                        child: pw.Text(AppStrings.taxText,
+                        child: pw.Text("${AppStrings.taxText} $taxText",
                             style:
                                 pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(5),
-                        child: pw.Text("500.0",
+                        child: pw.Text(tax,
                             style:
                                 pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ),
@@ -146,7 +168,7 @@ class PreviewUtils {
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(5),
-                        child: pw.Text("2500.0",
+                        child: pw.Text(totalAmount.toString(),
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: AppSizes.s14)),
