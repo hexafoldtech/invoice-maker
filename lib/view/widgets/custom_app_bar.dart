@@ -4,12 +4,13 @@ import 'package:invoice_maker/core/constants/global_key.dart';
 import 'package:invoice_maker/core/utils/app_button.dart';
 import 'package:invoice_maker/core/utils/coming_soon_dialog.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/extensions/string_formatter.dart';
 
-enum AppBarType { dashboard, create }
+enum AppBarType { dashboard, create, preview }
 
 enum DashboardAppBarButtons { invoices, estimates }
 
@@ -24,6 +25,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onPreview;
   final VoidCallback? onDone;
 
+  //Preview Mode
+  final VoidCallback? onPreviewDone;
+  final VoidCallback? onPreviewCustomize;
+
   const CustomAppBar({
     super.key,
     required this.appBarType,
@@ -31,13 +36,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onCancel,
     this.onPreview,
     this.onDone,
+    this.onPreviewDone,
+    this.onPreviewCustomize,
   });
 
   @override
   Widget build(BuildContext context) {
-    return appBarType == AppBarType.dashboard
-        ? _buildDashboardAppBar()
-        : _buildCreateAppBar();
+    switch (appBarType) {
+      case AppBarType.dashboard:
+        return _buildDashboardAppBar();
+      case AppBarType.create:
+        return _buildCreateAppBar();
+      case AppBarType.preview:
+        return _buildPreviewAppBar();
+    }
   }
 
   /// 📌 Dashboard App Bar
@@ -133,6 +145,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: onDone ?? () {},
           child: _appBarText(
               AppStrings.doneText, AppColors.black, FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPreviewAppBar() {
+    return AppBar(
+      forceMaterialTransparency: true,
+      elevation: 0,
+      leading: AppButton(
+          type: ButtonType.flat,
+          label: AppStrings.doneText,
+          action: onPreviewDone ?? () {}),
+      centerTitle: true,
+      title: Text(
+        AppStrings.previewText,
+        style: AppTextStyles.helveticaNeue(
+            AppColors.black, FontWeightStyles.semiBold, AppSizes.s16.r),
+      ),
+      actions: [
+        TextButton(
+          onPressed: onPreviewCustomize ??
+              () {
+                DialogBoxes()
+                    .showComingSoonDialog(navigatorKey.currentContext!);
+              },
+          child: _appBarText(AppStrings.customizeText, AppColors.black,
+              FontWeightStyles.regular),
         ),
       ],
     );
