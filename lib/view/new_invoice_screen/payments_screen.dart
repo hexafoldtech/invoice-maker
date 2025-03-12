@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
-import 'package:invoice_maker/core/constants/app_sizes.dart';
-import 'package:invoice_maker/core/constants/app_strings.dart';
-import 'package:invoice_maker/core/utils/app_button.dart';
-import 'package:invoice_maker/core/utils/app_text_styles.dart';
-import 'package:invoice_maker/view/widgets/custom_app_bar.dart';
-
+import '../widgets/custom_app_bar.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_fonts_styles.dart';
+import '../../core/constants/app_sizes.dart';
+import '../../core/constants/app_strings.dart';
+import '../../core/utils/app_button.dart';
+import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/custom_text_form_field.dart';
 import '../../core/utils/switch_button.dart';
 
@@ -21,6 +20,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _isEditing = false;
   String _receivedAmount = "";
   bool _isSwitch = false;
+  final FocusNode _focusNode = FocusNode();
 
   final TextEditingController _controller = TextEditingController();
 
@@ -29,6 +29,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       _receivedAmount = _controller.text;
       _isEditing = false;
     });
+    _focusNode.unfocus();
   }
 
   @override
@@ -68,10 +69,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 SizedBox(
                   width: AppSizes.s100,
                   child: CustomTextFormField(
+                    focusNode: _focusNode,
                     formType: FormType.item,
                     textInputType: TextInputType.number,
                     controller: _controller,
-                    hintText: '0%',
+                    hintText: '${AppStrings.rupeeSymbolText}0',
                   ),
                 ),
                 AppButton(
@@ -98,6 +100,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               setState(() {
                 _isEditing = true;
               });
+              _focusNode.requestFocus();
             },
           ),
         ],

@@ -189,7 +189,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       forceMaterialTransparency: true,
       elevation: 0,
-      leadingWidth: AppSizes.s70,
+      leadingWidth: AppSizes.s70.r,
       leading: GestureDetector(
         onTap: onPaymentsBack ?? () {},
         child: Row(
