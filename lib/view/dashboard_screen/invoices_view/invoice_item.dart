@@ -4,6 +4,7 @@ import 'package:invoice_maker/core/constants/app_colors.dart';
 import 'package:invoice_maker/core/constants/app_fonts_styles.dart';
 import 'package:invoice_maker/core/constants/app_sizes.dart';
 import 'package:invoice_maker/core/utils/app_text_styles.dart';
+import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
 
 class InvoiceItem extends StatelessWidget {
   final bool paid;
@@ -35,7 +36,7 @@ class InvoiceItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text("₹ $price",
+              Text("₹ ${price.formatWithCommas()}",
                   style: AppTextStyles.helveticaNeue(AppColors.black,
                       FontWeightStyles.semiBold, AppSizes.s14.r)),
               Container(

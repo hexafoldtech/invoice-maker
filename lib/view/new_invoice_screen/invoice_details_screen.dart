@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
 import '../widgets/custom_floating_button.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/extensions/string_formatter.dart';
@@ -90,7 +91,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 AppColors.black, FontWeightStyles.medium),
           ),
           Text(
-            "${AppStrings.rupeeSymbolText} ${widget.amount}",
+            "${AppStrings.rupeeSymbolText} ${widget.amount.formatWithCommas()}",
             style: AppTextStyles.helveticaNeueLarge(
                 AppColors.black, FontWeightStyles.medium),
           ),

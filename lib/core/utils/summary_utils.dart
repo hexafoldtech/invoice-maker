@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
 import 'app_text_styles.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_fonts_styles.dart';
@@ -20,7 +21,7 @@ class SummaryUtils {
             ),
             if (trailingIcon == null)
               Text(
-                '$amount',
+                amount.formatWithCommas(),
                 style: AppTextStyles.helveticaNeue(
                     AppColors.black, FontWeightStyles.regular, AppSizes.s17.r),
               ),
@@ -28,7 +29,7 @@ class SummaryUtils {
               Row(
                 children: [
                   Text(
-                    '$amount',
+                    amount.formatWithCommas(),
                     style: AppTextStyles.helveticaNeue(AppColors.black,
                         FontWeightStyles.regular, AppSizes.s17.r),
                   ),
@@ -83,7 +84,7 @@ class SummaryUtils {
             ),
             const SizedBox(width: AppSizes.s8),
             Text(
-              '${AppStrings.rupeeSymbolText} $totalAmount',
+              '${AppStrings.rupeeSymbolText} ${totalAmount.formatWithCommas()}',
               style: AppTextStyles.helveticaNeue(
                   AppColors.black, FontWeightStyles.bold, AppSizes.s17.r),
             ),
