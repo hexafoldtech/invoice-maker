@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import "../../../providers/invoice_provider.dart";
 import 'invoice_item.dart';
 import '../estimates_view/total_recieved_amount.dart';
+import '../../../core/definitions/route_names.dart';
 import '../../../core/utils/extensions/date_formatter.dart';
 import '../../../core/utils/app_text_styles.dart';
 import '../../../core/constants/app_colors.dart';
@@ -118,6 +119,28 @@ class _ToggleButtonState extends State<ToggleButton> {
                               id: (invoiceProvider.invoices[index].id + 1)
                                   .toString()
                                   .padLeft(3, '0'),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNames.invoiceDetailsScreen,
+                                  arguments: {
+                                    'clientName': invoiceProvider
+                                        .invoices[index].client.clientName,
+                                    'amount':
+                                        invoiceProvider.invoices[index].total,
+                                    'issueDate': invoiceProvider
+                                        .invoices[index].issueDate
+                                        .toFormattedString(),
+                                    'dueDate':
+                                        invoiceProvider.invoices[index].dueDate,
+                                    'paid': true,
+                                    'invoiceNo':
+                                        (invoiceProvider.invoices[index].id + 1)
+                                            .toString()
+                                            .padLeft(3, '0'),
+                                  },
+                                );
+                              },
                             );
                           })
                       : const SizedBox.shrink(),
@@ -130,11 +153,32 @@ class _ToggleButtonState extends State<ToggleButton> {
                               paid: false,
                               clientName:
                                   unpaidInvoices[index].client.clientName,
-                              date: unpaidInvoices[index].dueDate.toFormattedString(),
+                              date: unpaidInvoices[index]
+                                  .dueDate
+                                  .toFormattedString(),
                               price: unpaidInvoices[index].total,
                               id: (unpaidInvoices[index].id + 1)
                                   .toString()
                                   .padLeft(3, '0'),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNames.invoiceDetailsScreen,
+                                  arguments: {
+                                    'clientName':
+                                        unpaidInvoices[index].client.clientName,
+                                    'amount': unpaidInvoices[index].total,
+                                    'issueDate': unpaidInvoices[index]
+                                        .issueDate
+                                        .toFormattedString(),
+                                    'dueDate': unpaidInvoices[index].dueDate,
+                                    'paid': true,
+                                    'invoiceNo': (unpaidInvoices[index].id + 1)
+                                        .toString()
+                                        .padLeft(3, '0'),
+                                  },
+                                );
+                              },
                             );
                           },
                         )
@@ -149,11 +193,32 @@ class _ToggleButtonState extends State<ToggleButton> {
                             return InvoiceItem(
                               paid: true,
                               clientName: paidInvoices[index].client.clientName,
-                              date: paidInvoices[index].dueDate.toFormattedString(),
+                              date: paidInvoices[index]
+                                  .dueDate
+                                  .toFormattedString(),
                               price: paidInvoices[index].total,
                               id: (paidInvoices[index].id + 1)
                                   .toString()
                                   .padLeft(3, '0'),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNames.invoiceDetailsScreen,
+                                  arguments: {
+                                    'clientName':
+                                        paidInvoices[index].client.clientName,
+                                    'amount': paidInvoices[index].total,
+                                    'issueDate': paidInvoices[index]
+                                        .issueDate
+                                        .toFormattedString(),
+                                    'dueDate': paidInvoices[index].dueDate,
+                                    'paid': true,
+                                    'invoiceNo': (paidInvoices[index].id + 1)
+                                        .toString()
+                                        .padLeft(3, '0'),
+                                  },
+                                );
+                              },
                             );
                           },
                         )

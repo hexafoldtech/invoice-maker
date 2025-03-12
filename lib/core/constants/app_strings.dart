@@ -119,5 +119,12 @@ class AppStrings {
   static const String paymentsText = "Payments";
   static const String paidFullText = "Paid In Full";
   static const String addPartialPaymentText = "Add Partial Payment";
+  static const String addRecievedPaymentText = "Add Recieved Payment";
+  static const String hasInvoicePaidText = "Has invoice been paid?";
+  static const String markAsPaidText = "Mark as Paid";
   static const String saveText = "Save";
+  static const String shareText = "Share";
+  static const String printText = "Print";
+  static const String editText = "Edit";
+  static const String sendInvoiceText = "Send Invoice";
 }

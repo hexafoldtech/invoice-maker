@@ -11,6 +11,7 @@ class InvoiceItem extends StatelessWidget {
   final String id;
   final String date;
   final double price;
+  final VoidCallback? onTap;
 
   const InvoiceItem(
       {super.key,
@@ -18,7 +19,8 @@ class InvoiceItem extends StatelessWidget {
       required this.clientName,
       required this.date,
       required this.price,
-      required this.id});
+      required this.id,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,6 @@ class InvoiceItem extends StatelessWidget {
                 ),
               )
             ]), // Icon on the right
-        onTap: () {});
+        onTap: onTap ?? () {});
   }
 }
