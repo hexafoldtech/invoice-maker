@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/definitions/route_names.dart';
+import 'package:invoice_maker/core/utils/extensions/date_formatter.dart';
 import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
+import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
 import '../widgets/custom_floating_button.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/extensions/string_formatter.dart';
@@ -10,21 +13,9 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 
 class InvoiceDetailsScreen extends StatefulWidget {
-  final String clientName;
-  final double amount;
-  final String issueDate;
-  final DateTime dueDate;
-  final bool? paid;
-  final String invoiceNo;
+  final InvoiceModel invoice;
 
-  const InvoiceDetailsScreen(
-      {super.key,
-      required this.clientName,
-      required this.amount,
-      required this.issueDate,
-      required this.dueDate,
-      this.paid,
-      required this.invoiceNo});
+  const InvoiceDetailsScreen({super.key, required this.invoice});
 
   @override
   State<InvoiceDetailsScreen> createState() => _InvoiceDetailsScreenState();
@@ -34,7 +25,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   String dueIn = '';
 
   void calculateDiff() {
-    final diff = DateTime.now().difference(widget.dueDate).inDays;
+    final diff = DateTime.now().difference(widget.invoice.dueDate).inDays;
     dueIn = '${diff.abs()}d';
   }
 
@@ -49,6 +40,12 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, RouteNames.dashboardScreen);
+          },
+        ),
         actions: [
           Text(
             AppStrings.previewText,
@@ -86,12 +83,12 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             height: AppSizes.s20.r,
           ),
           Text(
-            widget.clientName,
+            widget.invoice.client.clientName,
             style: AppTextStyles.helveticaNeueMedium(
                 AppColors.black, FontWeightStyles.medium),
           ),
           Text(
-            "${AppStrings.rupeeSymbolText} ${widget.amount.formatWithCommas()}",
+            "${AppStrings.rupeeSymbolText} ${widget.invoice.total.formatWithCommas()}",
             style: AppTextStyles.helveticaNeueLarge(
                 AppColors.black, FontWeightStyles.medium),
           ),
@@ -106,16 +103,20 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           SizedBox(
             height: AppSizes.s20.r,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.add),
-              Text(
-                AppStrings.addRecievedPaymentText,
-                style: AppTextStyles.helveticaNeueSmall(
-                    AppColors.black, FontWeightStyles.regular),
-              ),
-            ],
+          GestureDetector(
+            onTap: () =>
+                Navigator.pushNamed(context, RouteNames.paymentsScreen),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.add),
+                Text(
+                  AppStrings.addRecievedPaymentText,
+                  style: AppTextStyles.helveticaNeueSmall(
+                      AppColors.black, FontWeightStyles.regular),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: AppSizes.s30.r,
@@ -156,7 +157,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           AppColors.black, FontWeightStyles.regular),
                     ),
                     Text(
-                      widget.issueDate,
+                      widget.invoice.issueDate.toFormattedString(),
                       style: AppTextStyles.helveticaNeueSmall(
                           AppColors.grey, FontWeightStyles.regular),
                     ),
@@ -172,14 +173,14 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           AppColors.black, FontWeightStyles.regular),
                     ),
                     Text(
-                      widget.invoiceNo,
+                      (widget.invoice.id + 1).toString().padLeft(3, '0'),
                       style: AppTextStyles.helveticaNeueSmall(
                           AppColors.grey, FontWeightStyles.regular),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 6,
+                  height: MediaQuery.of(context).size.height / 8,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

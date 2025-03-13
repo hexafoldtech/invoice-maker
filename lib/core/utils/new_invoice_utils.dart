@@ -43,9 +43,10 @@ class NewInvoiceUtils {
       var newInvoice = invoiceProvider.createInvoiceModel();
       invoiceProvider.addInvoice(newInvoice).then((_) {
         if (context.mounted) {
+          Navigator.pushNamed(context, RouteNames.invoiceDetailsScreen,
+              arguments: {'invoice': newInvoice});
           Provider.of<ItemProvider>(context, listen: false)
               .clearSelectedItems();
-          Navigator.pop(context);
         }
       });
     } else {

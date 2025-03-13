@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -46,8 +48,19 @@ class _ToggleButtonState extends State<ToggleButton> {
                 invoice.status == AppStrings.toggleButtonUnpaidText)
             .toList();
 
-        final amount =
+        final totalAllAmount =
             invoiceProvider.invoices.fold(0.0, (sum, e) => sum + e.total);
+        final totalPaidAmount =
+            paidInvoices.fold(0.0, (sum, e) => sum + e.total);
+        final totalUnPaidAmount =
+            unpaidInvoices.fold(0.0, (sum, e) => sum + e.total);
+        log("Unpaid ${totalUnPaidAmount.toString()}");
+        final totalAllRecievedAmount =
+            invoiceProvider.invoices.fold(0.0, (sum, e) => sum + e.paidAmount);
+        final totalPaidRecievedAmount =
+            paidInvoices.fold(0.0, (sum, e) => sum + e.paidAmount);
+        final totalUnPaidRecievedAmount =
+            unpaidInvoices.fold(0.0, (sum, e) => sum + e.paidAmount);
         return Column(
           children: [
             /// [custom toggle buttons] for polished UI
@@ -97,130 +110,137 @@ class _ToggleButtonState extends State<ToggleButton> {
               ),
             ),
             SizedBox(height: AppSizes.s10.r),
-            TotalReceivedAmount(title: AppStrings.total, amount: amount),
-            const TotalReceivedAmount(title: AppStrings.received, amount: 0.00),
             SizedBox(
               height: AppSizes.s400.r,
               child: IndexedStack(
                 index: selectedIndex,
                 children: [
                   invoiceProvider.invoices.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: invoiceProvider.invoices.length,
-                          itemBuilder: (context, index) {
-                            return InvoiceItem(
-                              paid: invoiceProvider.invoices[index].status ==
-                                  AppStrings.toggleButtonPaidText,
-                              clientName: invoiceProvider
-                                  .invoices[index].client.clientName,
-                              date: invoiceProvider.invoices[index].dueDate
-                                  .toFormattedString(),
-                              price: invoiceProvider.invoices[index].total,
-                              id: (invoiceProvider.invoices[index].id + 1)
-                                  .toString()
-                                  .padLeft(3, '0'),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteNames.invoiceDetailsScreen,
-                                  arguments: {
-                                    'clientName': invoiceProvider
-                                        .invoices[index].client.clientName,
-                                    'amount':
-                                        invoiceProvider.invoices[index].total,
-                                    'issueDate': invoiceProvider
-                                        .invoices[index].issueDate
-                                        .toFormattedString(),
-                                    'dueDate':
-                                        invoiceProvider.invoices[index].dueDate,
-                                    'paid': true,
-                                    'invoiceNo':
-                                        (invoiceProvider.invoices[index].id + 1)
-                                            .toString()
-                                            .padLeft(3, '0'),
-                                  },
-                                );
-                              },
-                            );
-                          })
+                      ? Column(
+                          children: [
+                            TotalReceivedAmount(
+                                title: AppStrings.total,
+                                amount: totalAllAmount),
+                            TotalReceivedAmount(
+                                title: AppStrings.received,
+                                amount: totalAllRecievedAmount),
+                            Expanded(
+                              child: ListView.builder(
+                                  itemCount: invoiceProvider.invoices.length,
+                                  itemBuilder: (context, index) {
+                                    return InvoiceItem(
+                                      paid: invoiceProvider
+                                              .invoices[index].status ==
+                                          AppStrings.toggleButtonPaidText,
+                                      clientName: invoiceProvider
+                                          .invoices[index].client.clientName,
+                                      date: invoiceProvider
+                                          .invoices[index].dueDate
+                                          .toFormattedString(),
+                                      price:
+                                          invoiceProvider.invoices[index].total,
+                                      id: (invoiceProvider.invoices[index].id +
+                                              1)
+                                          .toString()
+                                          .padLeft(3, '0'),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          RouteNames.invoiceDetailsScreen,
+                                          arguments: {
+                                            'invoice':
+                                                invoiceProvider.invoices[index]
+                                          },
+                                        );
+                                      },
+                                    );
+                                  }),
+                            ),
+                          ],
+                        )
                       : const SizedBox.shrink(),
                   unpaidInvoices.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: unpaidInvoices.length,
-                          itemBuilder: (context, index) {
-                            return InvoiceItem(
-                              paid: false,
-                              clientName:
-                                  unpaidInvoices[index].client.clientName,
-                              date: unpaidInvoices[index]
-                                  .dueDate
-                                  .toFormattedString(),
-                              price: unpaidInvoices[index].total,
-                              id: (unpaidInvoices[index].id + 1)
-                                  .toString()
-                                  .padLeft(3, '0'),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteNames.invoiceDetailsScreen,
-                                  arguments: {
-                                    'clientName':
+                      ? Column(
+                          children: [
+                            TotalReceivedAmount(
+                                title: AppStrings.total,
+                                amount: totalUnPaidAmount),
+                            TotalReceivedAmount(
+                                title: AppStrings.received,
+                                amount: totalUnPaidRecievedAmount),
+                            Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: unpaidInvoices.length,
+                                itemBuilder: (context, index) {
+                                  return InvoiceItem(
+                                    paid: false,
+                                    clientName:
                                         unpaidInvoices[index].client.clientName,
-                                    'amount': unpaidInvoices[index].total,
-                                    'issueDate': unpaidInvoices[index]
-                                        .issueDate
+                                    date: unpaidInvoices[index]
+                                        .dueDate
                                         .toFormattedString(),
-                                    'dueDate': unpaidInvoices[index].dueDate,
-                                    'paid': true,
-                                    'invoiceNo': (unpaidInvoices[index].id + 1)
+                                    price: unpaidInvoices[index].total,
+                                    id: (unpaidInvoices[index].id + 1)
                                         .toString()
                                         .padLeft(3, '0'),
-                                  },
-                                );
-                              },
-                            );
-                          },
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteNames.invoiceDetailsScreen,
+                                        arguments: {
+                                          'invoice': unpaidInvoices[index]
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         )
                       : const SizedBox.shrink(),
 
                   // Paid Invoices
                   paidInvoices.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: paidInvoices.length,
-                          itemBuilder: (context, index) {
-                            return InvoiceItem(
-                              paid: true,
-                              clientName: paidInvoices[index].client.clientName,
-                              date: paidInvoices[index]
-                                  .dueDate
-                                  .toFormattedString(),
-                              price: paidInvoices[index].total,
-                              id: (paidInvoices[index].id + 1)
-                                  .toString()
-                                  .padLeft(3, '0'),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteNames.invoiceDetailsScreen,
-                                  arguments: {
-                                    'clientName':
+                      ? Column(
+                          children: [
+                            TotalReceivedAmount(
+                                title: AppStrings.total,
+                                amount: totalPaidAmount),
+                            TotalReceivedAmount(
+                                title: AppStrings.received,
+                                amount: totalPaidRecievedAmount),
+                            Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: paidInvoices.length,
+                                itemBuilder: (context, index) {
+                                  return InvoiceItem(
+                                    paid: true,
+                                    clientName:
                                         paidInvoices[index].client.clientName,
-                                    'amount': paidInvoices[index].total,
-                                    'issueDate': paidInvoices[index]
-                                        .issueDate
+                                    date: paidInvoices[index]
+                                        .dueDate
                                         .toFormattedString(),
-                                    'dueDate': paidInvoices[index].dueDate,
-                                    'paid': true,
-                                    'invoiceNo': (paidInvoices[index].id + 1)
+                                    price: paidInvoices[index].total,
+                                    id: (paidInvoices[index].id + 1)
                                         .toString()
                                         .padLeft(3, '0'),
-                                  },
-                                );
-                              },
-                            );
-                          },
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteNames.invoiceDetailsScreen,
+                                        arguments: {
+                                          'invoice': paidInvoices[index]
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         )
                       : const SizedBox.shrink(),
                 ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/utils/extensions/date_formatter.dart';
 import 'route_names.dart';
 import '../../view/new_invoice_screen/add_tax_screen.dart';
 import '../../view/app_screens/error_screen.dart';
@@ -54,13 +53,7 @@ class RouteGenerator {
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
             builder: (_) => InvoiceDetailsScreen(
-                  clientName: args?['clientName'] ?? 'Unknown',
-                  amount: args?['amount'] ?? 0.0,
-                  issueDate:
-                      args?['issueDate'] ?? DateTime.now().toFormattedString(),
-                  dueDate: args?['dueDate'] ?? DateTime.now(),
-                  paid: args?['paid'] ?? false,
-                  invoiceNo: args?['invoiceNo'] ?? 'N/A',
+                  invoice: args!['invoice'],
                 ));
       default:
         return MaterialPageRoute(
