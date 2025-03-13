@@ -39,17 +39,20 @@ class InvoiceModel extends HiveObject {
   @HiveField(10)
   String status;
 
-  InvoiceModel({
-    required this.id,
-    required this.client,
-    required this.issueDate,
-    required this.dueDate,
-    required this.items,
-    required this.discount,
-    required this.subTotal,
-    this.tax,
-    this.taxType,
-    this.status = AppStrings.toggleButtonUnpaidText,
-    required this.total,
-  });
+  @HiveField(11)
+  double paidAmount;
+
+  InvoiceModel(
+      {required this.id,
+      required this.client,
+      required this.issueDate,
+      required this.dueDate,
+      required this.items,
+      required this.discount,
+      required this.subTotal,
+      this.tax,
+      this.taxType,
+      this.status = AppStrings.toggleButtonUnpaidText,
+      required this.total,
+      this.paidAmount = 0});
 }
