@@ -48,7 +48,11 @@ class RouteGenerator {
           child: const PreviewScreen(),
         );
       case RouteNames.paymentsScreen:
-        return MaterialPageRoute(builder: (_) => const PaymentScreen());
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+            builder: (_) => PaymentScreen(
+                  invoice: args!['invoice'],
+                ));
       case RouteNames.invoiceDetailsScreen:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(

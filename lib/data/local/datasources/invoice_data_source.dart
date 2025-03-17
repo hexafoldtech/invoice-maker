@@ -34,4 +34,13 @@ class InvoiceDataSourceImpl implements InvoiceLocalDataSource {
   Future<void> deleteInvoice(int id) async {
     await _invoiceBox.delete(id);
   }
+
+  @override
+  Future<void> updateInvoiceAmount(
+      InvoiceModel invoice, double newPaidAmount) async {
+    if (_invoiceBox.containsKey(invoice.id)) {
+      invoice.paidAmount = newPaidAmount;
+      await _invoiceBox.put(invoice.id, invoice);
+    }
+  }
 }

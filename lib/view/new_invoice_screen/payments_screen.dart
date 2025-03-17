@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_maker/providers/invoice_provider.dart';
+import 'package:provider/provider.dart';
+import '../../models/InvoiceModel/invoice_model.dart';
 import '../widgets/custom_app_bar.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_fonts_styles.dart';
@@ -10,7 +13,8 @@ import '../../core/utils/custom_text_form_field.dart';
 import '../../core/utils/switch_button.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  final InvoiceModel invoice;
+  const PaymentScreen({super.key, required this.invoice});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -29,6 +33,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
       _receivedAmount = _controller.text;
       _isEditing = false;
     });
+    if (double.parse(_receivedAmount) < widget.invoice.total) {
+      Provider.of<InvoiceProvider>(context, listen: false)
+          .updateInvoiceAmount(widget.invoice, double.parse(_receivedAmount));
+    }
     _focusNode.unfocus();
   }
 

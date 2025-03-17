@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:invoice_maker/core/definitions/route_names.dart';
-import 'package:invoice_maker/core/utils/extensions/date_formatter.dart';
-import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
-import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
+import 'package:provider/provider.dart';
+import '../../providers/invoice_provider.dart';
+import '../../models/InvoiceModel/invoice_model.dart';
 import '../widgets/custom_floating_button.dart';
+import '../../core/definitions/route_names.dart';
+import '../../core/utils/extensions/date_formatter.dart';
+import '../../core/utils/extensions/number_formatter.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/extensions/string_formatter.dart';
 import '../../core/constants/app_colors.dart';
@@ -23,16 +25,35 @@ class InvoiceDetailsScreen extends StatefulWidget {
 
 class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   String dueIn = '';
+  double amount = 0;
 
   void calculateDiff() {
     final diff = DateTime.now().difference(widget.invoice.dueDate).inDays;
     dueIn = '${diff.abs()}d';
   }
 
+  void calcAmount() {
+    final invoiceProvider =
+        Provider.of<InvoiceProvider>(context, listen: false);
+    final invoice = invoiceProvider.invoices.firstWhere(
+      (inv) => inv.id == widget.invoice.id,
+      orElse: () => widget.invoice,
+    );
+
+    setState(() {
+      amount = invoice.paidAmount != 0
+          ? widget.invoice.total - invoice.paidAmount
+          : widget.invoice.total;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    calculateDiff();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      calculateDiff();
+      calcAmount();
+    });
   }
 
   @override
@@ -88,7 +109,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 AppColors.black, FontWeightStyles.medium),
           ),
           Text(
-            "${AppStrings.rupeeSymbolText} ${widget.invoice.total.formatWithCommas()}",
+            "${AppStrings.rupeeSymbolText} ${amount.formatWithCommas()}",
             style: AppTextStyles.helveticaNeueLarge(
                 AppColors.black, FontWeightStyles.medium),
           ),
@@ -103,21 +124,39 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           SizedBox(
             height: AppSizes.s20.r,
           ),
-          GestureDetector(
-            onTap: () =>
-                Navigator.pushNamed(context, RouteNames.paymentsScreen),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.add),
-                Text(
-                  AppStrings.addRecievedPaymentText,
-                  style: AppTextStyles.helveticaNeueSmall(
-                      AppColors.black, FontWeightStyles.regular),
+          Provider.of<InvoiceProvider>(context, listen: true)
+                      .invoices
+                      .firstWhere((inv) => inv.id == widget.invoice.id)
+                      .paidAmount ==
+                  0
+              ? GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                      context, RouteNames.paymentsScreen,
+                      arguments: {'invoice': widget.invoice}),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.add),
+                      Text(
+                        AppStrings.addRecievedPaymentText,
+                        style: AppTextStyles.helveticaNeueSmall(
+                            AppColors.black, FontWeightStyles.regular),
+                      ),
+                    ],
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(AppStrings.recievedPayText,
+                        style: AppTextStyles.helveticaNeueSmall(
+                            AppColors.black, FontWeightStyles.regular)),
+                    Text(
+                        "${AppStrings.rupeeSymbolText} ${Provider.of<InvoiceProvider>(context).invoices.firstWhere((inv) => inv.id == widget.invoice.id).paidAmount.formatWithCommas()}",
+                        style: AppTextStyles.helveticaNeue(AppColors.black,
+                            FontWeightStyles.regular, AppSizes.s11.r)),
+                  ],
                 ),
-              ],
-            ),
-          ),
           SizedBox(
             height: AppSizes.s30.r,
           ),
@@ -148,6 +187,34 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Provider.of<InvoiceProvider>(context, listen: true)
+                            .invoices
+                            .firstWhere((inv) => inv.id == widget.invoice.id)
+                            .paidAmount !=
+                        0
+                    ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                AppStrings.totalCapitalText,
+                                style: AppTextStyles.helveticaNeueSmall(
+                                    AppColors.black, FontWeightStyles.regular),
+                              ),
+                              Text(
+                                "${AppStrings.rupeeSymbolText} ${widget.invoice.total.formatWithCommas()}",
+                                style: AppTextStyles.helveticaNeueSmall(
+                                    AppColors.grey, FontWeightStyles.regular),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: AppSizes.s30.r,
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

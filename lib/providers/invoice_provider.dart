@@ -199,6 +199,17 @@ class InvoiceProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateInvoiceAmount(
+      InvoiceModel invoice, double newPaidAmount) async {
+    try {
+      await _invoiceRepo.updateInvoiceAmount(invoice, newPaidAmount);
+      notifyListeners();
+    } catch (e) {
+      _state = AppUIStates.empty;
+      notifyListeners();
+    }
+  }
+
   Future<void> deleteInvoice(int id) async {
     try {
       await _invoiceRepo.deleteInvoice(id);
