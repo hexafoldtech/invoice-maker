@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +28,8 @@ class InvoiceDetailsScreen extends StatefulWidget {
 class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   String dueIn = '';
   double amount = 0;
+  double recAmount = 0;
+  bool markAsPaid = false;
 
   void calculateDiff() {
     final diff = DateTime.now().difference(widget.invoice.dueDate).inDays;
@@ -41,9 +45,25 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     );
 
     setState(() {
-      amount = invoice.paidAmount != 0
+      amount = invoice.paidAmount != 0 ||
+              invoice.status == AppStrings.toggleButtonPaidText
           ? widget.invoice.total - invoice.paidAmount
           : widget.invoice.total;
+      recAmount = amount;
+      log('rec $recAmount');
+      log('tot ${widget.invoice.total}');
+      if (recAmount == widget.invoice.total) {
+        markAsPaid = true;
+      }
+    });
+  }
+
+  void markPaid() {
+    Provider.of<InvoiceProvider>(context, listen: false)
+        .updateInvoiceAmount(widget.invoice, widget.invoice.total);
+    setState(() {
+      markAsPaid = !markAsPaid;
+      recAmount = 0;
     });
   }
 
@@ -58,6 +78,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double isAmount = Provider.of<InvoiceProvider>(context, listen: true)
+        .invoices
+        .firstWhere((inv) => inv.id == widget.invoice.id)
+        .paidAmount;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.white,
@@ -109,26 +134,23 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 AppColors.black, FontWeightStyles.medium),
           ),
           Text(
-            "${AppStrings.rupeeSymbolText} ${amount.formatWithCommas()}",
+            "${AppStrings.rupeeSymbolText} ${recAmount.formatWithCommas()}",
             style: AppTextStyles.helveticaNeueLarge(
                 AppColors.black, FontWeightStyles.medium),
           ),
           SizedBox(
             height: AppSizes.s15.r,
           ),
-          Text(
-            "${AppStrings.duePreviewText} $dueIn",
-            style: AppTextStyles.helveticaNeueSmall(
-                AppColors.grey, FontWeightStyles.regular),
-          ),
+          if (!markAsPaid)
+            Text(
+              "${AppStrings.duePreviewText} $dueIn",
+              style: AppTextStyles.helveticaNeueSmall(
+                  AppColors.grey, FontWeightStyles.regular),
+            ),
           SizedBox(
             height: AppSizes.s20.r,
           ),
-          Provider.of<InvoiceProvider>(context, listen: true)
-                      .invoices
-                      .firstWhere((inv) => inv.id == widget.invoice.id)
-                      .paidAmount ==
-                  0
+          isAmount == 0
               ? GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, RouteNames.paymentsScreen,
@@ -152,7 +174,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         style: AppTextStyles.helveticaNeueSmall(
                             AppColors.black, FontWeightStyles.regular)),
                     Text(
-                        "${AppStrings.rupeeSymbolText} ${Provider.of<InvoiceProvider>(context).invoices.firstWhere((inv) => inv.id == widget.invoice.id).paidAmount.formatWithCommas()}",
+                        "${AppStrings.rupeeSymbolText} ${isAmount.formatWithCommas()}",
                         style: AppTextStyles.helveticaNeue(AppColors.black,
                             FontWeightStyles.regular, AppSizes.s11.r)),
                   ],
@@ -166,17 +188,38 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               Text(AppStrings.hasInvoicePaidText,
                   style: AppTextStyles.helveticaNeueSmall(
                       AppColors.black, FontWeightStyles.regular)),
-              Container(
-                width: AppSizes.s90.r,
-                height: AppSizes.s30.r,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s10),
-                    color: AppColors.lightblueShade),
-                child: Center(
-                    child: Text(AppStrings.markAsPaidText,
-                        style: AppTextStyles.helveticaNeue(AppColors.black,
-                            FontWeightStyles.regular, AppSizes.s11.r))),
-              )
+              !markAsPaid
+                  ? GestureDetector(
+                      onTap: () {
+                        markPaid();
+                      },
+                      child: Container(
+                        width: AppSizes.s90.r,
+                        height: AppSizes.s30.r,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(AppSizes.s10),
+                            color: AppColors.lightblueShade),
+                        child: Center(
+                            child: Text(AppStrings.markAsPaidText,
+                                style: AppTextStyles.helveticaNeue(
+                                    AppColors.black,
+                                    FontWeightStyles.regular,
+                                    AppSizes.s11.r))),
+                      ),
+                    )
+                  : Container(
+                      width: AppSizes.s90.r,
+                      height: AppSizes.s30.r,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppSizes.s10),
+                          color: AppColors.greenAccent),
+                      child: Center(
+                          child: Text(AppStrings.yesText,
+                              style: AppTextStyles.helveticaNeue(
+                                  AppColors.black,
+                                  FontWeightStyles.regular,
+                                  AppSizes.s11.r))),
+                    )
             ],
           ),
           SizedBox(
@@ -187,11 +230,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Provider.of<InvoiceProvider>(context, listen: true)
-                            .invoices
-                            .firstWhere((inv) => inv.id == widget.invoice.id)
-                            .paidAmount !=
-                        0
+                isAmount != 0
                     ? Column(
                         children: [
                           Row(
@@ -247,7 +286,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 8,
+                  height: MediaQuery.of(context).size.height / isAmount == 0
+                      ? 8.r
+                      : 25.r,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

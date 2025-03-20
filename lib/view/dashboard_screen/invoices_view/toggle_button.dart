@@ -158,7 +158,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                             ),
                           ],
                         )
-                      : const SizedBox.shrink(),
+                      : const Center(child: Text('No Invoices')),
                   unpaidInvoices.isNotEmpty
                       ? Column(
                           children: [
@@ -199,17 +199,14 @@ class _ToggleButtonState extends State<ToggleButton> {
                             ),
                           ],
                         )
-                      : const SizedBox.shrink(),
+                      : const Center(child: Text('No Invoices')),
 
                   // Paid Invoices
                   paidInvoices.isNotEmpty
                       ? Column(
                           children: [
                             TotalReceivedAmount(
-                                title: AppStrings.total,
-                                amount: totalPaidAmount),
-                            TotalReceivedAmount(
-                                title: AppStrings.received,
+                                title: AppStrings.yearText,
                                 amount: totalPaidRecievedAmount),
                             Expanded(
                               child: ListView.builder(
@@ -242,7 +239,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                             ),
                           ],
                         )
-                      : const SizedBox.shrink(),
+                      : const Center(child: Text('No Invoices')),
                 ],
               ),
             ),

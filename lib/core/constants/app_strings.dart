@@ -127,4 +127,6 @@ class AppStrings {
   static const String printText = "Print";
   static const String editText = "Edit";
   static const String sendInvoiceText = "Send Invoice";
+  static const String yesText = "Yes";
+  static const String yearText = "this year:";
 }
