@@ -164,6 +164,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: AppButton(
           type: ButtonType.flat,
           label: AppStrings.doneText,
+          textColor: AppColors.black,
           action: onPreviewDone ?? () {}),
       centerTitle: true,
       title: Text(

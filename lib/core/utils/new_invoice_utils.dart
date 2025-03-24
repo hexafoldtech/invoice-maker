@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_maker/view/new_invoice_screen/preview_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/client_provider.dart';
@@ -26,7 +27,8 @@ class NewInvoiceUtils {
         Provider.of<ItemProvider>(context, listen: false)
             .selectedItems
             .isNotEmpty) {
-      Navigator.pushNamed(context, RouteNames.previewScreen);
+      Navigator.pushNamed(context, RouteNames.previewScreen,
+          arguments: {'type': PreviewType.preview});
     } else {
       DialogBoxes().showPreviewDialog(context);
     }

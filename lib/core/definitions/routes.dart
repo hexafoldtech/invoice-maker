@@ -44,8 +44,12 @@ class RouteGenerator {
       case RouteNames.welcomeScreen:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case RouteNames.previewScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
         return CustomPageTransition(
-          child: const PreviewScreen(),
+          child: PreviewScreen(
+            type: args!['type'],
+            invoice: args['invoice'],
+          ),
         );
       case RouteNames.paymentsScreen:
         final args = settings.arguments as Map<String, dynamic>?;

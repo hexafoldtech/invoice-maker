@@ -40,12 +40,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _focusNode.unfocus();
   }
 
+  void _saveFullPayment() {
+    Provider.of<InvoiceProvider>(context, listen: false)
+        .updateInvoiceAmount(widget.invoice, widget.invoice.total);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         appBarType: AppBarType.payments,
-        onPaymentsBack: () => Navigator.pop(context),
+        onPaymentsBack: () {
+          if (_isSwitch) {
+            _saveFullPayment();
+          }
+          Navigator.pop(context);
+        },
       ),
       body: Column(
         children: [
@@ -67,50 +77,52 @@ class _PaymentScreenState extends State<PaymentScreen> {
               )
             ],
           ),
-          const SizedBox(
-            height: AppSizes.s20,
-          ),
-          if (_isEditing)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  width: AppSizes.s100,
-                  child: CustomTextFormField(
-                    focusNode: _focusNode,
-                    formType: FormType.item,
-                    textInputType: TextInputType.number,
-                    controller: _controller,
-                    hintText: '${AppStrings.rupeeSymbolText}0',
+          if (!_isSwitch) ...[
+            const SizedBox(
+              height: AppSizes.s20,
+            ),
+            if (_isEditing)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: AppSizes.s100,
+                    child: CustomTextFormField(
+                      focusNode: _focusNode,
+                      formType: FormType.item,
+                      textInputType: TextInputType.number,
+                      controller: _controller,
+                      hintText: '${AppStrings.rupeeSymbolText}0',
+                    ),
                   ),
-                ),
-                AppButton(
-                  type: ButtonType.flat,
-                  label: AppStrings.saveText,
-                  textColor: AppColors.green,
-                  action: () {
-                    _savePayment();
-                  },
-                ),
-              ],
+                  AppButton(
+                    type: ButtonType.flat,
+                    label: AppStrings.saveText,
+                    textColor: AppColors.green,
+                    action: () {
+                      _savePayment();
+                    },
+                  ),
+                ],
+              ),
+            if (_receivedAmount.isNotEmpty)
+              Text(
+                "Received Payment: ${AppStrings.rupeeSymbolText} $_receivedAmount",
+                style: AppTextStyles.helveticaNeue(
+                    AppColors.black, FontWeightStyles.bold, AppSizes.s18),
+              ),
+            AppButton(
+              type: ButtonType.flat,
+              label: AppStrings.addPartialPaymentText,
+              textColor: AppColors.green,
+              action: () {
+                setState(() {
+                  _isEditing = true;
+                });
+                _focusNode.requestFocus();
+              },
             ),
-          if (_receivedAmount.isNotEmpty)
-            Text(
-              "Received Payment: ${AppStrings.rupeeSymbolText} $_receivedAmount",
-              style: AppTextStyles.helveticaNeue(
-                  AppColors.black, FontWeightStyles.bold, AppSizes.s18),
-            ),
-          AppButton(
-            type: ButtonType.flat,
-            label: AppStrings.addPartialPaymentText,
-            textColor: AppColors.green,
-            action: () {
-              setState(() {
-                _isEditing = true;
-              });
-              _focusNode.requestFocus();
-            },
-          ),
+          ]
         ],
       ),
     );

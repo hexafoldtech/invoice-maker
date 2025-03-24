@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/view/new_invoice_screen/preview_screen.dart';
 import 'package:provider/provider.dart';
 import '../../providers/invoice_provider.dart';
 import '../../models/InvoiceModel/invoice_model.dart';
@@ -45,15 +46,21 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     );
 
     setState(() {
-      amount = invoice.paidAmount != 0 ||
-              invoice.status == AppStrings.toggleButtonPaidText
+      amount = (invoice.paidAmount != 0 ||
+              invoice.status == AppStrings.toggleButtonPaidText)
           ? widget.invoice.total - invoice.paidAmount
           : widget.invoice.total;
+
       recAmount = amount;
+
       log('rec $recAmount');
       log('tot ${widget.invoice.total}');
-      if (recAmount == widget.invoice.total) {
-        markAsPaid = true;
+
+      // Prevent unnecessary resetting
+      log('PAID $markAsPaid');
+      if (!markAsPaid) {
+        markAsPaid = widget.invoice.status == AppStrings.toggleButtonPaidText;
+        log('PAID2 $markAsPaid');
       }
     });
   }
@@ -93,10 +100,17 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           },
         ),
         actions: [
-          Text(
-            AppStrings.previewText,
-            style: AppTextStyles.helveticaNeue(
-                AppColors.black, FontWeightStyles.regular, AppSizes.s16.r),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, RouteNames.previewScreen,
+                arguments: {
+                  'type': PreviewType.details,
+                  'invoice': widget.invoice
+                }),
+            child: Text(
+              AppStrings.previewText,
+              style: AppTextStyles.helveticaNeue(
+                  AppColors.black, FontWeightStyles.regular, AppSizes.s16.r),
+            ),
           ),
           const SizedBox(
             width: AppSizes.s20,
@@ -154,7 +168,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ? GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, RouteNames.paymentsScreen,
-                      arguments: {'invoice': widget.invoice}),
+                      arguments: {
+                        'invoice': widget.invoice,
+                      }),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
