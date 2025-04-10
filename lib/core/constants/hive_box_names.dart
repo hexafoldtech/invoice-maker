@@ -3,4 +3,5 @@ class HiveBoxNames {
   static const String client = "clients";
   static const String items = "items";
   static const String invoices = "invoices";
+  static const String estimates = "estimates";
 }

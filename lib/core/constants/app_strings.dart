@@ -130,4 +130,5 @@ class AppStrings {
   static const String yesText = "Yes";
   static const String yearText = "this year:";
   static const String newEstimateText = "New Estimate";
+  static const String estimateText = "Estimate";
 }

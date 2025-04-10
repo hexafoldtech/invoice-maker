@@ -14,6 +14,7 @@ import '../../view/app_screens/welcome_screen.dart';
 import '../../view/new_invoice_screen/preview_screen.dart';
 import '../../view/new_invoice_screen/payments_screen.dart';
 import '../../view/new_invoice_screen/invoice_details_screen.dart';
+import '../../view/new_estimate_screen/add_tax_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -37,8 +38,8 @@ class RouteGenerator {
             builder: (_) => const UnderDevelopmentScreen());
       case RouteNames.errorScreen:
         return MaterialPageRoute(builder: (_) => const ErrorScreen());
-      case RouteNames.addTaxScreen:
-        return MaterialPageRoute(builder: (_) => const AddTaxScreen());
+      case RouteNames.addTaxInInvoiceScreen:
+        return MaterialPageRoute(builder: (_) => const AddTaxInvoiceScreen());
       case RouteNames.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case RouteNames.welcomeScreen:
@@ -63,6 +64,8 @@ class RouteGenerator {
             builder: (_) => InvoiceDetailsScreen(
                   invoice: args!['invoice'],
                 ));
+      case RouteNames.addTaxInEstimateScreen:
+        return MaterialPageRoute(builder: (_) => const AddTaxEstimateScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());
