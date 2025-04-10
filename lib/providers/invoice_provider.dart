@@ -210,6 +210,11 @@ class InvoiceProvider extends ChangeNotifier {
     }
   }
 
+  void clearDueDate() {
+    _dueDate = "-";
+    notifyListeners();
+  }
+
   Future<void> deleteInvoice(int id) async {
     try {
       await _invoiceRepo.deleteInvoice(id);

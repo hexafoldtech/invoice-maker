@@ -11,8 +11,8 @@ import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 
-class Summary extends StatelessWidget {
-  const Summary({super.key});
+class InvoiceSummary extends StatelessWidget {
+  const InvoiceSummary({super.key});
 
   @override
   Widget build(BuildContext context) {

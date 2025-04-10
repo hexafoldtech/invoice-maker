@@ -129,4 +129,5 @@ class AppStrings {
   static const String sendInvoiceText = "Send Invoice";
   static const String yesText = "Yes";
   static const String yearText = "this year:";
+  static const String newEstimateText = "New Estimate";
 }

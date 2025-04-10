@@ -10,7 +10,7 @@ import '../../core/constants/app_strings.dart';
 import '../../core/constants/global_key.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/bottom_sheet.dart';
-import 'new_item_screen.dart';
+import '../new_invoice_screen/new_item_screen.dart';
 
 class ItemScreen extends StatefulWidget {
   const ItemScreen({super.key});

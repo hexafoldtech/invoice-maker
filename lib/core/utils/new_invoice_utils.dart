@@ -18,6 +18,7 @@ class NewInvoiceUtils {
             .isNotEmpty) {
       Provider.of<ClientProvider>(context, listen: false).clearSelectedClient();
       Provider.of<ItemProvider>(context, listen: false).clearSelectedItems();
+      Provider.of<InvoiceProvider>(context, listen: false).clearDueDate();
     }
   }
 
@@ -47,8 +48,11 @@ class NewInvoiceUtils {
         if (context.mounted) {
           Navigator.pushNamed(context, RouteNames.invoiceDetailsScreen,
               arguments: {'invoice': newInvoice});
+          Provider.of<ClientProvider>(context, listen: false)
+              .clearSelectedClient();
           Provider.of<ItemProvider>(context, listen: false)
               .clearSelectedItems();
+          Provider.of<InvoiceProvider>(context, listen: false).clearDueDate();
         }
       });
     } else {
