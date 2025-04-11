@@ -6,7 +6,8 @@ import '../constants/app_sizes.dart';
 import '../constants/app_strings.dart';
 
 class PreviewHeaderUtils {
-  buildHeader(String invNo, String currentDate, String dueDate) {
+  buildHeader(String invNo, String currentDate, String title,
+      {String? dueDate}) {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
@@ -23,13 +24,14 @@ class PreviewHeaderUtils {
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.end,
             children: [
-              pw.Text(AppStrings.invoiceCapsPreviewText,
+              pw.Text(title,
                   style: pw.TextStyle(
                       fontSize: AppSizes.s20.r,
                       color: PdfColor.fromHex("#690623"),
                       fontWeight: pw.FontWeight.bold)),
               pw.Text(invNo),
-              pw.Text("${AppStrings.dueDateText} $dueDate"),
+              if (dueDate != null)
+                pw.Text("${AppStrings.dueDateText} $dueDate"),
               pw.Text("${AppStrings.issuedDateText} $currentDate"),
             ],
           ),

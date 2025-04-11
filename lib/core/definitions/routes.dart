@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_maker/view/new_estimate_screen/estimate_details_screen.dart';
+import 'package:invoice_maker/view/new_estimate_screen/preview_screen.dart';
 import 'route_names.dart';
 import '../../view/new_invoice_screen/add_tax_screen.dart';
 import '../../view/app_screens/error_screen.dart';
@@ -45,7 +46,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case RouteNames.welcomeScreen:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
-      case RouteNames.previewScreen:
+      case RouteNames.invoicePreviewScreen:
         final args = settings.arguments as Map<String, dynamic>?;
         return CustomPageTransition(
           child: PreviewScreen(
@@ -73,6 +74,14 @@ class RouteGenerator {
             builder: (_) => EstimateDetailsScreen(
                   estimate: args!['estimate'],
                 ));
+      case RouteNames.estimatePreviewScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return CustomPageTransition(
+          child: EstimatePreviewScreen(
+            type: args!['type'],
+            estimate: args['estimate'],
+          ),
+        );
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());

@@ -10,6 +10,7 @@ import '../../core/constants/app_fonts_styles.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
 import '../widgets/custom_floating_button.dart';
+import 'preview_screen.dart';
 
 class EstimateDetailsScreen extends StatefulWidget {
   final EstimateModel estimate;
@@ -34,11 +35,11 @@ class _EstimateDetailsScreenState extends State<EstimateDetailsScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, RouteNames.previewScreen,
-              //   arguments: {
-              //     'type': PreviewType.details,
-              //     'invoice': widget.invoice
-              //   });
+              Navigator.pushNamed(context, RouteNames.estimatePreviewScreen,
+                arguments: {
+                  'type': PreviewType.details,
+                  'estimate': widget.estimate
+                });
             },
             child: Text(
               AppStrings.previewText,

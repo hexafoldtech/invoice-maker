@@ -101,7 +101,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         ),
         actions: [
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, RouteNames.previewScreen,
+            onTap: () => Navigator.pushNamed(context, RouteNames.invoicePreviewScreen,
                 arguments: {
                   'type': PreviewType.details,
                   'invoice': widget.invoice

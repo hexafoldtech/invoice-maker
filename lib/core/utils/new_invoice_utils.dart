@@ -28,7 +28,7 @@ class NewInvoiceUtils {
         Provider.of<ItemProvider>(context, listen: false)
             .selectedItems
             .isNotEmpty) {
-      Navigator.pushNamed(context, RouteNames.previewScreen,
+      Navigator.pushNamed(context, RouteNames.invoicePreviewScreen,
           arguments: {'type': PreviewType.preview});
     } else {
       DialogBoxes().showPreviewDialog(context);

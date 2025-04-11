@@ -1,19 +1,19 @@
-import 'package:invoice_maker/core/constants/global_key.dart';
-import 'package:invoice_maker/core/utils/extensions/date_formatter.dart';
-import 'package:invoice_maker/core/utils/preview_header.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'preview_header.dart';
+import 'extensions/date_formatter.dart';
+import '../../models/InvoiceModel/invoice_model.dart';
+import '../../providers/invoice_provider.dart';
+import '../../providers/client_provider.dart';
+import '../../providers/item_provider.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
-import '../../models/InvoiceModel/invoice_model.dart';
-import '../../providers/client_provider.dart';
-import '../../providers/invoice_provider.dart';
-import '../../providers/item_provider.dart';
+import '../constants/global_key.dart';
 
-class PreviewUtils {
+class InvoicePreviewUtils {
   Future<Uint8List> generatePdf({InvoiceModel? invoice}) async {
     final pdf = pw.Document();
 
@@ -66,8 +66,9 @@ class PreviewUtils {
             children: [
               PreviewHeaderUtils().buildHeader(
                   "#${invoiceProvider.generateInvoiceId()}",
+                  AppStrings.invoiceCapsPreviewText,
                   currentDate,
-                  dueDate),
+                  dueDate: dueDate),
               pw.SizedBox(height: 40),
               PreviewHeaderUtils().buildClientDetails(
                   client!.clientName,

@@ -133,4 +133,5 @@ class AppStrings {
   static const String estimateText = "Estimate";
   static const String noEstimatesText = "No Estimates";
   static const String convertToInvoiceText = "Convert to Invoice";
+  static const String estimateCapsPreviewText = "ESTIMATE";
 }
