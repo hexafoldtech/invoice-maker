@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:invoice_maker/core/constants/global_key.dart';
+import 'package:invoice_maker/core/utils/extensions/due_date_calculator.dart';
+import 'package:invoice_maker/core/utils/extensions/string_formatter.dart';
+import 'package:invoice_maker/providers/estimate_provider.dart';
+import 'package:invoice_maker/providers/invoice_provider.dart';
+import 'package:provider/provider.dart';
+import '../../core/utils/bottom_sheet.dart';
 import '../../models/EstimateModel/estimate_model.dart';
 import '../../core/definitions/route_names.dart';
 import '../../core/utils/app_text_styles.dart';
@@ -36,10 +44,10 @@ class _EstimateDetailsScreenState extends State<EstimateDetailsScreen> {
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, RouteNames.estimatePreviewScreen,
-                arguments: {
-                  'type': PreviewType.details,
-                  'estimate': widget.estimate
-                });
+                  arguments: {
+                    'type': PreviewType.details,
+                    'estimate': widget.estimate
+                  });
             },
             child: Text(
               AppStrings.previewText,
@@ -168,7 +176,31 @@ class _EstimateDetailsScreenState extends State<EstimateDetailsScreen> {
             CustomFloatingButton(
               icon: Icons.transform_sharp,
               text: AppStrings.convertToInvoiceText,
-              onPressed: () {},
+              onPressed: () {
+                CustomBottomSheet(
+                  type: CustomBottomSheetType.floating,
+                  header: const Text(AppStrings.selectDueDateText),
+                  mainContent: Column(
+                    children: [].addDueDateItems(
+                        Provider.of<InvoiceProvider>(context, listen: false)
+                            .dueDateOptions, (selectedDate) {
+                      if (selectedDate != AppStrings.cancelText) {
+                        var invoice = Provider.of<EstimateProvider>(context,
+                                listen: false)
+                            .createInvoiceModel(widget.estimate,
+                                dueDate: selectedDate.toDateTime());
+                        Provider.of<EstimateProvider>(context, listen: false)
+                            .deleteEstimate(widget.estimate.id);
+                        Provider.of<InvoiceProvider>(context, listen: false)
+                            .addInvoice(invoice);
+                        Navigator.pop(navigatorKey.currentContext!);
+                        Navigator.pushNamed(
+                            context, RouteNames.dashboardScreen);
+                      }
+                    }),
+                  ),
+                ).showCustomBottomSheet();
+              },
             ),
           ],
         ),

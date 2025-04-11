@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:invoice_maker/models/EstimateModel/estimate_model.dart';
+import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
 import 'package:invoice_maker/providers/client_provider.dart';
 import 'package:invoice_maker/providers/item_provider.dart';
 import 'package:invoice_maker/repository/estimate_repo.dart';
@@ -137,6 +138,29 @@ class EstimateProvider extends ChangeNotifier {
         total: totalAmount,
         taxType: _selectedTaxType,
         tax: tax);
+  }
+
+  InvoiceModel createInvoiceModel(EstimateModel estimate,
+      {required DateTime dueDate}) {
+    final box = Hive.box<InvoiceModel>(HiveBoxNames.invoices);
+    final int newId = (box.isEmpty)
+        ? 0
+        : box.keys
+                .cast<int>()
+                .reduce((value, element) => value > element ? value : element) +
+            1;
+
+    return InvoiceModel(
+        id: newId,
+        dueDate: dueDate,
+        client: estimate.client,
+        issueDate: estimate.issueDate,
+        items: estimate.items,
+        discount: estimate.discount,
+        subTotal: estimate.subTotal,
+        total: estimate.total,
+        taxType: estimate.taxType,
+        tax: estimate.tax);
   }
 
   void initListners() {

@@ -25,17 +25,17 @@ class EstimateRepo {
     }
   }
 
-  Future<void> saveEstimate(EstimateModel invoice) async {
+  Future<void> saveEstimate(EstimateModel estimate) async {
     try {
-      await estimateDataSourceImpl.saveEstimate(invoice);
+      await estimateDataSourceImpl.saveEstimate(estimate);
     } catch (e) {
       debugPrint(AppStrings.errorText);
     }
   }
 
-  Future<void> updateEstimate(EstimateModel invoice) async {
+  Future<void> updateEstimate(EstimateModel estimate) async {
     try {
-      await estimateDataSourceImpl.updateEstimate(invoice);
+      await estimateDataSourceImpl.updateEstimate(estimate);
     } catch (e) {
       debugPrint(AppStrings.errorText);
     }
