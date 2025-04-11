@@ -14,4 +14,5 @@ class RouteNames {
   static const String paymentsScreen = "payments_screen";
   static const String invoiceDetailsScreen = "invoice_details_screen";
   static const String addTaxInEstimateScreen = "add_tax_estimate_screen";
+  static const String estimateDetailsScreen = "estimate_details_screen";
 }

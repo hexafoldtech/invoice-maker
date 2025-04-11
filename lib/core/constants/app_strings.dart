@@ -131,4 +131,6 @@ class AppStrings {
   static const String yearText = "this year:";
   static const String newEstimateText = "New Estimate";
   static const String estimateText = "Estimate";
+  static const String noEstimatesText = "No Estimates";
+  static const String convertToInvoiceText = "Convert to Invoice";
 }

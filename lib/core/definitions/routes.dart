@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_maker/view/new_estimate_screen/estimate_details_screen.dart';
 import 'route_names.dart';
 import '../../view/new_invoice_screen/add_tax_screen.dart';
 import '../../view/app_screens/error_screen.dart';
@@ -66,6 +67,12 @@ class RouteGenerator {
                 ));
       case RouteNames.addTaxInEstimateScreen:
         return MaterialPageRoute(builder: (_) => const AddTaxEstimateScreen());
+      case RouteNames.estimateDetailsScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+            builder: (_) => EstimateDetailsScreen(
+                  estimate: args!['estimate'],
+                ));
       default:
         return MaterialPageRoute(
             builder: (_) => const UnderDevelopmentScreen());
