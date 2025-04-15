@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/text_form_validator.dart';
 import '../../providers/form_provider.dart';
 import '../../providers/item_provider.dart';
-import '../widgets/custom_floating_button.dart';
+import 'custom_floating_button.dart';
 import '../../core/utils/add_new_item_details.dart';
 import '../../core/utils/custom_text_form_field.dart';
 import '../../core/utils/add_new_item_discount.dart';

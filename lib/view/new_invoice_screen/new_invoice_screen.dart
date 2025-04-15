@@ -5,9 +5,9 @@ import 'package:invoice_maker/core/utils/new_invoice_utils.dart';
 import '../../providers/client_provider.dart';
 import '../../providers/invoice_provider.dart';
 import 'package:provider/provider.dart';
-import 'client_screen.dart';
-import 'item_screen.dart';
-import 'summary.dart';
+import '../widgets/client_screen.dart';
+import '../widgets/item_screen.dart';
+import 'invoice_summary.dart';
 import 'invoice_issued_due_section.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_floating_button.dart';
@@ -144,7 +144,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                       mainChild: ItemScreen(),
                     ),
                     const SizedBox(height: AppSizes.s20),
-                    const Summary(),
+                    const InvoiceSummary(),
                   ],
                 ),
               )

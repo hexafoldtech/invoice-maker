@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/core/constants/app_colors.dart';
-import 'package:invoice_maker/core/utils/invoice_preview_utils.dart';
-import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/utils/estimate_preview_utils.dart';
+import '../../models/EstimateModel/estimate_model.dart';
 import '../widgets/custom_app_bar.dart';
 
 enum PreviewType { preview, details }
 
-class PreviewScreen extends StatelessWidget {
+class EstimatePreviewScreen extends StatelessWidget {
   final PreviewType type;
-  final InvoiceModel? invoice;
-  const PreviewScreen({super.key, required this.type, this.invoice});
+  final EstimateModel? estimate;
+  const EstimatePreviewScreen({super.key, required this.type, this.estimate});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class PreviewScreen extends StatelessWidget {
         return PdfPreview(
           canChangePageFormat: false,
           canChangeOrientation: false,
-          build: (format) => InvoicePreviewUtils().generatePdf(invoice: invoice),
+          build: (format) =>
+              EstimatePreviewUtils().generatePdf(estimate: estimate),
           initialPageFormat: PdfPageFormat.a4,
           pdfFileName: "invoice.pdf",
           allowPrinting: false,
@@ -42,7 +43,7 @@ class PreviewScreen extends StatelessWidget {
         return PdfPreview(
           canChangePageFormat: false,
           canChangeOrientation: false,
-          build: (format) => InvoicePreviewUtils().generatePdf(),
+          build: (format) => EstimatePreviewUtils().generatePdf(),
           initialPageFormat: PdfPageFormat.a4,
           pdfFileName: "invoice.pdf",
           allowPrinting: false,

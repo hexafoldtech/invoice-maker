@@ -114,4 +114,24 @@ class AppStrings {
   static const String completeInvoicePreviewText =
       "Please fill the whole invoice to preview";
   static const String completeInvoiceText = "Please fill the whole invoice";
+  static const String backText = "Back";
+  static const String recievedPayText = "Recieved Payments";
+  static const String paymentsText = "Payments";
+  static const String paidFullText = "Paid In Full";
+  static const String addPartialPaymentText = "Add Partial Payment";
+  static const String addRecievedPaymentText = "Add Recieved Payment";
+  static const String hasInvoicePaidText = "Has invoice been paid?";
+  static const String markAsPaidText = "Mark as Paid";
+  static const String saveText = "Save";
+  static const String shareText = "Share";
+  static const String printText = "Print";
+  static const String editText = "Edit";
+  static const String sendInvoiceText = "Send Invoice";
+  static const String yesText = "Yes";
+  static const String yearText = "this year:";
+  static const String newEstimateText = "New Estimate";
+  static const String estimateText = "Estimate";
+  static const String noEstimatesText = "No Estimates";
+  static const String convertToInvoiceText = "Convert to Invoice";
+  static const String estimateCapsPreviewText = "ESTIMATE";
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
 import 'package:invoice_maker/providers/item_provider.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
@@ -121,7 +122,7 @@ class _ItemScreenState extends State<ItemScreen> {
                               Navigator.pop(ctx);
                             },
                             trailing: Text(
-                              "${items.itemPrice.toString()} $unit",
+                              "${items.itemPrice.formatWithCommas()} $unit",
                               style: AppTextStyles.helveticaNeue(
                                   AppColors.darkGrey,
                                   FontWeight.w500,

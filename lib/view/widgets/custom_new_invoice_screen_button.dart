@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:invoice_maker/core/utils/extensions/number_formatter.dart';
 import 'package:provider/provider.dart';
 import '../../providers/item_provider.dart';
 import '../../core/utils/bottom_sheet.dart';
@@ -47,9 +48,9 @@ class CustomNewInvoiceScreenButton extends StatelessWidget {
                     ItemDisplay(
                       title: item.itemName,
                       desc: item.itemDetails,
-                      price: item.itemUnitPrice.toString(),
+                      price: item.itemUnitPrice.formatWithCommas(),
                       quantity: item.itemQuantity.toString(),
-                      finalPrice: item.itemPrice.toString(),
+                      finalPrice: item.itemPrice.formatWithCommas(),
                       discount: item.itemDiscountRate?.toString(),
                       onDelete: () {
                         itemProvider.deleteSelectedItem(item);

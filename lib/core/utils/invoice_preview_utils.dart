@@ -1,24 +1,28 @@
-import 'package:invoice_maker/core/constants/global_key.dart';
-import 'package:invoice_maker/core/utils/preview_header.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'preview_header.dart';
+import 'extensions/date_formatter.dart';
+import '../../models/InvoiceModel/invoice_model.dart';
+import '../../providers/invoice_provider.dart';
+import '../../providers/client_provider.dart';
+import '../../providers/item_provider.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_strings.dart';
-import '../../providers/client_provider.dart';
-import '../../providers/invoice_provider.dart';
-import '../../providers/item_provider.dart';
+import '../constants/global_key.dart';
 
-class PreviewUtils {
-  Future<Uint8List> generatePdf() async {
+class InvoicePreviewUtils {
+  Future<Uint8List> generatePdf({InvoiceModel? invoice}) async {
     final pdf = pw.Document();
 
-    final String currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    final String currentDate = invoice?.issueDate.toFormattedString() ??
+        DateFormat('dd/MM/yyyy').format(DateTime.now());
+
     var itemProvider =
         Provider.of<ItemProvider>(navigatorKey.currentContext!, listen: false);
-    var selectedItems = itemProvider.selectedItems;
+    var selectedItems = invoice?.items ?? itemProvider.selectedItems;
     List<List<dynamic>> tableData = selectedItems
         .map((item) => [
               "${item.itemName}\n${item.itemDetails}${item.isDiscount ? "\nIncl. ${item.itemDiscountRate}% discount" : ""}",
@@ -28,21 +32,29 @@ class PreviewUtils {
             ])
         .toList();
 
-    var client =
+    var client = invoice?.client ??
         Provider.of<ClientProvider>(navigatorKey.currentContext!, listen: false)
             .selectedClient;
-
     var invoiceProvider = Provider.of<InvoiceProvider>(
         navigatorKey.currentContext!,
         listen: false);
-    var dueDate = DateFormat('dd/MM/yyyy')
-        .format(DateFormat('dd MMM yyyy').parse(invoiceProvider.dueDate));
-    var totalAmount = invoiceProvider.totalAmount;
-    var subtotal = invoiceProvider.subTotal;
-    var tax = invoiceProvider.tax.toStringAsFixed(2);
-    var taxText = invoiceProvider.taxText == AppStrings.taxText
-        ? ''
-        : invoiceProvider.taxText.substring(4);
+
+    var dueDate = DateFormat('dd/MM/yyyy').format(
+      invoice?.dueDate ??
+          DateFormat('dd MMM yyyy').parse(invoiceProvider.dueDate),
+    );
+    var totalAmount = invoice?.total ?? invoiceProvider.totalAmount;
+    var subtotal = invoice?.subTotal ?? invoiceProvider.subTotal;
+    var tax = invoice?.tax?.toStringAsFixed(2) ??
+        invoiceProvider.tax.toStringAsFixed(2);
+    String taxText;
+    if (invoice != null && invoice.tax != 0) {
+      taxText = "(${invoice.tax} ${invoice.taxType})";
+    } else {
+      taxText = invoiceProvider.taxText == AppStrings.taxText
+          ? ''
+          : invoiceProvider.taxText.substring(4);
+    }
 
     pdf.addPage(
       pw.Page(
@@ -54,8 +66,9 @@ class PreviewUtils {
             children: [
               PreviewHeaderUtils().buildHeader(
                   "#${invoiceProvider.generateInvoiceId()}",
+                  AppStrings.invoiceCapsPreviewText,
                   currentDate,
-                  dueDate),
+                  dueDate: dueDate),
               pw.SizedBox(height: 40),
               PreviewHeaderUtils().buildClientDetails(
                   client!.clientName,

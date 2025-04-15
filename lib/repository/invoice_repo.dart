@@ -40,6 +40,15 @@ class InvoiceRepo {
     }
   }
 
+  Future<void> updateInvoiceAmount(
+      InvoiceModel invoice, double newPaidAmount) async {
+    try {
+      await invoiceDataSourceImpl.updateInvoiceAmount(invoice, newPaidAmount);
+    } catch (e) {
+      debugPrint(AppStrings.errorText);
+    }
+  }
+
   Future<void> deleteInvoice(int id) async {
     try {
       await invoiceDataSourceImpl.deleteInvoice(id);

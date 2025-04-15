@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_maker/view/new_invoice_screen/preview_screen.dart';
 import 'package:provider/provider.dart';
-
+import '../../providers/estimate_provider.dart';
 import '../../providers/client_provider.dart';
-import '../../providers/invoice_provider.dart';
 import '../../providers/item_provider.dart';
+import '../../view/new_estimate_screen/preview_screen.dart';
 import '../definitions/route_names.dart';
 import 'dialog_boxes.dart';
 
-class NewInvoiceUtils {
+class NewEstimateUtils {
   void onCancel(BuildContext context) {
     Navigator.pop(context);
     if (Provider.of<ClientProvider>(context, listen: false).selectedClient !=
@@ -18,7 +17,6 @@ class NewInvoiceUtils {
             .isNotEmpty) {
       Provider.of<ClientProvider>(context, listen: false).clearSelectedClient();
       Provider.of<ItemProvider>(context, listen: false).clearSelectedItems();
-      Provider.of<InvoiceProvider>(context, listen: false).clearDueDate();
     }
   }
 
@@ -28,31 +26,30 @@ class NewInvoiceUtils {
         Provider.of<ItemProvider>(context, listen: false)
             .selectedItems
             .isNotEmpty) {
-      Navigator.pushNamed(context, RouteNames.invoicePreviewScreen,
+      Navigator.pushNamed(context, RouteNames.estimatePreviewScreen,
           arguments: {'type': PreviewType.preview});
     } else {
       DialogBoxes().showPreviewDialog(context);
     }
   }
 
-  void onSaveInvoice(BuildContext context) {
+  void onSaveEstimate(BuildContext context) {
     if (Provider.of<ClientProvider>(context, listen: false).selectedClient !=
             null &&
         Provider.of<ItemProvider>(context, listen: false)
             .selectedItems
             .isNotEmpty) {
-      var invoiceProvider =
-          Provider.of<InvoiceProvider>(context, listen: false);
-      var newInvoice = invoiceProvider.createInvoiceModel();
-      invoiceProvider.addInvoice(newInvoice).then((_) {
+      var estimateProvider =
+          Provider.of<EstimateProvider>(context, listen: false);
+      var newEstimate = estimateProvider.createEstimateModel();
+      estimateProvider.addEstimate(newEstimate).then((_) {
         if (context.mounted) {
-          Navigator.pushNamed(context, RouteNames.invoiceDetailsScreen,
-              arguments: {'invoice': newInvoice});
-          Provider.of<ClientProvider>(context, listen: false)
-              .clearSelectedClient();
+          Navigator.pushNamed(context, RouteNames.estimateDetailsScreen,
+              arguments: {'estimate': newEstimate});
           Provider.of<ItemProvider>(context, listen: false)
               .clearSelectedItems();
-          Provider.of<InvoiceProvider>(context, listen: false).clearDueDate();
+          Provider.of<ClientProvider>(context, listen: false)
+              .clearSelectedClient();
         }
       });
     } else {

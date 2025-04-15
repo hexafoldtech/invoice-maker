@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import '../../../models/ItemModel/items_model.dart';
 import '../../../core/constants/hive_box_names.dart';
-import '../../item_data_sources.dart';
+import '../../item_data_stores.dart';
 
 // class ItemBoxes {
 //   static Box<ItemsModel> getData() => Hive.box(HiveBoxNames.items);

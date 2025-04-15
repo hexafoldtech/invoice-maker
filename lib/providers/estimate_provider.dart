@@ -2,44 +2,35 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:invoice_maker/models/EstimateModel/estimate_model.dart';
+import 'package:invoice_maker/models/InvoiceModel/invoice_model.dart';
+import 'package:invoice_maker/providers/client_provider.dart';
+import 'package:invoice_maker/providers/item_provider.dart';
+import 'package:invoice_maker/repository/estimate_repo.dart';
 import 'package:provider/provider.dart';
-import '../repository/invoice_repo.dart';
-import 'client_provider.dart';
-import 'item_provider.dart';
-import '../../../models/InvoiceModel/invoice_model.dart';
-import '../core/utils/extensions/string_formatter.dart';
+
 import '../core/constants/app_strings.dart';
 import '../core/constants/hive_box_names.dart';
 
 enum AppUIStates { loading, empty, success, none }
 
-class InvoiceProvider extends ChangeNotifier {
-  final InvoiceRepo _invoiceRepo = InvoiceRepo();
+class EstimateProvider extends ChangeNotifier {
+  final EstimateRepo _estimateRepo = EstimateRepo();
   final BuildContext context;
-  InvoiceProvider({required this.context});
+  EstimateProvider({required this.context});
 
-  List<InvoiceModel> _invoices = [];
+  List<EstimateModel> _estimates = [];
   AppUIStates _state = AppUIStates.none;
   bool _isLoading = false;
-  String _dueDate = "-";
-  final List<MapEntry<String, int>> _dueDateOptions = [
-    const MapEntry(AppStrings.noDueDateText, 0),
-    const MapEntry(AppStrings.onReceiptDueDateText, 0),
-    const MapEntry(AppStrings.tenDaysDueDateText, 10),
-    const MapEntry(AppStrings.fifteenDaysDueDateText, 15),
-    const MapEntry(AppStrings.thirtyDaysDueDateText, 30),
-    const MapEntry(AppStrings.cancelText, -1) //  used to close the bottom sheet
-  ];
+
   final TextEditingController _taxController = TextEditingController();
   bool _showTaxTypeRow = false;
   String _selectedTaxType = AppStrings.inclusiveText;
   String _taxText = AppStrings.taxText;
 
-  List<InvoiceModel> get invoices => _invoices;
+  List<EstimateModel> get estimates => _estimates;
   AppUIStates get state => _state;
   bool get isLoading => _isLoading;
-  String get dueDate => _dueDate;
-  List<MapEntry<String, int>> get dueDateOptions => _dueDateOptions;
   TextEditingController get taxController => _taxController;
   bool get showTaxTypeRow => _showTaxTypeRow;
   String get selectedTaxType => _selectedTaxType;
@@ -107,45 +98,6 @@ class InvoiceProvider extends ChangeNotifier {
     notifyListeners(); // Ensure UI updates
   }
 
-  void updateDueDate(String newDueDate) {
-    _dueDate = newDueDate;
-    notifyListeners();
-  }
-
-  String generateInvoiceId() {
-    final box = Hive.box<InvoiceModel>(HiveBoxNames.invoices);
-    int nextId = box.length + 1;
-    return nextId.toString().padLeft(3, '0');
-  }
-
-  InvoiceModel createInvoiceModel() {
-    final box = Hive.box<InvoiceModel>(HiveBoxNames.invoices);
-    final int newId = (box.isEmpty)
-        ? 0
-        : box.keys
-                .cast<int>()
-                .reduce((value, element) => value > element ? value : element) +
-            1;
-
-    return InvoiceModel(
-        id: newId,
-        client:
-            Provider.of<ClientProvider>(context, listen: false).selectedClient!,
-        issueDate: DateTime.now(),
-        dueDate: dueDate.toDateTime(),
-        items: Provider.of<ItemProvider>(context, listen: false).selectedItems,
-        discount: totalDiscount,
-        subTotal: subTotal,
-        total: totalAmount,
-        taxType: _selectedTaxType,
-        tax: tax);
-  }
-
-  void initListners() {
-    _taxController.addListener(_handleTaxInputChange);
-    _taxController.addListener(_updateFormattedTaxText);
-  }
-
   void _handleTaxInputChange() {
     bool shouldShow = taxController.text.isNotEmpty;
     if (_showTaxTypeRow != shouldShow) {
@@ -160,12 +112,68 @@ class InvoiceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchInvoices() async {
+  String generateEstimateId() {
+    final box = Hive.box<EstimateModel>(HiveBoxNames.estimates);
+    int nextId = box.length + 1;
+    return "EST$nextId";
+  }
+
+  EstimateModel createEstimateModel() {
+    final box = Hive.box<EstimateModel>(HiveBoxNames.estimates);
+    final int newId = (box.isEmpty)
+        ? 0
+        : box.keys
+                .cast<int>()
+                .reduce((value, element) => value > element ? value : element) +
+            1;
+
+    return EstimateModel(
+        id: newId,
+        client:
+            Provider.of<ClientProvider>(context, listen: false).selectedClient!,
+        issueDate: DateTime.now(),
+        items: Provider.of<ItemProvider>(context, listen: false).selectedItems,
+        discount: totalDiscount,
+        subTotal: subTotal,
+        total: totalAmount,
+        taxType: _selectedTaxType,
+        tax: tax);
+  }
+
+  InvoiceModel createInvoiceModel(EstimateModel estimate,
+      {required DateTime dueDate}) {
+    final box = Hive.box<InvoiceModel>(HiveBoxNames.invoices);
+    final int newId = (box.isEmpty)
+        ? 0
+        : box.keys
+                .cast<int>()
+                .reduce((value, element) => value > element ? value : element) +
+            1;
+
+    return InvoiceModel(
+        id: newId,
+        dueDate: dueDate,
+        client: estimate.client,
+        issueDate: estimate.issueDate,
+        items: estimate.items,
+        discount: estimate.discount,
+        subTotal: estimate.subTotal,
+        total: estimate.total,
+        taxType: estimate.taxType,
+        tax: estimate.tax);
+  }
+
+  void initListners() {
+    _taxController.addListener(_handleTaxInputChange);
+    _taxController.addListener(_updateFormattedTaxText);
+  }
+
+  Future<void> fetchEstimates() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _invoices = await _invoiceRepo.getAllInvoices();
+      _estimates = await _estimateRepo.getAllEstimates();
     } catch (e) {
       _state = AppUIStates.empty;
     }
@@ -174,10 +182,10 @@ class InvoiceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addInvoice(InvoiceModel invoice) async {
+  Future<void> addEstimate(EstimateModel estimate) async {
     try {
-      await _invoiceRepo.saveInvoice(invoice);
-      _invoices.add(invoice);
+      await _estimateRepo.saveEstimate(estimate);
+      _estimates.add(estimate);
       notifyListeners();
     } catch (e) {
       _state = AppUIStates.empty;
@@ -185,12 +193,12 @@ class InvoiceProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateInvoice(InvoiceModel invoice) async {
+  Future<void> updateEstimate(EstimateModel estimate) async {
     try {
-      await _invoiceRepo.updateInvoice(invoice);
-      int index = _invoices.indexWhere((i) => i.id == invoice.id);
+      await _estimateRepo.updateEstimate(estimate);
+      int index = _estimates.indexWhere((i) => i.id == estimate.id);
       if (index != -1) {
-        _invoices[index] = invoice;
+        _estimates[index] = estimate;
         notifyListeners();
       }
     } catch (e) {
@@ -199,38 +207,14 @@ class InvoiceProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateInvoiceAmount(
-      InvoiceModel invoice, double newPaidAmount) async {
+  Future<void> deleteEstimate(int id) async {
     try {
-      await _invoiceRepo.updateInvoiceAmount(invoice, newPaidAmount);
+      await _estimateRepo.deleteEstimate(id);
+      _estimates.removeWhere((invoice) => invoice.id == id);
       notifyListeners();
     } catch (e) {
       _state = AppUIStates.empty;
       notifyListeners();
     }
-  }
-
-  void clearDueDate() {
-    _dueDate = "-";
-    notifyListeners();
-  }
-
-  Future<void> deleteInvoice(int id) async {
-    try {
-      await _invoiceRepo.deleteInvoice(id);
-      _invoices.removeWhere((invoice) => invoice.id == id);
-      notifyListeners();
-    } catch (e) {
-      _state = AppUIStates.empty;
-      notifyListeners();
-    }
-  }
-
-  @override
-  void dispose() {
-    taxController.removeListener(_handleTaxInputChange);
-    taxController.removeListener(_updateFormattedTaxText);
-    taxController.dispose();
-    super.dispose();
   }
 }

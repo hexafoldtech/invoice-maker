@@ -181,8 +181,8 @@ class AppButton extends StatelessWidget {
           padding: EdgeInsets.only(top: AppSizes.s15.r, left: AppSizes.s8.r),
           child: Text(
             label,
-            style: AppTextStyles.helveticaNeueSmall(
-                AppColors.black, FontWeight.normal),
+            style:
+                AppTextStyles.helveticaNeueSmall(textColor, FontWeight.normal),
           )),
     );
   }

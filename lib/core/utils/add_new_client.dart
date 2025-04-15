@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../providers/client_provider.dart';
-import '../../view/new_invoice_screen/new_client_screen.dart';
+import '../../view/widgets/new_client_screen.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/bottom_sheet.dart';
 import '../../core/constants/app_colors.dart';

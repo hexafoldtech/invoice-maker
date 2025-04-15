@@ -6,4 +6,5 @@ abstract class InvoiceLocalDataSource {
   Future<List<InvoiceModel>> getAllInvoices();
   Future<void> deleteInvoice(int id);
   Future<void> updateInvoice(InvoiceModel invoice);
+  Future<void> updateInvoiceAmount(InvoiceModel invoice, double newPaidAmount);
 }

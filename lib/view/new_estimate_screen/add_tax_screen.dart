@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../providers/invoice_provider.dart';
+import '../../providers/estimate_provider.dart';
 import '../../core/utils/app_text_styles.dart';
 import '../../core/utils/custom_text_form_field.dart';
 import '../../core/constants/app_colors.dart';
@@ -10,19 +10,19 @@ import "../../core/constants/app_sizes.dart";
 import '../../core/constants/app_strings.dart';
 import '../../core/constants/global_key.dart';
 
-class AddTaxInvoiceScreen extends StatefulWidget {
-  const AddTaxInvoiceScreen({super.key});
+class AddTaxEstimateScreen extends StatefulWidget {
+  const AddTaxEstimateScreen({super.key});
 
   @override
-  State<AddTaxInvoiceScreen> createState() => _AddTaxInvoiceScreenState();
+  State<AddTaxEstimateScreen> createState() => _AddTaxEstimateScreenState();
 }
 
-class _AddTaxInvoiceScreenState extends State<AddTaxInvoiceScreen> {
+class _AddTaxEstimateScreenState extends State<AddTaxEstimateScreen> {
   @override
   void initState() {
     super.initState();
 
-    Provider.of<InvoiceProvider>(context, listen: false).initListners();
+    Provider.of<EstimateProvider>(context, listen: false).initListners();
   }
 
   @override
@@ -59,8 +59,8 @@ class _AddTaxInvoiceScreenState extends State<AddTaxInvoiceScreen> {
           ),
         ),
       ),
-      body: Consumer<InvoiceProvider>(
-        builder: (context, invoiceProvider, child) {
+      body: Consumer<EstimateProvider>(
+        builder: (context, estimateProvider, child) {
           return Column(
             children: [
               Padding(
@@ -69,20 +69,20 @@ class _AddTaxInvoiceScreenState extends State<AddTaxInvoiceScreen> {
                   onFocusChange: (hasFocus) {
                     if (!hasFocus) {
                       // Re-append "%" when editing is done
-                      if (!invoiceProvider.taxController.text.endsWith('%') &&
-                          invoiceProvider.taxController.text.isNotEmpty) {
-                        invoiceProvider.taxController.text =
-                            "${invoiceProvider.taxController.text}%";
-                        invoiceProvider.taxController.selection =
+                      if (!estimateProvider.taxController.text.endsWith('%') &&
+                          estimateProvider.taxController.text.isNotEmpty) {
+                        estimateProvider.taxController.text =
+                            "${estimateProvider.taxController.text}%";
+                        estimateProvider.taxController.selection =
                             TextSelection.fromPosition(
                           TextPosition(
                               offset:
-                                  invoiceProvider.taxController.text.length),
+                                  estimateProvider.taxController.text.length),
                         );
                       }
                     } else {
                       // Remove "%" when user starts editing
-                      invoiceProvider.taxController.text = invoiceProvider
+                      estimateProvider.taxController.text = estimateProvider
                           .taxController.text
                           .replaceAll('%', '');
                     }
@@ -90,12 +90,12 @@ class _AddTaxInvoiceScreenState extends State<AddTaxInvoiceScreen> {
                   child: CustomTextFormField(
                     formType: FormType.item,
                     textInputType: TextInputType.number,
-                    controller: invoiceProvider.taxController,
+                    controller: estimateProvider.taxController,
                     hintText: '0%',
                   ),
                 ),
               ),
-              if (invoiceProvider.showTaxTypeRow)
+              if (estimateProvider.showTaxTypeRow)
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 8.r),
@@ -126,15 +126,15 @@ class _AddTaxInvoiceScreenState extends State<AddTaxInvoiceScreen> {
   }
 
   Widget _buildDiscountTypeOption(String type) {
-    var invoiceProvider = Provider.of<InvoiceProvider>(
+    var estimateProvider = Provider.of<EstimateProvider>(
         navigatorKey.currentContext!,
         listen: false);
-    final bool isSelected = invoiceProvider.selectedTaxType == type;
+    final bool isSelected = estimateProvider.selectedTaxType == type;
 
     return GestureDetector(
       onTap: () {
-        invoiceProvider.updateTaxType(type);
-        invoiceProvider;
+        estimateProvider.updateTaxType(type);
+        estimateProvider;
       },
       child: Container(
         width: AppSizes.s100.r,
